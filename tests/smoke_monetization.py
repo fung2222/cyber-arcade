@@ -1,10 +1,10 @@
 # Headless smoke test for the hub monetisation prototype (tier badges, store, Silver→Gold upgrade, trials, restore).
-#   python -u tests/smoke_monetization.py [BASE_URL] [OUT_DIR]
+#   python -u tests/smoke_monetization.py HUB_URL [OUT_DIR]     (HUB_URL = the unlisted hub page, or set env HUB_URL)
 # Needs Playwright + Chrome. Exits 1 on any console error / failed assertion.
 import asyncio, sys, json, os
 from playwright.async_api import async_playwright
 
-BASE = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:18940/cyber-arcade/'
+BASE = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('HUB_URL') or sys.exit('usage: smoke_monetization.py HUB_URL [OUT_DIR]')
 OUT = sys.argv[2] if len(sys.argv) > 2 else '/workspace/shots/monetization'
 os.makedirs(OUT, exist_ok=True)
 VIEWS = {'m': dict(viewport={'width': 412, 'height': 915}, device_scale_factor=2, is_mobile=True, has_touch=True),
@@ -30,8 +30,9 @@ async def run(b, view, lang):
     sfx = f'{lang}-{"mobile" if view == "m" else "desktop"}'
     # 1) hub with badges (fresh Free state)
     ctx, pg = await page(b, view, lang)
-    check(await pg.locator('.badge.gold').count() == 2 and await pg.locator('.badge.silver').count() == 2 and await pg.locator('.badge.free').count() == 3, f'{sfx} badges')
-    check(await pg.locator('.card.locked').count() == 4, f'{sfx} 4 locked cards')
+    n = await pg.evaluate("(() => { const c = {free: 0, silver: 0, gold: 0}; window.__hub.games.forEach((g) => c[g.tier]++); return c; })()")
+    check(all([await pg.locator(f'.badge.{k}').count() == v for k, v in n.items()]), f'{sfx} badges {n}')
+    check(await pg.locator('.card.locked').count() == n['silver'] + n['gold'], f'{sfx} locked cards')
     await snap(pg, f'01-hub-free-{sfx}', full=True)
     # 2) store, Free state
     await pg.click('#btn-unlock'); await pg.wait_for_selector('.tier.gold')
@@ -49,7 +50,7 @@ async def run(b, view, lang):
     await snap(pg, f'04-store-silver-upgrade-{sfx}')
     p = f'{OUT}/04b-gold-upgrade-card-{sfx}.png'; await pg.locator('.tier.gold').screenshot(path=p); shots.append(p)
     await pg.click('#store-close'); await pg.wait_for_timeout(200)
-    check(await pg.locator('.card.locked').count() == 2, f'{sfx} silver: 2 locked (gold) cards')
+    check(await pg.locator('.card.locked').count() == n['gold'], f'{sfx} silver: only gold cards locked')
     check(json.loads(await pg.evaluate("localStorage.getItem('cyber.entitlement')"))['tier'] == 'silver', f'{sfx} shared key')
     await snap(pg, f'05-hub-silver-{sfx}', full=True)
     # 3b) wipe local cache (simulated reinstall) → Restore Purchases brings Silver back

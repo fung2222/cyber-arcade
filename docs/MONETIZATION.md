@@ -1,8 +1,8 @@
 # CYBER ARCADE — 收費模式 Monetisation model
 
-狀態 Status: **Roy 已拍板 decided 2026-10-02** · 原型 prototype: root hub (`index.html`, `js/entitlements.js`) · 真正收費只限日後 Google Play App 版 · real billing = Android app build only.
+狀態 Status: **Roy 已拍板 decided 2026-10-02** · 分級更新 tiers updated 2026-10-02 (Roy's free-genre rule) · 原型 prototype: unlisted test portal hub (`js/hub.js`, `js/entitlements.js`; path given privately) · 真正收費只限日後 Google Play App 版 · real billing = Android app build only · **網頁版暫不公開 web not public for now — straight to the app.**
 
-> **EN summary.** One hub app (CYBER ARCADE) bundles every game offline (wrapped with Capacitor for Android later). Three access levels: **Free**, **Silver 銀級 HK$18**, **Gold 金級 HK$28** — one-time Google Play Billing **non-consumable** in-app products `tier_silver`, `tier_gold`, plus `tier_gold_upgrade` (HK$10, Silver owners only). Gold includes everything in Silver. **Each unlock includes all future games added to that tier.** Free players can play the Free games fully and try every Silver/Gold game (**3 runs per day per game**, with an in-game cap in the app build). Free players see interstitial ads only at natural breaks (game over / result screens) and opt-in rewarded ads (continue / undo). **Any paid tier removes forced/interstitial ads**; opt-in rewarded ads may stay. Purchases are restorable (Restore Purchases). Google's fee is 15 %; prices are set per country with Play price templates. The strongest games (e.g. CYBER BOARD) may later also ship as free standalone apps that funnel players to the hub. Recommended billing plugin: **RevenueCat `@revenuecat/purchases-capacitor`**. The public GitHub Pages web build stays free (a limited demo, `noindex`); paid gating is meant for the app build.
+> **EN summary.** One hub app (CYBER ARCADE) bundles every game offline (wrapped with Capacitor for Android later). Three access levels: **Free**, **Silver 銀級 HK$18**, **Gold 金級 HK$28** — one-time Google Play Billing **non-consumable** in-app products `tier_silver`, `tier_gold`, plus `tier_gold_upgrade` (HK$10, Silver owners only). Gold includes everything in Silver. **Each unlock includes all future games added to that tier.** Free players can play the Free games fully and try every Silver/Gold game (**3 runs per day per game**, with an in-game cap in the app build). Free players see interstitial ads only at natural breaks (game over / result screens) and opt-in rewarded ads (continue / undo). **Any paid tier removes forced/interstitial ads**; opt-in rewarded ads may stay. Purchases are restorable (Restore Purchases). Google's fee is 15 %; prices are set per country with Play price templates. The strongest games (e.g. CYBER BOARD) may later also ship as free standalone apps that funnel players to the hub. Recommended billing plugin: **RevenueCat `@revenuecat/purchases-capacitor`**. **Roy's rule: any game whose genre already has lots of free equivalents on Google Play is Free** (so DATA FUSE, a 2048-like, is Free). The web is **not public for now** (root page = neutral placeholder; games stay `noindex` and unlinked); paid gating is app-only.
 
 ---
 
@@ -41,15 +41,17 @@
 
 ## 3. 遊戲分級 Tier assignment (`games.json` → `tier`)
 
-Roy 嘅建議照用 · Roy's proposal is kept unchanged. Edit `tier` in [`games.json`](../games.json) to change it — the hub and trials follow automatically.
+**Roy 嘅分級規則（2026-10-02）：如果一隻遊戲嘅類型喺 Google Play 已經有大量免費同類遊戲，就放免費級。** 付費級只放有獨特玩法／份量大嘅遊戲。
+**Roy's rule (2026-10-02): any game whose genre already has lots of free equivalents on Google Play goes to FREE.** Paid tiers are for distinctive, content-heavy games.
+Edit `tier` in [`games.json`](../games.json) to change it — the hub, store lists and trials follow automatically.
 
 | 級別 Tier | 遊戲 Games | 理由 Why |
 |---|---|---|
-| 免費 Free | 賽博蛇 CYBER SNAKE · 霓虹記憶 NEON RECALL · 賽博小遊戲合集 CYBER MINI PACK | 輕量、上手快，做引流同廣告收入 · light, instant-fun funnel games that carry ad revenue |
-| 銀級 Silver | 數據熔合 DATA FUSE · 霓虹火柴人 NEON STICK DUEL | 中型：完整遊戲 + 無盡模式 · mid-size complete games with endless modes |
-| 金級 Gold | 賽博棋門 CYBER BOARD · 賽博忍者：星海魔獸 CYBER NINJA | 最大型：棋門係 4 合 1（國際象棋／象棋／黑白棋／飛行棋 + AI + 無盡塔），忍者係有巨獸戰嘅完整射擊 · largest: CYBER BOARD is 4-in-1 with AI ladders + endless tower; CYBER NINJA is a full shooter with boss fights |
+| 免費 Free | 賽博蛇 CYBER SNAKE · 霓虹記憶 NEON RECALL · 賽博小遊戲合集 CYBER MINI PACK · 數據熔合 DATA FUSE | 貪食蛇、記憶配對、包剪揼／過三關、2048 類喺 Play 上面都有大量免費版 → 免費，做引流同廣告收入 · snake, memory match, RPS/tic-tac-toe and 2048-likes all have many free equivalents → Free funnel + ad revenue |
+| 銀級 Silver | 霓虹火柴人 NEON STICK DUEL · 霓虹火柴人跑酷 neon stickman parkour（製作中 in production） | 中型、有自己特色嘅完整遊戲 + 無盡模式 · mid-size distinctive games with endless modes |
+| 金級 Gold | 賽博棋門 CYBER BOARD · 賽博忍者：星海魔獸 CYBER NINJA · 霓虹堡壘 NEON BASTION（cyber-tower，塔防 tower defense） | 最大型：棋門係 4 合 1 + AI + 無盡塔；忍者係有巨獸戰嘅完整射擊；堡壘有 8 張地圖、5 種塔 × 3 級、無盡模式 · largest: 4-in-1 board games, a full boss shooter, and an 8-map tower defense with endless mode |
 
-註 Note: DATA FUSE 屬「2048 類」，Play 上面有大量免費同類遊戲，未必有人肯為佢付費 → 見 §13 開放問題。DATA FUSE is a 2048-like genre with many free competitors; it may convert poorly as a paid game (open question §13).
+已決定 Decided: DATA FUSE 由銀級改為免費（2048 類）· DATA FUSE moved Silver → Free under the rule above.
 
 ## 4. 試玩規則 Trial rules (Silver / Gold games, Free players only)
 
@@ -59,10 +61,12 @@ Roy 嘅建議照用 · Roy's proposal is kept unchanged. Edit `tier` in [`games.
 
 | 遊戲 Game | 級別 | 每日 Runs/day | 局內上限 In-game cap (app build) |
 |---|---|---|---|
-| DATA FUSE | Silver | 3 | 冇（一局本身就有自然終點）· none — a run ends naturally at game over |
 | NEON STICK DUEL | Silver | 3 | 只開放塔第 1–3 層 · tower floors 1–3 |
 | CYBER NINJA | Gold | 3 | 玩到第 5 波（第一隻巨獸）· up to wave 5 (first boss) |
 | CYBER BOARD | Gold | 3 | AI 第 1–2 級 + 無盡塔第 1–3 層 · AI levels 1–2 and tower floors 1–3 |
+| NEON BASTION (cyber-tower) | Gold | 3 | 戰役只開放地圖 1–2；無盡模式玩到第 10 波，之後彈解鎖提示返大廳（遊戲已實作 `trial=1`）· campaign maps 1–2; endless up to wave 10, then an unlock prompt back to the hub (already implemented in the game) |
+
+試玩規則維持每日 3 局 + 局內上限（Roy 冇反對，2026-10-02 確認）· Trial rule stays 3 runs/day + in-game caps (Roy did not object; confirmed 2026-10-02).
 
 Trial 計數存喺本地（`cyber.arcade.trial`）；清 App 資料或者改系統日期可以重置 —— 價值低，接受呢個風險，唔值得做伺服器。Trial counts are local only; wiping app data or changing the clock resets them — an accepted, low-value risk.
 
@@ -132,11 +136,13 @@ Note: Play Billing Library 7 is blocked for new uploads after 31 Aug 2026 — us
 
 遊戲 repo 暫時**唔使改**；日後只需要讀 `ads` / `trial` 參數（或 `cyber.entitlement`）。The game repos are unchanged for now; later they only need to read the `ads`/`trial` params (or `cyber.entitlement`). 呢啲值喺網頁版可以俾人改 —— 只用嚟控制廣告同試玩，唔好用嚟保護有價值嘅嘢。These values are user-editable on the web; they only gate ads and trial caps.
 
-## 9. 網頁版 vs App 版 Web vs app
+## 9. 網頁版 vs App 版 Web vs app（Roy 2026-10-02：網頁版暫不公開，直接做 App · web not public for now, go straight to the app）
 
-- GitHub Pages 上面嘅大廳同每隻遊戲**繼續公開、免費、玩得**；大廳收費畫面只係**原型示範**（標明「DEV 模擬付款 · 唔會收錢」），唔會收任何錢 · the public Pages hub and games stay free and reachable; the store there is a clearly-labelled DEV stub.
-- 真正收費只喺日後 Google Play App 版 · paid gating is meant for the app build; the web may stay a limited demo (open question §13).
-- 全站繼續 `noindex,nofollow` + `robots.txt` Disallow，直至正式上架 · keep the site noindex.
+- **公開根目錄** `https://fung2222.github.io/cyber-arcade/` 只係一個中性「開發中 · 即將推出」頁（noindex，冇遊戲列表、冇商店、冇任何遊戲連結）· the public root is a neutral "in development / coming soon" placeholder — no game list, no store, no links.
+- **收費大廳原型**搬咗去未公開嘅測試入口（路徑私下俾 Roy，唔寫入任何文件）；頁面用 `<base>` 指返 repo 根目錄嘅 `js/`、`css/`、`games.json` · the monetised hub prototype now lives inside the unlisted test portal (path shared privately, never written in docs); it uses `<base>` to load the hub code from the repo root.
+- 每隻遊戲 repo 繼續 `noindex,nofollow` + `robots.txt` Disallow，唔會由 SONO 或任何公開頁面連過去；Pages 保持開啟（Roy 測試要用）· every game stays noindex and unlinked from SONO or any public page; Pages stays on for Roy's testing.
+- 網頁版保持免費、唔宣傳；真正收費只喺 Google Play App 版 · the web stays free and unpromoted; paid gating is app-only.
+- **限制 Limitation:** repo 係公開嘅，GitHub file tree 睇得到所有資料夾，知道網址就玩得 —— 只係「冇連結 + 唔收錄」，唔係真正隱藏。要真正隱藏需要：(a) 私人 repo + GitHub 付費方案（私人 repo 開 Pages 要 Pro/Team，但網站本身仍然公開；要登入先睇到嘅 Pages 只限 Enterprise Cloud），或者 (b) Cloudflare Pages + Cloudflare Access 登入保護（細團隊有免費額度）。 · The repos are public, so folders are visible in the GitHub file tree and anyone with a URL can play — it is unlinked + unindexed, not truly hidden. True hiding needs (a) private repos on a paid GitHub plan (Pages from private repos needs Pro/Team, but the site itself is still public; access-controlled Pages is Enterprise Cloud only), or (b) Cloudflare Pages behind Cloudflare Access login (free tier for small teams).
 
 ## 10. Play Console 設定步驟 Play Console setup
 
@@ -164,15 +170,18 @@ Note: Play Billing Library 7 is blocked for new uploads after 31 Aug 2026 — us
 
 ## 12. 原型 Prototype status (2026-10-02)
 
-- 大廳 Hub: `index.html` + `css/hub.css` + `js/hub.js` + `js/strings.js`（cyber-kit i18n v0.2.1 vendored, `cyber.lang`, zh-HK/EN toggle）· tier badges 免費 FREE / 銀 SILVER / 金 GOLD, lock state, trial label, trial sheet, store sheet (Free/Silver/Gold comparison, prices, "includes all future games", Silver→Gold upgrade HK$10 when Silver owned, Restore Purchases, fine print), toasts.
+- 大廳 Hub（喺未公開測試入口 in the unlisted test portal）: entry page with `<base>` → `css/hub.css` + `js/hub.js` + `js/strings.js`（cyber-kit i18n v0.2.1 vendored, `cyber.lang`, zh-HK/EN toggle）· tier badges 免費 FREE / 銀 SILVER / 金 GOLD, lock state, trial label, trial sheet, store sheet (Free/Silver/Gold comparison, prices, "includes all future games", Silver→Gold upgrade HK$10 when Silver owned, Restore Purchases, fine print), toasts.
 - DEV 面板 Dev panel (stub only): 連撳「你嘅級別」7 下（或 `?dev=1`）· tap the tier chip 7× (or `?dev=1`): set Silver / Gold, reset trials, wipe local cache (simulate reinstall), reset everything. Test hooks: `?nonav=1` (record launches instead of navigating), `?store=1`, `window.__hub`.
-- 測試 Tests: `node --test tests/` (entitlements + stub, 7/7) · `python -u tests/smoke_monetization.py [BASE_URL]` (Playwright, 412×915 touch + 1280×800, zh + en, zero console errors).
+- 測試 Tests: `node --test tests/` (entitlements + stub, 7/7) · `python -u tests/smoke_monetization.py HUB_URL` (HUB_URL = the unlisted hub page) (Playwright, 412×915 touch + 1280×800, zh + en, zero console errors).
 
 ## 13. 開放問題 Open questions for Roy
 
-1. **DATA FUSE 放銀級？** 2048 類有大量免費競爭者；考慮同 CYBER MINI PACK 或 NEON RECALL 對調？ · Keep DATA FUSE in Silver, or swap with a Free game?
-2. **試玩次數** 每日 3 局 + §4 局內上限 OK？定係改「首 3 關永久試玩」？ · Is 3 runs/day + in-game caps right, or prefer "first 3 levels, no daily limit"?
-3. **網頁版** 要唔要都限制（試玩）定係保持全部免費示範？（建議：保持免費但唔宣傳，上架後可加「下載 App」橫額）· gate the web too, or keep it a free unlisted demo?
+已解答 Answered (Roy, 2026-10-02):
+- ~~DATA FUSE 放銀級？~~ → **免費**；新規則：類型有大量免費同類遊戲就放免費 · **Free**; rule: genres with many free equivalents go Free (§3).
+- ~~試玩次數~~ → **維持每日 3 局 + 局內上限** · **keep 3 runs/day + in-game caps** (§4).
+- ~~網頁版要唔要限制？~~ → **網頁版保持免費、唔宣傳，而家唔公開；直接做 App；收費只喺 App** · **web stays free and unpromoted, not public for now; go straight to the app; paid gating app-only** (§9).
+
+仍然開放 Still open:
 4. **各地定價** 要唔要特別調低某啲市場（例如東南亞）？Silver + Upgrade 喺某啲國家四捨五入後可能同 Gold 差少少，接受？ · regional pricing tweaks; rounding drift Silver + Upgrade vs Gold.
 5. **Family Library 家庭媒體庫** 要唔要為應用程式內產品開？（上架前再核實 Play 現時支援）· enable Family Library for these products if Play allows?
 6. **退款／邊緣情況** 只買咗 upgrade 冇 Silver（理論上唔會發生）而家當銀級處理，OK？ · edge case: upgrade without Silver → treated as Silver.

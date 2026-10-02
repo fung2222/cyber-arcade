@@ -57,6 +57,11 @@
   .lang-btn:hover { box-shadow: inset 0 0 12px var(--c1); }
   .tags { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
   .tag { font-size: 10px; letter-spacing: 1px; padding: 2px 7px; color: var(--c3); border: 1px solid rgba(255,243,92,.45); }
+  .tag.t-free { color: var(--ok); border-color: rgba(59,255,138,.5); }
+  .tag.t-silver { color: #dfe6ff; border-color: rgba(223,230,255,.6); }
+  .tag.t-gold { color: #ffcf4a; border-color: rgba(255,207,74,.7); }
+  .hub-link { display: inline-block; margin-top: 14px; padding: 10px 18px; color: #fff; text-decoration: none; font: 700 13px var(--zh); letter-spacing: 2px; border: 1px solid #ffcf4a; background: rgba(255,207,74,.1); box-shadow: 0 0 12px rgba(255,207,74,.25); }
+  .hub-link small { display: block; font: 400 8px 'Orbitron', sans-serif; letter-spacing: 2px; color: #ffcf4a; }
   html[data-lang="en"] .name-zh { font-family: 'Orbitron', var(--zh); font-size: 20px; }
 </style>
 </head>
@@ -67,6 +72,7 @@
   <h1>CYBER ARCADE</h1>
   <div class="sub" data-k="sub"></div>
   <div class="legend"><span id="count">…</span><span data-k="source"></span></div>
+  <a class="hub-link" href="./hub/"><span data-k="hub"></span><small>APP HUB PROTOTYPE · TIERS / STORE / TRIALS</small></a>
 </header>
 <main id="list"><div class="err">載入中 Loading…</div></main>
 <footer data-k="footer"></footer>
@@ -78,6 +84,8 @@ const STR = {
   source: ['資料來源 games.json', 'source: games.json'], footer: ['未公開頁面 · 唔會被搜尋器收錄 · 請勿分享', 'Unlisted page · not indexed · please do not share'],
   live: ['{done} / {total} 已上線 · 更新 {date}', '{done} / {total} LIVE · updated {date}'], loading: ['載入中…', 'Loading…'], fail: ['載入 games.json 失敗', 'Failed to load games.json'],
   play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
+  hub: ['App 大廳原型（收費／試玩）→', 'App hub prototype (tiers / trials) →'],
+  tierfree: ['免費 FREE', 'FREE'], tiersilver: ['銀級 SILVER', 'SILVER'], tiergold: ['金級 GOLD', 'GOLD'],
   done: ['已上線', 'LIVE'], wip: ['製作中', 'IN PROGRESS'], planned: ['計劃中', 'PLANNED'], retired: ['已退役', 'RETIRED'],
 };
 const norm = (l) => /^zh/i.test(l || '') ? 'zh-HK' : 'en';
@@ -98,7 +106,8 @@ function render() {
   const L = zh() ? 'zh' : 'en', O = zh() ? 'en' : 'zh';
   data.games.forEach((g, i) => {
     const live = g.status === 'done' || g.status === 'wip';
-    const tags = [g.i18n ? t('bilingual') : '', g.endless ? t('endless') : ''].filter(Boolean).map((x) => `<span class="tag">${esc(x)}</span>`).join('');
+    const tierTag = g.tier ? `<span class="tag t-${esc(g.tier)}">${esc(t('tier' + g.tier))}</span>` : '';
+    const tags = tierTag + [g.i18n ? t('bilingual') : '', g.endless ? t('endless') : ''].filter(Boolean).map((x) => `<span class="tag">${esc(x)}</span>`).join('');
     const el = document.createElement('article');
     el.className = 'card ' + g.status;
     el.innerHTML = `<div class="idx">${String(i + 1).padStart(2, '0')}</div>

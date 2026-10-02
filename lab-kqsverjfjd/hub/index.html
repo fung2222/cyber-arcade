@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<base href="../../"><!-- hub code lives at the repo root (js/, css/, games.json); this page is the unlisted entry -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#05010f">
+<title data-i18n="doc.title">CYBER ARCADE 賽博街機</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/hub.css">
+</head>
+<body>
+<button class="lang-btn" id="btn-lang" aria-label="Language / 語言"></button>
+<header>
+  <div class="kicker" data-i18n="kicker"></div>
+  <h1>CYBER ARCADE</h1>
+  <div class="sub" data-i18n="sub"></div>
+  <div class="tierbar">
+    <button class="tier-chip" id="tier-chip" aria-haspopup="dialog"><span data-i18n="yourTier"></span> <b id="tier-name">—</b></button>
+    <button class="unlock-btn" id="btn-unlock"><span data-i18n="unlock"></span></button>
+  </div>
+  <div class="ads-line" id="ads-line"></div>
+</header>
+<main id="list"><div class="err" data-i18n="loading"></div></main>
+<p class="web-note" data-i18n="webNote"></p>
+<footer data-i18n="footer"></footer>
+
+<!-- modal shell (store / trial / stub payment) -->
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast hidden" id="toast"></div>
+
+<!-- hidden DEV panel: tap the tier chip 7× or open with ?dev=1 -->
+<div class="dev hidden" id="dev">
+  <div class="dev-head"><b data-i18n="dev"></b><button id="dev-close" aria-label="close">×</button></div>
+  <div class="dev-meta" id="dev-meta"></div>
+  <button data-dev="silver" data-i18n="devSilver"></button>
+  <button data-dev="gold" data-i18n="devGold"></button>
+  <button data-dev="trials" data-i18n="devTrials"></button>
+  <button data-dev="wipe" data-i18n="devWipe"></button>
+  <button data-dev="reset" data-i18n="devReset"></button>
+</div>
+<script type="module" src="js/hub.js"></script>
+</body>
+</html>

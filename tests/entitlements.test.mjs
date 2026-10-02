@@ -44,20 +44,20 @@ test('free tier: access, ads, trials + midnight reset', async () => {
   assert.equal(ent.adsEnabled(), true);
   assert.equal(ent.rewardedAdsEnabled(), true);
   assert.equal(ent.hasAccess('cyber-snake'), true);
-  assert.equal(ent.hasAccess('data-fuse'), false);
+  assert.equal(ent.hasAccess('neon-stick-duel'), false);
   assert.equal(ent.hasAccess('cyber-board'), false);
   assert.equal(ent.trialRemaining('cyber-snake'), Infinity);
-  assert.equal(ent.trialRemaining('data-fuse'), 3);
-  assert.equal(ent.consumeTrial('data-fuse'), 2);
-  assert.equal(ent.consumeTrial('data-fuse'), 1);
-  assert.equal(ent.consumeTrial('data-fuse'), 0);
-  assert.equal(ent.consumeTrial('data-fuse'), -1);
-  assert.equal(ent.trialRemaining('data-fuse'), 0);
+  assert.equal(ent.trialRemaining('neon-stick-duel'), 3);
+  assert.equal(ent.consumeTrial('neon-stick-duel'), 2);
+  assert.equal(ent.consumeTrial('neon-stick-duel'), 1);
+  assert.equal(ent.consumeTrial('neon-stick-duel'), 0);
+  assert.equal(ent.consumeTrial('neon-stick-duel'), -1);
+  assert.equal(ent.trialRemaining('neon-stick-duel'), 0);
   assert.equal(ent.trialRemaining('cyber-ninja'), 3, 'trials are per game');
-  assert.match(ent.launchParams('data-fuse', { trial: true, trialLeft: 0 }), /hub=1&tier=free&ads=1&trial=1&trialLeft=0/);
+  assert.match(ent.launchParams('neon-stick-duel', { trial: true, trialLeft: 0 }), /hub=1&tier=free&ads=1&trial=1&trialLeft=0/);
   assert.equal(JSON.parse(storage.getItem(ENT_KEY)).tier, 'free');
   clock = new Date(2026, 9, 3, 0, 1);                       // local midnight passed
-  assert.equal(ent.trialRemaining('data-fuse'), 3);
+  assert.equal(ent.trialRemaining('neon-stick-duel'), 3);
 });
 
 test('purchase silver → upgrade → gold; cancel; not-available', async () => {
@@ -69,7 +69,7 @@ test('purchase silver → upgrade → gold; cancel; not-available', async () => 
   answer = true;
   const s = await ent.purchase('tier_silver');
   assert.equal(s.ok, true); assert.equal(s.tier, 'silver');
-  assert.equal(ent.hasAccess('data-fuse'), true);
+  assert.equal(ent.hasAccess('neon-stick-duel'), true);
   assert.equal(ent.hasAccess('cyber-board'), false);
   assert.equal(ent.adsEnabled(), false);
   assert.deepEqual(ent.available(), ['tier_gold_upgrade']);

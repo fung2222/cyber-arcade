@@ -40,14 +40,7 @@
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
-      "tier": "silver",
-      "trial": {
-        "runsPerDay": 3,
-        "rule": {
-          "zh": "每日 3 局（由大廳每開一次 = 一局），局內冇其他限制",
-          "en": "3 runs per day (each launch from the hub = one run); no other in-game cap"
-        }
-      }
+      "tier": "free"
     },
     {
       "id": "neon-recall",
@@ -188,7 +181,7 @@
     }
   ],
   "tiers": {
-    "note": "Proposed by Roy 2026-10-02; edit tier per game here. See docs/MONETIZATION.md.",
+    "note": "Decided by Roy 2026-10-02. Rule: a game whose genre already has lots of free equivalents on Google Play is FREE. Edit tier per game here. See docs/MONETIZATION.md.",
     "free": {
       "price": null
     },
