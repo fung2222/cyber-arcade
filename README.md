@@ -19,6 +19,7 @@ CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系
 
 ## 文件 Docs
 - [docs/ARCADE-HANDOFF.md](docs/ARCADE-HANDOFF.md) — 風格指引、技術、結構、製作次序、Play/AdMob 計劃、命名規則
+- [docs/MONETIZATION.md](docs/MONETIZATION.md) — 收費模式：免費／銀級／金級、試玩、廣告、Google Play Billing 計劃 · monetisation model
 - [docs/SONO-AUDIT.md](docs/SONO-AUDIT.md) — 舊 SONO 遊戲審查報告
 
 ## 規則 Ground rules

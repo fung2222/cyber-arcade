@@ -17,7 +17,7 @@ Owner: fung2222 (Roy). Updated 2026-10-02. Series of cyberpunk 3D mini-games reb
 
 ## 3. Repo structure
 ```
-fung2222/cyber-arcade   this repo: docs, games.json (single source of truth), minimal root page, robots.txt
+fung2222/cyber-arcade   this repo: docs, games.json (single source of truth), root hub (index.html + js/ + css/, monetisation prototype), robots.txt
 fung2222/cyber-kit      shared kit, tagged versions (v0.1.0)
 fung2222/<game>         one repo per game:
   index.html  css/game.css  js/{config,logic,main,audio,...}.js  vendor/cyber-kit/  tests/  docs/HANDOFF.md  privacy.html
@@ -87,6 +87,14 @@ Verification (2026-10-02, headless Chrome 412×915 touch + 1280×800, zero conso
 - **Testing track:** new personal developer accounts need a **closed test with ≥12 testers for 14 consecutive days** before production. Roy recruits testers from his MBTI site.
 - **AdMob linking** after the app is public on Play; publish **app-ads.txt** on the developer website domain listed in Play Console.
 - Use Google test ad unit ids in all non-release builds.
+
+## 8b. Monetisation (decided 2026-10-02) → full plan in [MONETIZATION.md](MONETIZATION.md)
+- **One hub app** bundles all games offline (Capacitor later). Tiers: **Free · Silver 銀級 HK$18 · Gold 金級 HK$28**, one-time Google Play **non-consumable** products `tier_silver`, `tier_gold`, `tier_gold_upgrade` (Silver → Gold HK$10). Gold ⊇ Silver. **Each unlock includes all future games added to that tier** (no "forever/lifetime" wording). Restore Purchases required. Google fee 15 %; per-country prices via Play price templates.
+- **Free players:** Free games unlimited; Silver/Gold games **3 trial runs per game per day** (+ in-game cap in the app build); interstitials only at natural breaks, rewarded ads opt-in. **Paid tiers: no forced/interstitial ads**, rewarded stays opt-in.
+- **Tier assignment** (`games.json` → `tier`, edit there): Free = cyber-snake, neon-recall, cyber-mini-pack · Silver = data-fuse, neon-stick-duel · Gold = cyber-board, cyber-ninja.
+- **Billing:** recommended RevenueCat `@revenuecat/purchases-capacitor` (server validation + acknowledgement, no backend). Code: `js/entitlements.js` (tiers, trials, ads flag) with a backend interface — `js/billing/web-stub.js` (DEV stub, localStorage, no real payment) now, `js/billing/play-revenuecat.js` skeleton for the app build.
+- **Game contract:** hub launches games with `?hub=1&tier=…&ads=0|1[&trial=1&trialLeft=N]` and writes `localStorage cyber.entitlement`. Follow-ups: cyber-kit `createAds` skips interstitials when `ads=0`/paid; games apply trial caps when `trial=1`.
+- **Prototype:** the public root hub (`index.html`) now shows tier badges, lock/trial state, store sheet (Free/Silver/Gold, upgrade, restore) and a hidden DEV panel (tap the tier chip 7×). **The web build stays free and noindex; paid gating is for the app build.** Tests: `node --test tests/`, `tests/smoke_monetization.py`.
 
 ## 9. Naming & trademark rules
 - Original names only: no "2048", "Tetris", "Street Fighter", "RYU", "Pac", "Snake II", etc. in store titles.
