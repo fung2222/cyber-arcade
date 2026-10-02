@@ -103,6 +103,23 @@
       "status": "done",
       "kit": "v0.1.0",
       "play": "not-submitted"
+    },
+    {
+      "id": "cyber-board",
+      "name": {
+        "zh": "賽博棋鬥",
+        "en": "CYBER BOARD"
+      },
+      "genre": {
+        "zh": "四合一棋盤對戰（國際象棋 · 象棋 · 黑白棋 · 飛行棋）",
+        "en": "4-in-1 board battles (chess · xiangqi · flip · sky race)"
+      },
+      "repo": "https://github.com/fung2222/cyber-board",
+      "url": "https://fung2222.github.io/cyber-board/",
+      "demo": "https://fung2222.github.io/cyber-board/?demo=1",
+      "status": "done",
+      "kit": "v0.2.1",
+      "play": "not-submitted"
     }
   ],
   "retired": [
