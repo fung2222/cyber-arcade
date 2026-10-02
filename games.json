@@ -4,8 +4,14 @@
   "games": [
     {
       "id": "cyber-snake",
-      "name": { "zh": "賽博蛇", "en": "CYBER SNAKE" },
-      "genre": { "zh": "3D 貪食蛇", "en": "3D snake" },
+      "name": {
+        "zh": "賽博蛇",
+        "en": "CYBER SNAKE"
+      },
+      "genre": {
+        "zh": "3D 貪食蛇",
+        "en": "3D snake"
+      },
       "repo": "https://github.com/fung2222/cyber-snake",
       "url": "https://fung2222.github.io/cyber-snake/",
       "demo": "https://fung2222.github.io/cyber-snake/?demo=1",
@@ -15,8 +21,14 @@
     },
     {
       "id": "data-fuse",
-      "name": { "zh": "數據熔合", "en": "DATA FUSE" },
-      "genre": { "zh": "3D 數字合併解壓", "en": "3D merge puzzle" },
+      "name": {
+        "zh": "數據熔合",
+        "en": "DATA FUSE"
+      },
+      "genre": {
+        "zh": "3D 數字合併解壓",
+        "en": "3D merge puzzle"
+      },
       "repo": "https://github.com/fung2222/data-fuse",
       "url": "https://fung2222.github.io/data-fuse/",
       "demo": "https://fung2222.github.io/data-fuse/?demo=1",
@@ -26,19 +38,31 @@
     },
     {
       "id": "neon-recall",
-      "name": { "zh": "霓虹記憶", "en": "NEON RECALL" },
-      "genre": { "zh": "3D 記憶配對", "en": "3D memory match" },
+      "name": {
+        "zh": "霓虹記憶",
+        "en": "NEON RECALL"
+      },
+      "genre": {
+        "zh": "3D 記憶配對",
+        "en": "3D memory match"
+      },
       "repo": "https://github.com/fung2222/neon-recall",
       "url": "https://fung2222.github.io/neon-recall/",
       "demo": "https://fung2222.github.io/neon-recall/?demo=1",
-      "status": "planned",
+      "status": "done",
       "kit": "v0.1.0",
       "play": "not-submitted"
     },
     {
       "id": "cyber-ninja",
-      "name": { "zh": "賽博忍者：星海魔獸", "en": "CYBER NINJA" },
-      "genre": { "zh": "3D 直向射擊（自動開火）", "en": "3D vertical shooter (auto-fire)" },
+      "name": {
+        "zh": "賽博忍者：星海魔獸",
+        "en": "CYBER NINJA"
+      },
+      "genre": {
+        "zh": "3D 直向射擊（自動開火）",
+        "en": "3D vertical shooter (auto-fire)"
+      },
       "repo": "https://github.com/fung2222/cyber-ninja",
       "url": "https://fung2222.github.io/cyber-ninja/",
       "demo": "https://fung2222.github.io/cyber-ninja/?demo=1",
@@ -48,8 +72,14 @@
     },
     {
       "id": "cyber-mini-pack",
-      "name": { "zh": "賽博小遊戲合集", "en": "CYBER MINI PACK" },
-      "genre": { "zh": "包剪揼 · 過三關 · 神經反射", "en": "Rock-paper-scissors · Tic-tac-toe · Reaction test" },
+      "name": {
+        "zh": "賽博小遊戲合集",
+        "en": "CYBER MINI PACK"
+      },
+      "genre": {
+        "zh": "包剪揼 · 過三關 · 神經反射",
+        "en": "Rock-paper-scissors · Tic-tac-toe · Reaction test"
+      },
       "repo": "https://github.com/fung2222/cyber-mini-pack",
       "url": "https://fung2222.github.io/cyber-mini-pack/",
       "demo": "https://fung2222.github.io/cyber-mini-pack/?demo=1",
@@ -59,8 +89,14 @@
     },
     {
       "id": "neon-stick-duel",
-      "name": { "zh": "霓虹火柴人", "en": "NEON STICK DUEL" },
-      "genre": { "zh": "單手 3D 火柴人對決", "en": "One-thumb 3D stick duel" },
+      "name": {
+        "zh": "霓虹火柴人",
+        "en": "NEON STICK DUEL"
+      },
+      "genre": {
+        "zh": "單手 3D 火柴人對決",
+        "en": "One-thumb 3D stick duel"
+      },
       "repo": "https://github.com/fung2222/neon-stick-duel",
       "url": "https://fung2222.github.io/neon-stick-duel/",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
@@ -70,9 +106,21 @@
     }
   ],
   "retired": [
-    { "id": "ai-fighter", "reason": "SONO orphan stub that crashed on first frame and used a trademarked character name; superseded by neon-stick-duel" },
-    { "id": "stickman-fighter-v1", "reason": "duplicate of Stickman Fighter; superseded by neon-stick-duel" },
-    { "id": "snake", "reason": "superseded by cyber-snake" },
-    { "id": "rps-battle / tictactoe / reaction modal", "reason": "merged into cyber-mini-pack (avoid thin duplicate apps)" }
+    {
+      "id": "ai-fighter",
+      "reason": "SONO orphan stub that crashed on first frame and used a trademarked character name; superseded by neon-stick-duel"
+    },
+    {
+      "id": "stickman-fighter-v1",
+      "reason": "duplicate of Stickman Fighter; superseded by neon-stick-duel"
+    },
+    {
+      "id": "snake",
+      "reason": "superseded by cyber-snake"
+    },
+    {
+      "id": "rps-battle / tictactoe / reaction modal",
+      "reason": "merged into cyber-mini-pack (avoid thin duplicate apps)"
+    }
   ]
 }
