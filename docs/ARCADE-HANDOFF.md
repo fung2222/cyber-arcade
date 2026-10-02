@@ -33,7 +33,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 | 2 | 數據熔合 DATA FUSE | data-fuse | https://fung2222.github.io/data-fuse/ | ✅ done (web v1) | not submitted |
 | 3 | 霓虹記憶 NEON RECALL | neon-recall | https://fung2222.github.io/neon-recall/ | ✅ done (web v1) | — |
 | 4 | 賽博忍者：星海魔獸 CYBER NINJA | cyber-ninja | https://fung2222.github.io/cyber-ninja/ | ✅ done (web v1) | — |
-| 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | — | planned | — |
+| 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | https://fung2222.github.io/cyber-mini-pack/ | ✅ done (web v1) | — |
 | 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | — | planned | — |
 | — | AI 指令格鬥 ai-fighter | — | — | ❌ retired (crashing stub, trademark name) | — |
 
@@ -44,7 +44,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 2. ~~DATA FUSE~~ ✅
 3. ~~NEON RECALL~~ ✅ — 3D holo cards with cyber icons, levels 2×4 → 6×4, stars, no fail; interstitial every 3 levels; rewarded "peek".
 4. ~~CYBER NINJA~~ ✅ — drag to move, auto-fire, tap ultimate, enemy waves + bosses; rewarded continue; interstitial at game over.
-5. CYBER MINI PACK — one app, three modes: 包剪揼 (pattern-reading AI personalities, best of 3, streaks), 過三關 (ladder of 3 AI opponents of rising strength), 神經反射 (reaction test with false-start detection).
+5. ~~CYBER MINI PACK~~ ✅ — one app, three modes: 包剪揼 (pattern-reading AI personalities, best of 3, streaks), 過三關 (ladder of 3 AI opponents of rising strength), 神經反射 (reaction test with false-start detection).
 6. NEON STICK DUEL — one-thumb: tap attack, swipe dodge/jump, hold to charge; tower mode; original icons.
 
 ## 7. Decisions & rules (binding)
