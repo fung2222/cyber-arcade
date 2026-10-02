@@ -24,17 +24,17 @@ fung2222/<game>         one repo per game:
 ```
 
 ## 4. cyber-kit usage
-Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix in the kit repo, tag, re-vendor). Import map: `three`, `three/addons/`, `cyber-kit`, `cyber-kit/`. Kit provides: `createStage`, `NeonCity`, `ThemeController`/`THEMES`, `Particles`/`Shockwaves`/`FxState`, `SynthAudio`, `createInput`, `CyberUI` + `hud.css`, `createStore`, `Platform`, `createAds`. See cyber-kit `docs/API.md`.
+Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix in the kit repo, tag, re-vendor). Import map: `three`, `three/addons/`, `cyber-kit`, `cyber-kit/`. Kit provides: `createStage`, `NeonCity`, `ThemeController`/`THEMES`, `Particles`/`Shockwaves`/`FxState`, `SynthAudio`, `createInput`, `CyberUI` + `hud.css`, `createStore`, `Platform`, `createAds`, and since **v0.2.0 `i18n`** (`t`, `i18n.add/set/toggle/onChange/bindToggle`, `data-i18n*` DOM attributes, `localStorage cyber.lang`) plus `endlessCurve`/`milestoneOf` helpers. **Use v0.2.1** (auto-applies DOM strings after `i18n.add`; with v0.2.0 call `i18n.apply()` yourself). See cyber-kit `docs/API.md`.
 
 ## 5. Game status
 | # | Game | Repo | Live | Status | Play Store |
 |---|---|---|---|---|---|
-| 1 | 賽博蛇 CYBER SNAKE | cyber-snake | https://fung2222.github.io/cyber-snake/ | ✅ done (kit source) | not submitted |
-| 2 | 數據熔合 DATA FUSE | data-fuse | https://fung2222.github.io/data-fuse/ | ✅ done (web v1) | not submitted |
-| 3 | 霓虹記憶 NEON RECALL | neon-recall | https://fung2222.github.io/neon-recall/ | ✅ done (web v1) | — |
-| 4 | 賽博忍者：星海魔獸 CYBER NINJA | cyber-ninja | https://fung2222.github.io/cyber-ninja/ | ✅ done (web v1) | — |
-| 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | https://fung2222.github.io/cyber-mini-pack/ | ✅ done (web v1) | — |
-| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ done (web v1) | — |
+| 1 | 賽博蛇 CYBER SNAKE | cyber-snake | https://fung2222.github.io/cyber-snake/ | ✅ v1.1 bilingual + endless (kit source; vendors only kit v0.2.1 `core/i18n.js`) | not submitted |
+| 2 | 數據熔合 DATA FUSE | data-fuse | https://fung2222.github.io/data-fuse/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | not submitted |
+| 3 | 霓虹記憶 NEON RECALL | neon-recall | https://fung2222.github.io/neon-recall/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
+| 4 | 賽博忍者：星海魔獸 CYBER NINJA | cyber-ninja | https://fung2222.github.io/cyber-ninja/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
+| 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | https://fung2222.github.io/cyber-mini-pack/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
+| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
 | 7 | 賽博棋鬥 CYBER BOARD | cyber-board | https://fung2222.github.io/cyber-board/ | ✅ done (web v1, cyber-kit v0.2.1) | — |
 | — | AI 指令格鬥 ai-fighter | — | — | ❌ retired (crashing stub, trademark name) | — |
 
@@ -53,13 +53,27 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 - Roy's review of every game (play links in the table above; demo = `?demo=1`).
 - Android packaging per game (Capacitor 8 + `@capacitor-community/admob` v8; steps in each repo's `docs/HANDOFF.md`), real AdMob unit ids, store listings/screenshots.
 - When a game goes public: remove `noindex` from its `index.html` / `privacy.html`. The arcade test page stays unlisted.
-- cyber-snake is still the original repo (untouched by this series); re-skin on cyber-kit only if Roy asks.
+- cyber-snake: v1.1 (2026-10-02, with Roy's go-ahead) got i18n + endless + noindex + privacy.html with minimal-risk changes; a full re-skin on cyber-kit only if Roy asks.
 
 ## 7. Decisions & rules (binding)
 - **Never port sono code.** Do not copy any code, constants or configs from `fung2222/sono`. Rebuild every game from scratch; only the concept is reused. (cyber-snake is the style reference and the source of cyber-kit — that is allowed.)
 - **Merge the small games.** RPS 包剪揼 + XO 過三關 + reaction test 神經反射 become ONE game, CYBER MINI PACK, with modes (avoids Play "spam / minimal functionality" duplicates). **ai-fighter is retired**; Stickman Fighter v1 and old snake are superseded.
 - **Test portal is unlisted.** A test hub listing every game exists in this repo at an unguessable path; the path is given to the owner privately and is intentionally not written in any doc, README or SONO link. Root `index.html` does not link to it. All pages are `noindex,nofollow` and `robots.txt` disallows everything until launch. (The repo is public, so the folder is visible in the GitHub file tree — it is only unlinked and unindexed.)
-- Do not modify `fung2222/sono` or `fung2222/cyber-snake` from arcade work.
+- Do not modify `fung2222/sono`. `fung2222/cyber-snake` may only get minimal-risk changes when Roy asks (v1.1 bilingual + endless was approved 2026-10-02).
+- **Every game must be bilingual zh-HK / en.** Use cyber-kit ≥ v0.2.1 `i18n`: every UI string (HUD, banners, level/opponent names, how-to-play, dialogs, toasts) goes through a string table `{key: [zh-HK, en]}`; an in-game toggle (start screen + pause, `.lang-btn`); persisted in `localStorage cyber.lang` (shared by all games); default from `navigator.language` (zh* → zh-HK, else en); `?lang=en|zh` forces. privacy.html and the store-facing README sections (Language + English) must be bilingual too. Smoke tests must screenshot both languages.
+- **Every game must have an endless mode.** No final "beat the game" state: after the authored content, levels/waves/floors continue procedurally with a **capped** difficulty curve (stays playable forever), milestone rewards + theme shifts, and a saved best endless record. Document natural ad-break points (never mid-action, never at a milestone banner) in each `docs/HANDOFF.md`. Smoke tests must prove play continues beyond the old end.
+
+## 7b. Bilingual + endless round (2026-10-02) — per-game endless design
+| Game | Endless design | Best record | Ad breaks |
+|---|---|---|---|
+| CYBER SNAKE | levels 7+ = procedural seeded layouts; speed cap 0.062 s/tick, target cap 10, obstacle cap 10; milestone bonus every 10 levels | hi-score + best level | game-over screen only (web has no ads) |
+| DATA FUSE | procedural zones at every doubling forever (beyond 131072 → 262144 = zone 13…); 4-spawn chance +1 %/zone after 2048, cap 20 %; undo bonus per zone | best core + best zone | game over (Retry/Menu) |
+| NEON RECALL | levels never end; preview ≥ 0.7 s, glitch-swap chance +1 %/level cap 60 %, 6×5 overclock grid every 3rd level from 12; milestone every 10 levels (+pts, +2 peeks, first clear only) | best level | clear-screen buttons (≈ every 3 levels) |
+| CYBER NINJA | waves forever; 6 boss species then Mk.N variants; boss HP cap 1100, enemy HP ×3.5 cap, boss fire-rate ×1.6 cap; milestone every 10 waves (+pts, full shields, theme) | best wave | game over (Retry/Menu) |
+| CYBER MINI PACK | RPS endless rivals (index 3+), XO OVERCLOCK CORE Lv.n (blunder 22 % → 4 % floor), reaction gauntlet (450 → 300 ms cap) | rival / stage / round per mode | result screen buttons (next/modes), capped |
+| NEON STICK DUEL | floors 8+ procedural remixed rivals; HP 150+6/floor cap 330, think ≥ 0.17 s, rates ≤ 0.92; milestone every 10 floors (+5000, theme) | best floor | result screen buttons (next/retry/menu), capped |
+
+Verification (2026-10-02, headless Chrome 412×915 touch + 1280×800, zero console errors, en + zh screenshots, endless beyond the old end): cyber-kit i18n unit 8/8 · snake smoke ALL PASSED · data-fuse logic + smoke ALL PASSED · neon-recall logic 6/6 + smoke ALL PASSED · cyber-ninja waves + smoke ALL PASSED · mini-pack rules 12/12 + smoke ALL PASSED · stick-duel duel 22/22 + smoke ALL PASSED. Test hub is bilingual (inline i18n with the same `cyber.lang` contract; shows ZH/EN + ENDLESS tags from `games.json` `i18n`/`endless` flags).
 
 ## 8. Play Store + AdMob plan (policy summary)
 - **Assets:** everything bundled offline in the APK/AAB (no CDN).
@@ -83,7 +97,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 
 ## 10. How to ship a new game (checklist)
 1. New public repo `fung2222/<id>`, vendor cyber-kit tag, write game from scratch.
-2. `?demo=1`, best score, pause/mute/back, privacy.html, HANDOFF.md, tests/smoke.py.
-3. Smoke test passes at 412×915 + 1280×800 with zero console errors; review screenshots.
+2. `?demo=1`, best score, pause/mute/back, privacy.html, HANDOFF.md, tests/smoke.py, **bilingual zh-HK/en with in-game toggle**, **endless mode with best endless record**.
+3. Smoke test passes at 412×915 + 1280×800 with zero console errors (both languages, endless beyond the authored end); review screenshots.
 4. Push once verified, enable Pages, confirm live URL loads with zero errors.
 5. Update `games.json` + section 5 table here.

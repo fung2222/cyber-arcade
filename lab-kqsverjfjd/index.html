@@ -52,42 +52,74 @@
   .links a:active { transform: scale(.97); }
   footer { text-align: center; padding: 0 16px 30px; font-size: 11px; color: #6f6996; letter-spacing: 1px; }
   .err { grid-column: 1 / -1; text-align: center; color: #ff8aa5; }
+  .lang-btn { position: fixed; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); z-index: 5; min-width: 44px; height: 44px; padding: 0 10px;
+    background: rgba(10,4,30,.6); border: 1px solid var(--c1); color: #fff; font: 700 14px 'Orbitron', var(--zh); letter-spacing: 1px; cursor: pointer; }
+  .lang-btn:hover { box-shadow: inset 0 0 12px var(--c1); }
+  .tags { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 10px; letter-spacing: 1px; padding: 2px 7px; color: var(--c3); border: 1px solid rgba(255,243,92,.45); }
+  html[data-lang="en"] .name-zh { font-family: 'Orbitron', var(--zh); font-size: 20px; }
 </style>
 </head>
 <body>
+<button class="lang-btn" id="lang" aria-label="Language / 語言"></button>
 <header>
-  <div class="kicker">PRIVATE TEST LAB · 內部測試</div>
+  <div class="kicker" data-k="kicker"></div>
   <h1>CYBER ARCADE</h1>
-  <div class="sub">賽博街機 · 所有遊戲測試入口</div>
-  <div class="legend"><span id="count">…</span><span>資料來源 games.json</span></div>
+  <div class="sub" data-k="sub"></div>
+  <div class="legend"><span id="count">…</span><span data-k="source"></span></div>
 </header>
 <main id="list"><div class="err">載入中 Loading…</div></main>
-<footer>未公開頁面 · unlisted, not indexed · 請勿分享</footer>
+<footer data-k="footer"></footer>
 <script>
-const STATUS = { done: ['已上線', 'LIVE'], wip: ['製作中', 'IN PROGRESS'], planned: ['計劃中', 'PLANNED'], retired: ['已退役', 'RETIRED'] };
+// Bilingual zh-HK / en — same contract as cyber-kit i18n: localStorage 'cyber.lang', ?lang=en|zh, default from navigator.language.
+const KEY = 'cyber.lang';
+const STR = {
+  kicker: ['PRIVATE TEST LAB · 內部測試', 'PRIVATE TEST LAB'], sub: ['賽博街機 · 所有遊戲測試入口', 'All CYBER games · test entry point'],
+  source: ['資料來源 games.json', 'source: games.json'], footer: ['未公開頁面 · 唔會被搜尋器收錄 · 請勿分享', 'Unlisted page · not indexed · please do not share'],
+  live: ['{done} / {total} 已上線 · 更新 {date}', '{done} / {total} LIVE · updated {date}'], loading: ['載入中…', 'Loading…'], fail: ['載入 games.json 失敗', 'Failed to load games.json'],
+  play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
+  done: ['已上線', 'LIVE'], wip: ['製作中', 'IN PROGRESS'], planned: ['計劃中', 'PLANNED'], retired: ['已退役', 'RETIRED'],
+};
+const norm = (l) => /^zh/i.test(l || '') ? 'zh-HK' : 'en';
+let lang = (() => { const q = new URLSearchParams(location.search).get('lang'); if (q) { const l = norm(q); try { localStorage.setItem(KEY, l); } catch {} return l; }
+  try { const s = localStorage.getItem(KEY); if (s === 'zh-HK' || s === 'en') return s; } catch {} return norm(navigator.language); })();
+const zh = () => lang === 'zh-HK';
+const t = (k, p = {}) => (STR[k] ? STR[k][zh() ? 0 : 1] : k).replace(/\{(\w+)\}/g, (_, n) => p[n] ?? '');
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-fetch('../games.json', { cache: 'no-store' }).then((r) => r.json()).then((data) => {
+let data = null;
+function render() {
+  document.documentElement.lang = zh() ? 'zh-Hant-HK' : 'en'; document.documentElement.dataset.lang = zh() ? 'zh' : 'en';
+  document.getElementById('lang').textContent = zh() ? 'EN' : '中';
+  document.querySelectorAll('[data-k]').forEach((el) => { el.textContent = t(el.dataset.k); });
+  if (!data) return;
   const list = document.getElementById('list'); list.innerHTML = '';
   const done = data.games.filter((g) => g.status === 'done').length;
-  document.getElementById('count').textContent = `${done} / ${data.games.length} 已上線 LIVE · 更新 ${data.updated}`;
+  document.getElementById('count').textContent = t('live', { done, total: data.games.length, date: data.updated });
+  const L = zh() ? 'zh' : 'en', O = zh() ? 'en' : 'zh';
   data.games.forEach((g, i) => {
-    const st = STATUS[g.status] || [g.status, g.status];
     const live = g.status === 'done' || g.status === 'wip';
+    const tags = [g.i18n ? t('bilingual') : '', g.endless ? t('endless') : ''].filter(Boolean).map((x) => `<span class="tag">${esc(x)}</span>`).join('');
     const el = document.createElement('article');
     el.className = 'card ' + g.status;
     el.innerHTML = `<div class="idx">${String(i + 1).padStart(2, '0')}</div>
-      <div class="name-zh">${esc(g.name.zh)}</div><div class="name-en">${esc(g.name.en)}</div>
-      <div class="genre">${esc(g.genre?.zh)} · ${esc(g.genre?.en)}</div>
-      <span class="pill ${esc(g.status)}">${st[0]} ${st[1]}</span>
+      <div class="name-zh">${esc(g.name[L])}</div><div class="name-en">${esc(g.name[O])}</div>
+      <div class="genre">${esc(g.genre?.[L])}</div>
+      <span class="pill ${esc(g.status)}">${esc(STR[g.status] ? t(g.status) : g.status)}</span>
+      ${tags ? `<div class="tags">${tags}</div>` : ''}
       <div class="meta">Play Store: ${esc(g.play)} · kit ${esc(g.kit)}</div>
       <div class="links">
-        <a class="${live ? '' : 'off'}" href="${esc(g.url)}">開始玩<small>PLAY</small></a>
-        <a class="demo ${live ? '' : 'off'}" href="${esc(g.demo)}">示範<small>?DEMO=1</small></a>
+        <a class="${live ? '' : 'off'}" href="${esc(g.url)}">${esc(t('play'))}<small>PLAY</small></a>
+        <a class="demo ${live ? '' : 'off'}" href="${esc(g.demo)}">${esc(t('demo'))}<small>?DEMO=1</small></a>
         <a class="repo" href="${esc(g.repo)}">Repo<small>GITHUB</small></a>
       </div>`;
     list.appendChild(el);
   });
-}).catch((e) => { document.getElementById('list').innerHTML = '<div class="err">載入 games.json 失敗 · ' + esc(e.message) + '</div>'; });
+}
+document.getElementById('lang').addEventListener('click', () => { lang = zh() ? 'en' : 'zh-HK'; try { localStorage.setItem(KEY, lang); } catch {} render(); });
+document.getElementById('list').innerHTML = `<div class="err">${t('loading')}</div>`;
+render();
+fetch('../games.json', { cache: 'no-store' }).then((r) => r.json()).then((d) => { data = d; render(); })
+  .catch((e) => { document.getElementById('list').innerHTML = `<div class="err">${esc(t('fail'))} · ${esc(e.message)}</div>`; });
 </script>
 </body>
 </html>

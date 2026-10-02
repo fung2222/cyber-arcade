@@ -16,8 +16,10 @@
       "url": "https://fung2222.github.io/cyber-snake/",
       "demo": "https://fung2222.github.io/cyber-snake/?demo=1",
       "status": "done",
-      "kit": "source of cyber-kit",
-      "play": "not-submitted"
+      "kit": "v0.2.1 (i18n only)",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "data-fuse",
@@ -33,8 +35,10 @@
       "url": "https://fung2222.github.io/data-fuse/",
       "demo": "https://fung2222.github.io/data-fuse/?demo=1",
       "status": "done",
-      "kit": "v0.1.0",
-      "play": "not-submitted"
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "neon-recall",
@@ -50,8 +54,10 @@
       "url": "https://fung2222.github.io/neon-recall/",
       "demo": "https://fung2222.github.io/neon-recall/?demo=1",
       "status": "done",
-      "kit": "v0.1.0",
-      "play": "not-submitted"
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "cyber-ninja",
@@ -67,8 +73,10 @@
       "url": "https://fung2222.github.io/cyber-ninja/",
       "demo": "https://fung2222.github.io/cyber-ninja/?demo=1",
       "status": "done",
-      "kit": "v0.1.0",
-      "play": "not-submitted"
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "cyber-mini-pack",
@@ -84,8 +92,10 @@
       "url": "https://fung2222.github.io/cyber-mini-pack/",
       "demo": "https://fung2222.github.io/cyber-mini-pack/?demo=1",
       "status": "done",
-      "kit": "v0.1.0",
-      "play": "not-submitted"
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "neon-stick-duel",
@@ -101,8 +111,10 @@
       "url": "https://fung2222.github.io/neon-stick-duel/",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
       "status": "done",
-      "kit": "v0.1.0",
-      "play": "not-submitted"
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true
     },
     {
       "id": "cyber-board",
