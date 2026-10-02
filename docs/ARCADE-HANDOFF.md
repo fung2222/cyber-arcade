@@ -34,7 +34,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 | 3 | 霓虹記憶 NEON RECALL | neon-recall | https://fung2222.github.io/neon-recall/ | ✅ done (web v1) | — |
 | 4 | 賽博忍者：星海魔獸 CYBER NINJA | cyber-ninja | https://fung2222.github.io/cyber-ninja/ | ✅ done (web v1) | — |
 | 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | https://fung2222.github.io/cyber-mini-pack/ | ✅ done (web v1) | — |
-| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | — | planned | — |
+| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ done (web v1) | — |
 | — | AI 指令格鬥 ai-fighter | — | — | ❌ retired (crashing stub, trademark name) | — |
 
 `games.json` must be updated together with this table whenever a game ships.
@@ -45,7 +45,13 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 3. ~~NEON RECALL~~ ✅ — 3D holo cards with cyber icons, levels 2×4 → 6×4, stars, no fail; interstitial every 3 levels; rewarded "peek".
 4. ~~CYBER NINJA~~ ✅ — drag to move, auto-fire, tap ultimate, enemy waves + bosses; rewarded continue; interstitial at game over.
 5. ~~CYBER MINI PACK~~ ✅ — one app, three modes: 包剪揼 (pattern-reading AI personalities, best of 3, streaks), 過三關 (ladder of 3 AI opponents of rising strength), 神經反射 (reaction test with false-start detection).
-6. NEON STICK DUEL — one-thumb: tap attack, swipe dodge/jump, hold to charge; tower mode; original icons.
+6. ~~NEON STICK DUEL~~ ✅ — one-thumb: tap attack, swipe dodge/jump, hold to charge; tower mode; original icons.
+
+**All 6 web builds are done (2026-10-02).** What's left (not started, needs Roy's go-ahead):
+- Roy's review of every game (play links in the table above; demo = `?demo=1`).
+- Android packaging per game (Capacitor 8 + `@capacitor-community/admob` v8; steps in each repo's `docs/HANDOFF.md`), real AdMob unit ids, store listings/screenshots.
+- When a game goes public: remove `noindex` from its `index.html` / `privacy.html`. The arcade test page stays unlisted.
+- cyber-snake is still the original repo (untouched by this series); re-skin on cyber-kit only if Roy asks.
 
 ## 7. Decisions & rules (binding)
 - **Never port sono code.** Do not copy any code, constants or configs from `fung2222/sono`. Rebuild every game from scratch; only the concept is reused. (cyber-snake is the style reference and the source of cyber-kit — that is allowed.)
