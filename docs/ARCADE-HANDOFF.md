@@ -111,4 +111,4 @@ Verification (2026-10-02, headless Chrome 412×915 touch + 1280×800, zero conso
 2. `?demo=1`, best score, pause/mute/back, privacy.html, HANDOFF.md, tests/smoke.py, **bilingual zh-HK/en with in-game toggle**, **endless mode with best endless record**.
 3. Smoke test passes at 412×915 + 1280×800 with zero console errors (both languages, endless beyond the authored end); review screenshots.
 4. Push once verified, enable Pages, confirm live URL loads with zero errors.
-5. Update `games.json` + section 5 table here.
+5. Update `games.json` + section 5 table here, including the card thumbnail: capture a mid-action `?demo=1` frame of the live build at 1280×720 in headless Chrome (never a title screen), add its crop to `tools/make_thumbs.py` and run it → `assets/thumbs/<id>.webp` (16:9, 640×360, < 60 KB), then set `thumb` + `thumbAlt {zh, en}` in `games.json`. Check with `tests/smoke_thumbs.py`.
