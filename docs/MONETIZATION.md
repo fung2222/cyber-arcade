@@ -48,7 +48,7 @@ Edit `tier` in [`games.json`](../games.json) to change it — the hub, store lis
 | 級別 Tier | 遊戲 Games | 理由 Why |
 |---|---|---|
 | 免費 Free | 賽博蛇 CYBER SNAKE · 霓虹記憶 NEON RECALL · 賽博小遊戲合集 CYBER MINI PACK · 數據熔合 DATA FUSE | 貪食蛇、記憶配對、包剪揼／過三關、2048 類喺 Play 上面都有大量免費版 → 免費，做引流同廣告收入 · snake, memory match, RPS/tic-tac-toe and 2048-likes all have many free equivalents → Free funnel + ad revenue |
-| 銀級 Silver | 霓虹火柴人 NEON STICK DUEL · 霓虹火柴人跑酷 neon stickman parkour（製作中 in production） | 中型、有自己特色嘅完整遊戲 + 無盡模式 · mid-size distinctive games with endless modes |
+| 銀級 Silver | 霓虹火柴人 NEON STICK DUEL (`neon-stick-duel`) · 霓虹火柴人酷跑 NEON STICK RUN (`neon-stick-run`) | 中型、有自己特色嘅完整遊戲 + 無盡模式：單手火柴人對決塔；單手 3D 天台酷跑（12 關 + 無盡）· mid-size distinctive games with endless modes: a one-thumb stick-duel tower; one-thumb 3D rooftop parkour (12 stages + endless) |
 | 金級 Gold | 賽博棋門 CYBER BOARD · 賽博忍者：星海魔獸 CYBER NINJA · 霓虹堡壘 NEON BASTION（cyber-tower，塔防 tower defense） | 最大型：棋門係 4 合 1 + AI + 無盡塔；忍者係有巨獸戰嘅完整射擊；堡壘有 8 張地圖、5 種塔 × 3 級、無盡模式 · largest: 4-in-1 board games, a full boss shooter, and an 8-map tower defense with endless mode |
 
 已決定 Decided: DATA FUSE 由銀級改為免費（2048 類）· DATA FUSE moved Silver → Free under the rule above.
@@ -62,6 +62,7 @@ Edit `tier` in [`games.json`](../games.json) to change it — the hub, store lis
 | 遊戲 Game | 級別 | 每日 Runs/day | 局內上限 In-game cap (app build) |
 |---|---|---|---|
 | NEON STICK DUEL | Silver | 3 | 只開放塔第 1–3 層 · tower floors 1–3 |
+| NEON STICK RUN | Silver | 3 | 只開放第 1–3 關；無盡模式跑到 800 米，之後彈解鎖提示返大廳（遊戲已實作 `trial=1`）· stages 1–3; endless up to 800 m, then an unlock prompt back to the hub (already implemented in the game) |
 | CYBER NINJA | Gold | 3 | 玩到第 5 波（第一隻巨獸）· up to wave 5 (first boss) |
 | CYBER BOARD | Gold | 3 | AI 第 1–2 級 + 無盡塔第 1–3 層 · AI levels 1–2 and tower floors 1–3 |
 | NEON BASTION (cyber-tower) | Gold | 3 | 戰役只開放地圖 1–2；無盡模式玩到第 10 波，之後彈解鎖提示返大廳（遊戲已實作 `trial=1`）· campaign maps 1–2; endless up to wave 10, then an unlock prompt back to the hub (already implemented in the game) |
