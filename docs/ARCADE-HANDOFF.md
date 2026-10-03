@@ -37,6 +37,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 | 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
 | 7 | 賽博棋鬥 CYBER BOARD | cyber-board | https://fung2222.github.io/cyber-board/ | ✅ done (web v1, cyber-kit v0.2.1) | — |
 | 8 | 霓虹火柴人酷跑 NEON STICK RUN | neon-stick-run | https://fung2222.github.io/neon-stick-run/ | ✅ web v1.0 (12 stages + endless, cyber-kit v0.2.1, Silver, trial = stages 1–3 + endless 800 m) | — |
+| 9 | 霓虹堡壘 NEON BASTION | cyber-tower | https://fung2222.github.io/cyber-tower/ | ✅ web v1.1 (3D tower defense: 8 maps + endless, 5 towers × 3 levels, cyber-kit v0.2.1, Gold, trial = maps 1–2 + endless to wave 10; game-over interstitial stub only when `ads=1`, rewarded continue stub) | — |
 | — | AI 指令格鬥 ai-fighter | — | — | ❌ retired (crashing stub, trademark name) | — |
 
 `games.json` must be updated together with this table whenever a game ships.
