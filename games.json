@@ -15,6 +15,11 @@
       "repo": "https://github.com/fung2222/cyber-snake",
       "url": "https://fung2222.github.io/cyber-snake/",
       "demo": "https://fung2222.github.io/cyber-snake/?demo=1",
+      "thumb": "assets/thumbs/cyber-snake.webp",
+      "thumbAlt": {
+        "zh": "賽博蛇遊戲畫面：霓虹蛇喺發光網格上追住能量球",
+        "en": "CYBER SNAKE gameplay: a neon snake chasing an energy orb across a glowing grid"
+      },
       "status": "done",
       "kit": "v0.2.1 (i18n only)",
       "play": "not-submitted",
@@ -35,6 +40,11 @@
       "repo": "https://github.com/fung2222/data-fuse",
       "url": "https://fung2222.github.io/data-fuse/",
       "demo": "https://fung2222.github.io/data-fuse/?demo=1",
+      "thumb": "assets/thumbs/data-fuse.webp",
+      "thumbAlt": {
+        "zh": "數據熔合遊戲畫面：霓虹 4×4 棋盤上合併發光數字方塊",
+        "en": "DATA FUSE gameplay: glowing number blocks merging on a neon 4×4 board"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -55,6 +65,11 @@
       "repo": "https://github.com/fung2222/neon-recall",
       "url": "https://fung2222.github.io/neon-recall/",
       "demo": "https://fung2222.github.io/neon-recall/?demo=1",
+      "thumb": "assets/thumbs/neon-recall.webp",
+      "thumbAlt": {
+        "zh": "霓虹記憶遊戲畫面：霓虹卡牌翻開配對",
+        "en": "NEON RECALL gameplay: neon holo cards flipped to find matching pairs"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -75,6 +90,11 @@
       "repo": "https://github.com/fung2222/cyber-ninja",
       "url": "https://fung2222.github.io/cyber-ninja/",
       "demo": "https://fung2222.github.io/cyber-ninja/?demo=1",
+      "thumb": "assets/thumbs/cyber-ninja.webp",
+      "thumbAlt": {
+        "zh": "賽博忍者遊戲畫面：飛越霓虹城市上空自動開火對抗敵人",
+        "en": "CYBER NINJA gameplay: auto-firing over a neon city while enemies attack"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -102,6 +122,11 @@
       "repo": "https://github.com/fung2222/cyber-mini-pack",
       "url": "https://fung2222.github.io/cyber-mini-pack/",
       "demo": "https://fung2222.github.io/cyber-mini-pack/?demo=1",
+      "thumb": "assets/thumbs/cyber-mini-pack.webp",
+      "thumbAlt": {
+        "zh": "賽博小遊戲合集遊戲畫面：霓虹擂台上嘅包剪揼對決",
+        "en": "CYBER MINI PACK gameplay: a rock-paper-scissors round on a neon arena"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -122,6 +147,11 @@
       "repo": "https://github.com/fung2222/neon-stick-duel",
       "url": "https://fung2222.github.io/neon-stick-duel/",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
+      "thumb": "assets/thumbs/neon-stick-duel.webp",
+      "thumbAlt": {
+        "zh": "霓虹火柴人遊戲畫面：兩個霓虹火柴人喺城市天台對打",
+        "en": "NEON STICK DUEL gameplay: two neon stick fighters trading blows on a city rooftop"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -149,6 +179,11 @@
       "repo": "https://github.com/fung2222/neon-stick-run",
       "url": "https://fung2222.github.io/neon-stick-run/",
       "demo": "https://fung2222.github.io/neon-stick-run/?demo=1",
+      "thumb": "assets/thumbs/neon-stick-run.webp",
+      "thumbAlt": {
+        "zh": "霓虹火柴人酷跑遊戲畫面：霓虹火柴人喺天台之間衝刺",
+        "en": "NEON STICK RUN gameplay: a neon stick runner dashing across rooftops"
+      },
       "status": "done",
       "stage": {
         "zh": "網頁版 v1.0 完成 · 待 Roy 試玩 · 未包裝 Android",
@@ -184,6 +219,11 @@
       "repo": "https://github.com/fung2222/cyber-board",
       "url": "https://fung2222.github.io/cyber-board/",
       "demo": "https://fung2222.github.io/cyber-board/?demo=1",
+      "thumb": "assets/thumbs/cyber-board.webp",
+      "thumbAlt": {
+        "zh": "賽博棋鬥遊戲畫面：霓虹立體國際象棋對局",
+        "en": "CYBER BOARD gameplay: a neon 3D chess match in progress"
+      },
       "status": "done",
       "kit": "v0.2.1",
       "play": "not-submitted",
@@ -209,6 +249,11 @@
       "repo": "https://github.com/fung2222/cyber-tower",
       "url": "https://fung2222.github.io/cyber-tower/",
       "demo": "https://fung2222.github.io/cyber-tower/?demo=1",
+      "thumb": "assets/thumbs/cyber-tower.webp",
+      "thumbAlt": {
+        "zh": "霓虹堡壘遊戲畫面：霓虹城市網格上嘅防禦塔攔截沿通道衝向核心嘅病毒",
+        "en": "NEON BASTION gameplay: towers on a neon city grid stopping viruses on the path to the core"
+      },
       "status": "done",
       "stage": {
         "zh": "網頁版 v1.1 完成 · 待 Roy 試玩 · 未包裝 Android",
