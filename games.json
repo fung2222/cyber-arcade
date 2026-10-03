@@ -141,18 +141,22 @@
         "en": "NEON STICK DUEL"
       },
       "genre": {
-        "zh": "單手 3D 火柴人對決",
-        "en": "One-thumb 3D stick duel"
+        "zh": "3D 職業格鬥：劍士／魔法師／拳師／刺客（十連戰 + 無盡塔）",
+        "en": "3D class fighter: Swordsman / Mage / Brawler / Assassin (10-fight ladder + endless tower)"
       },
       "repo": "https://github.com/fung2222/neon-stick-duel",
       "url": "https://fung2222.github.io/neon-stick-duel/",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
       "thumb": "assets/thumbs/neon-stick-duel.webp",
       "thumbAlt": {
-        "zh": "霓虹火柴人遊戲畫面：兩個霓虹火柴人喺城市天台對打",
-        "en": "NEON STICK DUEL gameplay: two neon stick fighters trading blows on a city rooftop"
+        "zh": "霓虹火柴人遊戲畫面：劍士喺城市天台一劍挑起拳師",
+        "en": "NEON STICK DUEL gameplay: a swordsman launching a brawler into the air on a city rooftop"
       },
       "status": "done",
+      "stage": {
+        "zh": "網頁版 v2.0：四職業、搖桿＋按鍵、階梯十連戰＋無盡塔 · 待 Roy 試玩 · 未包裝 Android",
+        "en": "web v2.0: four classes, joystick + buttons, 10-fight ladder + endless tower · awaiting Roy's review · not packaged for Android"
+      },
       "kit": "v0.2.1",
       "play": "not-submitted",
       "i18n": true,
@@ -160,9 +164,13 @@
       "tier": "silver",
       "trial": {
         "runsPerDay": 3,
+        "caps": {
+          "ladder": 3,
+          "endless": 3
+        },
         "rule": {
-          "zh": "每日 3 局；日後 App 版每局只開放塔第 1–3 層",
-          "en": "3 runs per day; app build will cap each run at tower floors 1–3"
+          "zh": "每日 3 局；四個職業都玩得，階梯模式只開放第 1–3 戰，無盡塔只開放第 1–3 層，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
+          "en": "3 runs per day; all four classes, ladder fights 1–3 and endless floors 1–3 only, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
       }
     },

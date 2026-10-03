@@ -34,7 +34,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 | 3 | 霓虹記憶 NEON RECALL | neon-recall | https://fung2222.github.io/neon-recall/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
 | 4 | 賽博忍者：星海魔獸 CYBER NINJA | cyber-ninja | https://fung2222.github.io/cyber-ninja/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
 | 5 | 賽博小遊戲合集 CYBER MINI PACK | cyber-mini-pack | https://fung2222.github.io/cyber-mini-pack/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
-| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ v1.1 bilingual + endless (kit v0.2.1) | — |
+| 6 | 霓虹火柴人 NEON STICK DUEL | neon-stick-duel | https://fung2222.github.io/neon-stick-duel/ | ✅ v2.0 four classes (劍士/魔法師/拳師/刺客), joystick + buttons, 10-fight ladder + endless tower, trial caps ladder 1–3 / endless 1–3; bilingual (kit v0.2.1) · awaiting Roy's review | — |
 | 7 | 賽博棋鬥 CYBER BOARD | cyber-board | https://fung2222.github.io/cyber-board/ | ✅ done (web v1, cyber-kit v0.2.1) | — |
 | 8 | 霓虹火柴人酷跑 NEON STICK RUN | neon-stick-run | https://fung2222.github.io/neon-stick-run/ | ✅ web v1.0 (12 stages + endless, cyber-kit v0.2.1, Silver, trial = stages 1–3 + endless 800 m) | — |
 | 9 | 霓虹堡壘 NEON BASTION | cyber-tower | https://fung2222.github.io/cyber-tower/ | ✅ web v1.1 (3D tower defense: 8 maps + endless, 5 towers × 3 levels, cyber-kit v0.2.1, Gold, trial = maps 1–2 + endless to wave 10; game-over interstitial stub only when `ads=1`, rewarded continue stub) | — |
@@ -48,7 +48,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 3. ~~NEON RECALL~~ ✅ — 3D holo cards with cyber icons, levels 2×4 → 6×4, stars, no fail; interstitial every 3 levels; rewarded "peek".
 4. ~~CYBER NINJA~~ ✅ — drag to move, auto-fire, tap ultimate, enemy waves + bosses; rewarded continue; interstitial at game over.
 5. ~~CYBER MINI PACK~~ ✅ — one app, three modes: 包剪揼 (pattern-reading AI personalities, best of 3, streaks), 過三關 (ladder of 3 AI opponents of rising strength), 神經反射 (reaction test with false-start detection).
-6. ~~NEON STICK DUEL~~ ✅ — one-thumb: tap attack, swipe dodge/jump, hold to charge; tower mode; original icons.
+6. ~~NEON STICK DUEL~~ ✅ — v2: four classes with outfits + weapons, combo chains, 2 skills (gap-closer / escape) + ultimate, virtual joystick + arcade buttons, stage ladder + endless tower; original icons. (v1 was one-thumb tap/swipe/hold.)
 7. ~~CYBER BOARD~~ ✅ — 4-in-1: chess, xiangqi, flip (黑白棋), sky race (飛行棋); every capture is a skippable 3D battle with a per-piece move; vs AI (5 levels), local 2P, endless tower per game; zh-HK/EN via cyber-kit v0.2.1 i18n.
 
 **All 9 web builds are done (2026-10-03)** — the 7 above plus 霓虹堡壘 NEON BASTION (cyber-tower, Gold) and 霓虹火柴人酷跑 NEON STICK RUN (neon-stick-run, Silver). What's left (not started, needs Roy's go-ahead):
@@ -73,7 +73,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 | NEON RECALL | levels never end; preview ≥ 0.7 s, glitch-swap chance +1 %/level cap 60 %, 6×5 overclock grid every 3rd level from 12; milestone every 10 levels (+pts, +2 peeks, first clear only) | best level | clear-screen buttons (≈ every 3 levels) |
 | CYBER NINJA | waves forever; 6 boss species then Mk.N variants; boss HP cap 1100, enemy HP ×3.5 cap, boss fire-rate ×1.6 cap; milestone every 10 waves (+pts, full shields, theme) | best wave | game over (Retry/Menu) |
 | CYBER MINI PACK | RPS endless rivals (index 3+), XO OVERCLOCK CORE Lv.n (blunder 22 % → 4 % floor), reaction gauntlet (450 → 300 ms cap) | rival / stage / round per mode | result screen buttons (next/modes), capped |
-| NEON STICK DUEL | floors 8+ procedural remixed rivals; HP 150+6/floor cap 330, think ≥ 0.17 s, rates ≤ 0.92; milestone every 10 floors (+5000, theme) | best floor | result screen buttons (next/retry/menu), capped |
+| NEON STICK DUEL | endless tower floors forever, class rotates, procedural rivals; AI diff 0.18 → cap 0.95, HP ×(1+0.015/floor, cap +0.5), dmg ×(1+0.007/floor, cap +0.22); boss every 10 floors; separate 10-fight ladder with 2 bosses | best floor + ladder best + best score | interstitial only after a lost fight (retry/menu) when ads=1; rewarded revive once per fight; capped |
 | NEON STICK RUN | endless rooftops generated from patterns sized to the current speed; speed 10 → cap 21 m/s, density 0.18 → cap 0.88; milestone every 500 m (+25 chips, district theme shift); 12 authored stages stay separate | best distance + best score | result screen after a death (retry/menu/stages), never after a stage clear or at a milestone; capped |
 
 Verification (2026-10-02, headless Chrome 412×915 touch + 1280×800, zero console errors, en + zh screenshots, endless beyond the old end): cyber-kit i18n unit 8/8 · snake smoke ALL PASSED · data-fuse logic + smoke ALL PASSED · neon-recall logic 6/6 + smoke ALL PASSED · cyber-ninja waves + smoke ALL PASSED · mini-pack rules 12/12 + smoke ALL PASSED · stick-duel duel 22/22 + smoke ALL PASSED. Test hub is bilingual (inline i18n with the same `cyber.lang` contract; shows ZH/EN + ENDLESS tags from `games.json` `i18n`/`endless` flags).
