@@ -120,7 +120,7 @@ function render() {
       ${g.trial ? `<div class="meta">${esc(t('trial'))}: ${esc(g.trial.rule?.[L] || '')}</div>` : ''}
       <div class="meta">Play Store: ${esc(g.play)} · kit ${esc(g.kit)}</div>
       <div class="links">
-        <a class="${live ? '' : 'off'}" href="${esc(g.url)}">${esc(t('play'))}<small>PLAY</small></a>
+        <a class="${live ? '' : 'off'}" href="${esc(g.url)}">${esc(t('play'))}<small>${esc(STR.play[zh() ? 1 : 0])}</small></a>
         <a class="demo ${live ? '' : 'off'}" href="${esc(g.demo)}">${esc(t('demo'))}<small>?DEMO=1</small></a>
         <a class="repo" href="${esc(g.repo)}">Repo<small>GITHUB</small></a>
       </div>`;

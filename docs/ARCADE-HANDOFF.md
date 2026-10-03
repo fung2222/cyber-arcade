@@ -51,7 +51,7 @@ Copy a **tagged** kit version into `vendor/cyber-kit/` (never edit it there; fix
 6. ~~NEON STICK DUEL~~ ✅ — one-thumb: tap attack, swipe dodge/jump, hold to charge; tower mode; original icons.
 7. ~~CYBER BOARD~~ ✅ — 4-in-1: chess, xiangqi, flip (黑白棋), sky race (飛行棋); every capture is a skippable 3D battle with a per-piece move; vs AI (5 levels), local 2P, endless tower per game; zh-HK/EN via cyber-kit v0.2.1 i18n.
 
-**All 7 web builds are done (2026-10-02).** What's left (not started, needs Roy's go-ahead):
+**All 9 web builds are done (2026-10-03)** — the 7 above plus 霓虹堡壘 NEON BASTION (cyber-tower, Gold) and 霓虹火柴人酷跑 NEON STICK RUN (neon-stick-run, Silver). What's left (not started, needs Roy's go-ahead):
 - Roy's review of every game (play links in the table above; demo = `?demo=1`).
 - Android packaging per game (Capacitor 8 + `@capacitor-community/admob` v8; steps in each repo's `docs/HANDOFF.md`), real AdMob unit ids, store listings/screenshots.
 - When a game goes public: remove `noindex` from its `index.html` / `privacy.html`. The arcade test page stays unlisted.
