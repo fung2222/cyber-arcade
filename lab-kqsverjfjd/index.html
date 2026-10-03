@@ -29,9 +29,23 @@
   .card { position: relative; padding: 18px 18px 16px; background: linear-gradient(160deg, rgba(20,10,48,.85), rgba(8,3,22,.85)); border: 1px solid rgba(0,229,255,.35);
     clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); box-shadow: inset 0 0 24px rgba(0,229,255,.08); transition: transform .15s, border-color .2s; }
   .card:hover { transform: translateY(-2px); border-color: var(--c1); }
+  /* thumbnail: full-bleed 16:9 at the top, neon edge + gradient into the card body; tier tag + status pill overlaid */
+  .card { padding: 0; display: flex; flex-direction: column; }
+  .card .body { position: relative; padding: 12px 18px 16px; flex: 1; display: flex; flex-direction: column; }
+  .card .body .links { margin-top: auto; padding-top: 14px; }
+  .thumb { position: relative; margin: 0; aspect-ratio: 16 / 9; overflow: hidden; background: radial-gradient(ellipse at 50% 40%, rgba(0,229,255,.18), rgba(8,3,22,.95) 70%);
+    border-bottom: 1px solid rgba(0,229,255,.55); box-shadow: 0 1px 12px rgba(0,229,255,.35); }
+  .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .card:hover .thumb img { transform: scale(1.04); }
+  .thumb::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 0 0 22px rgba(0,229,255,.25);
+    background: linear-gradient(180deg, rgba(5,1,15,.55) 0%, rgba(5,1,15,0) 28%, rgba(5,1,15,0) 55%, rgba(8,3,22,.92) 100%), linear-gradient(90deg, rgba(255,43,214,.10), rgba(0,229,255,.06)); }
+  .card.planned .thumb img, .card.retired .thumb img { filter: grayscale(.8) brightness(.7); }
+  .thumb .ov { position: absolute; z-index: 2; display: flex; gap: 6px; align-items: center; }
+  .thumb .ov-tl { top: 10px; left: 14px; } .thumb .ov-tr { top: 10px; right: 12px; }
+  .thumb .tag, .thumb .pill { margin: 0; background: rgba(5,1,15,.8); backdrop-filter: blur(3px); }
   .card.planned { opacity: .62; border-color: rgba(255,255,255,.18); }
   .card.done { border-color: rgba(59,255,138,.5); }
-  .card .idx { position: absolute; right: 16px; top: 12px; font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; color: rgba(255,255,255,.07); }
+  .card .idx { position: absolute; right: 16px; top: 8px; font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; color: rgba(255,255,255,.07); }
   .name-zh { font-size: 24px; font-weight: 800; letter-spacing: 3px; color: #fff; text-shadow: 0 0 10px var(--c2); }
   .name-en { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 4px; color: var(--c1); margin-top: 2px; }
   .genre { margin-top: 8px; font-size: 13px; color: #b9b2e6; }
@@ -84,7 +98,7 @@ const STR = {
   kicker: ['PRIVATE TEST LAB · 內部測試', 'PRIVATE TEST LAB'], sub: ['賽博街機 · 所有遊戲測試入口', 'All CYBER games · test entry point'],
   source: ['資料來源 games.json', 'source: games.json'], footer: ['未公開頁面 · 唔會被搜尋器收錄 · 請勿分享', 'Unlisted page · not indexed · please do not share'],
   live: ['{done} / {total} 已上線 · 更新 {date}', '{done} / {total} LIVE · updated {date}'], loading: ['載入中…', 'Loading…'], fail: ['載入 games.json 失敗', 'Failed to load games.json'],
-  play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], stage: ['進度', 'STAGE'], trial: ['試玩', 'TRIAL'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
+  thumbAlt: ['「{name}」遊戲畫面', '{name} gameplay screenshot'], play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], stage: ['進度', 'STAGE'], trial: ['試玩', 'TRIAL'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
   hub: ['App 大廳原型（收費／試玩）→', 'App hub prototype (tiers / trials) →'],
   tierfree: ['免費 FREE', 'FREE'], tiersilver: ['銀級 SILVER', 'SILVER'], tiergold: ['金級 GOLD', 'GOLD'],
   done: ['已上線', 'LIVE'], wip: ['製作中', 'IN PROGRESS'], planned: ['計劃中', 'PLANNED'], retired: ['已退役', 'RETIRED'],
@@ -108,14 +122,16 @@ function render() {
   data.games.forEach((g, i) => {
     const live = g.status === 'done' || g.status === 'wip';
     const tierTag = g.tier ? `<span class="tag t-${esc(g.tier)}">${esc(t('tier' + g.tier))}</span>` : '';
-    const tags = tierTag + [g.i18n ? t('bilingual') : '', g.endless ? t('endless') : ''].filter(Boolean).map((x) => `<span class="tag">${esc(x)}</span>`).join('');
+    const tags = [g.i18n ? t('bilingual') : '', g.endless ? t('endless') : ''].filter(Boolean).map((x) => `<span class="tag">${esc(x)}</span>`).join('');
     const el = document.createElement('article');
     el.className = 'card ' + g.status;
-    el.innerHTML = `<div class="idx">${String(i + 1).padStart(2, '0')}</div>
+    const alt = g.thumbAlt?.[L] || t('thumbAlt', { name: g.name[L] });
+    const thumb = `<figure class="thumb">${g.thumb ? `<img src="../${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}
+      ${tierTag ? `<div class="ov ov-tl">${tierTag}</div>` : ''}<div class="ov ov-tr"><span class="pill ${esc(g.status)}">${esc(STR[g.status] ? t(g.status) : g.status)}</span></div></figure>`;
+    el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
       <div class="name-zh">${esc(g.name[L])}</div><div class="name-en">${esc(g.name[O])}</div>
       <div class="genre">${esc(g.genre?.[L])}</div>
       ${g.stage ? `<div class="stage">${esc(g.stage[L])}</div>` : ''}
-      <span class="pill ${esc(g.status)}">${esc(STR[g.status] ? t(g.status) : g.status)}</span>
       ${tags ? `<div class="tags">${tags}</div>` : ''}
       ${g.trial ? `<div class="meta">${esc(t('trial'))}: ${esc(g.trial.rule?.[L] || '')}</div>` : ''}
       <div class="meta">Play Store: ${esc(g.play)} · kit ${esc(g.kit)}</div>
@@ -123,7 +139,7 @@ function render() {
         <a class="${live ? '' : 'off'}" href="${esc(g.url)}">${esc(t('play'))}<small>${esc(STR.play[zh() ? 1 : 0])}</small></a>
         <a class="demo ${live ? '' : 'off'}" href="${esc(g.demo)}">${esc(t('demo'))}<small>?DEMO=1</small></a>
         <a class="repo" href="${esc(g.repo)}">Repo<small>GITHUB</small></a>
-      </div>`;
+      </div></div>`;
     list.appendChild(el);
   });
 }

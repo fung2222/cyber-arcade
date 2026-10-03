@@ -137,16 +137,20 @@ function render() {
     const left = ent.trialRemaining(g.id), max = ent.trialRuns(g.id);
     const state = !paid ? '' : access ? `<span class="state open">✓ ${esc(t('unlocked'))}</span>` : `<span class="state lock">🔒 ${esc(t('locked'))}</span>`;
     const trial = paid && !access ? `<div class="trial${left ? '' : ' none'}">${esc(left ? t('trialLeft', { n: left, max }) : t('trialNone'))}</div>` : '';
+    const alt = g.thumbAlt?.[L()] || t('thumbAlt', { name: g.name[L()] });
+    // thumbnail with the tier badge, lock state and trial counter overlaid (always readable on top of the image)
+    const thumb = `<figure class="thumb">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}
+      <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span></div>
+      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}</figure>`;
     const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const el = document.createElement('article');
     el.className = `card t-${g.tier}${access ? '' : ' locked'}`; el.dataset.game = g.id;
-    el.innerHTML = `<div class="idx">${String(i + 1).padStart(2, '0')}</div>
+    el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
       <div class="name">${esc(g.name[L()])}</div><div class="alt">${esc(g.name[O])}</div>
       <div class="genre">${esc(g.genre?.[L()])}</div>
-      <div class="badges"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${state}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${esc(g.stage[L()])}</div>` : ''}
-      ${trial}<div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div>`;
+      <div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
     list.appendChild(el);
   });
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => onPlay(b.dataset.play); });
