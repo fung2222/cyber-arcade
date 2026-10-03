@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-02",
+  "updated": "2026-10-03",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -158,6 +158,41 @@
         "rule": {
           "zh": "每日 3 局；日後 App 版試玩只開放 AI 第 1–2 級同無盡塔第 1–3 層",
           "en": "3 runs per day; app build will limit trials to AI levels 1–2 and tower floors 1–3"
+        }
+      }
+    },
+    {
+      "id": "cyber-tower",
+      "name": {
+        "zh": "霓虹堡壘",
+        "en": "NEON BASTION"
+      },
+      "genre": {
+        "zh": "3D 霓虹塔防（8 張地圖 + 無盡模式）",
+        "en": "3D neon tower defense (8 maps + endless)"
+      },
+      "repo": "https://github.com/fung2222/cyber-tower",
+      "url": "https://fung2222.github.io/cyber-tower/",
+      "demo": "https://fung2222.github.io/cyber-tower/?demo=1",
+      "status": "done",
+      "stage": {
+        "zh": "網頁版 v1.1 完成 · 待 Roy 試玩 · 未包裝 Android",
+        "en": "web v1.1 done · awaiting Roy's review · not packaged for Android"
+      },
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true,
+      "tier": "gold",
+      "trial": {
+        "runsPerDay": 3,
+        "caps": {
+          "maps": 2,
+          "endlessWave": 10
+        },
+        "rule": {
+          "zh": "每日 3 局；戰役只開放地圖 1–2，無盡模式玩到第 10 波，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
+          "en": "3 runs per day; campaign maps 1–2 only and endless up to wave 10, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
       }
     }
