@@ -145,7 +145,8 @@ function render() {
       <div class="name">${esc(g.name[L()])}</div><div class="alt">${esc(g.name[O])}</div>
       <div class="genre">${esc(g.genre?.[L()])}</div>
       <div class="badges"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${state}</div>
-      ${trial}<div class="links">${btn}</div>`;
+      ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${esc(g.stage[L()])}</div>` : ''}
+      ${trial}<div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div>`;
     list.appendChild(el);
   });
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => onPlay(b.dataset.play); });
@@ -175,6 +176,16 @@ $('dev').addEventListener('click', async (e) => {
 $('btn-unlock').onclick = () => openStore();
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('modal2') && !$('modal2').classList.contains('hidden')) return; closeSheet(); } });
 
+// a game's trial "unlock" button leaves {game, t} here and goes history.back() → open the unlock sheet (same origin, no hub path in game URLs)
+const RETURN_KEY = 'cyber.arcade.openStore';
+function checkReturnNote() {
+  let note = null; try { note = JSON.parse(localStorage.getItem(RETURN_KEY) || 'null'); localStorage.removeItem(RETURN_KEY); } catch { /* */ }
+  if (!note || !ent || Date.now() - (note.t || 0) > 10 * 60 * 1000) return;
+  const g = games.find((x) => x.id === note.game);
+  openStore(g ? t('trialOver', { name: g.name[L()], tier: tierName(g.tier) }) : undefined);
+}
+window.addEventListener('pageshow', (e) => { if (e.persisted) checkReturnNote(); });
+
 // ---------------------------------------------------------------- boot
 i18n.bindToggle($('btn-lang'));
 i18n.onChange(() => { render(); if (storeOpen()) renderStore(); });
@@ -189,7 +200,7 @@ window.__hub = { get ent() { return ent; }, get games() { return games; }, openS
     await ent.init();
     render();
     if (params.get('dev') === '1') showDev();
-    if (params.get('store') === '1') openStore();
+    if (params.get('store') === '1') openStore(); else checkReturnNote();
   } catch (e) {
     console.warn(e); $('list').innerHTML = `<div class="err">${esc(t('fail'))} · ${esc(e.message)}</div>`;
   }

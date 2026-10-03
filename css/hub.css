@@ -46,6 +46,8 @@ html[data-lang="en"] .name { font-family: 'Orbitron', var(--zh); font-size: 20px
 .links button, .links a { flex: 1; min-height: 44px; text-align: center; padding: 10px 8px; text-decoration: none; color: #fff; font: 700 13px var(--zh); letter-spacing: 2px; cursor: pointer;
   border: 1px solid var(--c1); background: rgba(0,229,255,.1); box-shadow: 0 0 10px rgba(0,229,255,.2); }
 .links .try { border-color: var(--c3); background: rgba(255,243,92,.08); }
+.links a.demo { flex: 0 0 auto; padding: 10px 14px; border-color: var(--c2, #ff2bd6); background: rgba(255,43,214,.08); }
+.stage { margin-top: 6px; font-size: 11px; color: #8f88c0; letter-spacing: .5px; }
 .links .unl { border-color: var(--gold); background: rgba(255,207,74,.1); flex: 0 0 auto; padding: 10px 14px; }
 .links button:active { transform: scale(.97); }
 .web-note { max-width: 860px; margin: 10px auto 0; padding: 0 20px; font-size: 12px; line-height: 1.6; color: #8f88b8; text-align: center; }

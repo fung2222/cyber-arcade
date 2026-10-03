@@ -35,5 +35,7 @@ i18n.add({
   devWipe: ['清除本機紀錄（模擬重新安裝）', 'Wipe local cache (simulate reinstall)'], devSilver: ['模擬：擁有銀級', 'Simulate: own Silver'], devGold: ['模擬：擁有金級', 'Simulate: own Gold'],
   devBackend: ['付款後端：{id}', 'Billing backend: {id}'],
   launching: ['開緊「{name}」…', 'Launching "{name}"…'],
+  demo: ['示範', 'DEMO'], stage: ['進度', 'STAGE'],
+  trialOver: ['「{name}」試玩到此為止。解鎖{tier}就可以玩晒全部地圖同無盡模式。', 'That is the end of the "{name}" trial. Unlock {tier} to play every map and the full endless mode.'],
 });
 export { i18n };

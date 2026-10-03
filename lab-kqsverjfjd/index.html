@@ -84,7 +84,7 @@ const STR = {
   kicker: ['PRIVATE TEST LAB · 內部測試', 'PRIVATE TEST LAB'], sub: ['賽博街機 · 所有遊戲測試入口', 'All CYBER games · test entry point'],
   source: ['資料來源 games.json', 'source: games.json'], footer: ['未公開頁面 · 唔會被搜尋器收錄 · 請勿分享', 'Unlisted page · not indexed · please do not share'],
   live: ['{done} / {total} 已上線 · 更新 {date}', '{done} / {total} LIVE · updated {date}'], loading: ['載入中…', 'Loading…'], fail: ['載入 games.json 失敗', 'Failed to load games.json'],
-  play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
+  play: ['開始玩', 'PLAY'], demo: ['示範', 'DEMO'], stage: ['進度', 'STAGE'], trial: ['試玩', 'TRIAL'], bilingual: ['中／英', 'ZH / EN'], endless: ['無盡模式', 'ENDLESS'],
   hub: ['App 大廳原型（收費／試玩）→', 'App hub prototype (tiers / trials) →'],
   tierfree: ['免費 FREE', 'FREE'], tiersilver: ['銀級 SILVER', 'SILVER'], tiergold: ['金級 GOLD', 'GOLD'],
   done: ['已上線', 'LIVE'], wip: ['製作中', 'IN PROGRESS'], planned: ['計劃中', 'PLANNED'], retired: ['已退役', 'RETIRED'],
@@ -117,6 +117,8 @@ function render() {
       ${g.stage ? `<div class="stage">${esc(g.stage[L])}</div>` : ''}
       <span class="pill ${esc(g.status)}">${esc(STR[g.status] ? t(g.status) : g.status)}</span>
       ${tags ? `<div class="tags">${tags}</div>` : ''}
+      ${g.stage ? `<div class="meta">${esc(t('stage'))}: ${esc(g.stage[L])}</div>` : ''}
+      ${g.trial ? `<div class="meta">${esc(t('trial'))}: ${esc(g.trial.rule?.[L] || '')}</div>` : ''}
       <div class="meta">Play Store: ${esc(g.play)} · kit ${esc(g.kit)}</div>
       <div class="links">
         <a class="${live ? '' : 'off'}" href="${esc(g.url)}">${esc(t('play'))}<small>PLAY</small></a>
