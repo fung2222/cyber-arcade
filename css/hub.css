@@ -13,6 +13,8 @@ body::after { content: ""; position: fixed; left: -50%; right: -50%; bottom: -10
 @media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
 header { padding: max(28px, env(safe-area-inset-top)) 20px 4px; text-align: center; }
 .kicker { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 6px; color: var(--c2); text-shadow: 0 0 8px var(--c2); }
+/* phones: keep the fixed language button (top-right, 44px) clear of the header kicker line */
+@media (max-width: 759px) { header { padding-left: 66px; padding-right: 66px; } .kicker { font-size: 10px; letter-spacing: 2px; line-height: 1.5; } }
 h1 { margin: 6px 0 0; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(30px, 7vw, 54px); letter-spacing: 6px; color: #fff;
   text-shadow: 0 0 10px var(--c1), 0 0 30px var(--c1), 3px 0 0 rgba(255,43,214,.7); }
 .sub { margin-top: 4px; font-size: 13px; letter-spacing: 3px; color: #a49dd0; }
