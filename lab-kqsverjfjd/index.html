@@ -117,7 +117,6 @@ function render() {
       ${g.stage ? `<div class="stage">${esc(g.stage[L])}</div>` : ''}
       <span class="pill ${esc(g.status)}">${esc(STR[g.status] ? t(g.status) : g.status)}</span>
       ${tags ? `<div class="tags">${tags}</div>` : ''}
-      ${g.stage ? `<div class="meta">${esc(t('stage'))}: ${esc(g.stage[L])}</div>` : ''}
       ${g.trial ? `<div class="meta">${esc(t('trial'))}: ${esc(g.trial.rule?.[L] || '')}</div>` : ''}
       <div class="meta">Play Store: ${esc(g.play)} · kit ${esc(g.kit)}</div>
       <div class="links">
