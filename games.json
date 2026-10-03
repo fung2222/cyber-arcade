@@ -137,6 +137,41 @@
       }
     },
     {
+      "id": "neon-stick-run",
+      "name": {
+        "zh": "霓虹火柴人酷跑",
+        "en": "NEON STICK RUN"
+      },
+      "genre": {
+        "zh": "單手 3D 天台酷跑（12 關 + 無盡模式）",
+        "en": "One-thumb 3D rooftop parkour (12 stages + endless)"
+      },
+      "repo": "https://github.com/fung2222/neon-stick-run",
+      "url": "https://fung2222.github.io/neon-stick-run/",
+      "demo": "https://fung2222.github.io/neon-stick-run/?demo=1",
+      "status": "done",
+      "stage": {
+        "zh": "網頁版 v1.0 完成 · 待 Roy 試玩 · 未包裝 Android",
+        "en": "web v1.0 done · awaiting Roy's review · not packaged for Android"
+      },
+      "kit": "v0.2.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true,
+      "tier": "silver",
+      "trial": {
+        "runsPerDay": 3,
+        "caps": {
+          "stages": 3,
+          "endlessM": 800
+        },
+        "rule": {
+          "zh": "每日 3 局；只開放第 1–3 關，無盡模式跑到 800 米，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
+          "en": "3 runs per day; stages 1–3 only and endless up to 800 m, then an unlock prompt back to the hub (implemented in-game via trial=1)"
+        }
+      }
+    },
+    {
       "id": "cyber-board",
       "name": {
         "zh": "賽博棋鬥",
