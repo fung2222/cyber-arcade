@@ -10,13 +10,13 @@ from PIL import Image
 
 SHOTS = {
     'cyber-snake':     ('cyber-snake-L1.png',     1.30, 0.50, 0.55),
-    'data-fuse':       ('data-fuse-L2.png',       1.25, 0.50, 0.50),
+    'data-fuse':       ('data-fuse-L1.png',       1.25, 0.50, 0.50),
     'neon-recall':     ('neon-recall-3.png',      1.30, 0.50, 0.50),
     'cyber-ninja':     ('cyber-ninja-S3.png',     1.15, 0.50, 0.45),
     'cyber-mini-pack': ('cyber-mini-pack-2.png',  1.25, 0.50, 0.52),
-    'neon-stick-duel': ('neon-stick-duel-2.png',  1.20, 0.50, 0.50),
+    'neon-stick-duel': ('neon-stick-duel-a3.png', 1.35, 0.47, 0.55),
     'cyber-board':     ('cyber-board-3.png',      1.25, 0.50, 0.47),
-    'cyber-tower':     ('cyber-tower-ff3.png',    1.30, 0.50, 0.44),
+    'cyber-tower':     ('cyber-tower-ff1.png',    1.30, 0.50, 0.44),
     'neon-stick-run':  ('neon-stick-run-2.png',   1.25, 0.40, 0.62),
 }
 W, H, MAX_BYTES = 640, 360, 58 * 1024
