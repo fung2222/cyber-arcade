@@ -7,6 +7,8 @@ import { createWebStubBackend } from './billing/web-stub.js';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Prefer wrap after CJK/Latin punctuation so titles/blurbs don't orphan mid-phrase.
+const softBreak = (s) => esc(s).replace(/([：:·／/、，,（）()])/g, '$1<wbr>');
 const params = new URLSearchParams(location.search);
 const NO_NAV = params.get('nonav') === '1';          // tests: record launches instead of leaving the page
 const L = () => (i18n.isZh() ? 'zh' : 'en');
@@ -181,9 +183,9 @@ function render() {
     el.className = `card t-${g.tier}${access ? '' : ' locked'}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
     el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
-      <div class="name">${esc(g.name[L()])}</div><div class="alt">${esc(g.name[O])}</div>
-      <div class="genre">${esc(g.genre?.[L()])}</div>
-      ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${esc(g.stage[L()])}</div>` : ''}
+      <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
+      <div class="genre">${softBreak(g.genre?.[L()])}</div>
+      ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${softBreak(g.stage[L()])}</div>` : ''}
       <div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
     list.appendChild(el);
     wirePreview(el);
@@ -219,6 +221,7 @@ function wirePreview(card) {
   const play = () => {
     if (reduceMotion() || playing) return;
     playing = true; fig.classList.add('playing');
+    try { vid.playbackRate = 0.5; } catch { /* older browsers */ }
     const p = vid.play(); if (p && p.catch) p.catch(() => { fig.classList.remove('playing'); playing = false; });
   };
   const stop = () => {

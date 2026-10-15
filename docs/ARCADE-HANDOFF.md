@@ -3,7 +3,9 @@
 ## Hub polish (2026-10-15)
 Commercial select-screen pass:
 - Card hover/focus-within: lift + stronger neon border; optional muted looping `<video>` preview (`games.json` `preview`) with poster = thumb; pause/reset on leave; `prefers-reduced-motion` keeps poster.
+- **Preview speed:** card preview videos play at `playbackRate = 0.5` whenever playback starts (hover, focus-within, touch sticky, IntersectionObserver) — slower/less flashy; still muted + loop; no re-encode.
 - **Touch / coarse pointer:** tap/press a card (`pointerdown`) plays its muted loop and keeps that card as the active preview; tapping another card switches. Desktop hover/focus behaviour unchanged. On coarse pointers, the card nearest the viewport center can also become active via `IntersectionObserver` (still no video when `prefers-reduced-motion`).
+- **Typography:** hub tagline uses phrase `<span class="nw">` groups (`data-i18n-html`) so zh/EN wrap as whole lines/phrases (not mid-「賽博街機」/mid-word); card titles/genres get soft `<wbr>` after punctuation; CSS `text-wrap: pretty` / balanced headers.
 - PLAY/TRY: neon flash + brief scale + SynthAudio `confirm`/`whoosh` (lazy audio unlock on first gesture; soft chill BGM after unlock), then navigate.
 - Keyboard: cards are `tabIndex=0` with `:focus-visible` / `:focus-within`.
 - `ent.launchParams` appends same-origin `ret=` (encoded hub URL) so games can return when `history.back` is unreliable.

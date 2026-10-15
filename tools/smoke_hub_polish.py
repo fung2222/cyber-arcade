@@ -27,10 +27,24 @@ async def main():
         await page.goto(HUB + sep + 'lang=zh', wait_until='networkidle', timeout=90000)
         await page.wait_for_selector('.card', timeout=30000)
         await page.screenshot(path=str(OUT / 'hub-desktop.png'), full_page=True)
-        card = page.locator('.card').first
+        # Tagline / hero at desktop width
+        await page.locator('header').screenshot(path=str(OUT / 'hub-tagline-desktop.png'))
+
+        card = page.locator('.card:has(.thumb.has-preview)').first
         await card.hover()
         await page.wait_for_timeout(1500)
+        rate = await page.evaluate(
+            """() => {
+              const fig = document.querySelector('.thumb.has-preview.playing');
+              const v = fig && fig.querySelector('video');
+              return v ? { rate: v.playbackRate, paused: v.paused, readyState: v.readyState } : null;
+            }"""
+        )
+        print('desktop hover preview:', rate)
+        if not rate or rate.get('paused') is not False or abs(float(rate.get('rate', 0)) - 0.5) > 0.05:
+            errs.append(f'desktop-halfspeed:{rate}')
         await page.screenshot(path=str(OUT / 'hub-hover-preview.png'))
+        await page.screenshot(path=str(OUT / 'hub-preview-halfspeed.png'))
         await page.keyboard.press('Tab')
         await ctx.close()
 
@@ -40,6 +54,10 @@ async def main():
         await page.goto(HUB + sep + 'lang=en', wait_until='networkidle', timeout=90000)
         await page.wait_for_selector('.card', timeout=30000)
         await page.screenshot(path=str(OUT / 'hub-mobile.png'), full_page=True)
+        # Tagline / hero at mobile width (zh switch for wrap check)
+        await page.goto(HUB + sep + 'lang=zh', wait_until='networkidle', timeout=90000)
+        await page.wait_for_selector('.card', timeout=30000)
+        await page.locator('header').screenshot(path=str(OUT / 'hub-tagline-mobile.png'))
 
         # Touch: tap a preview card → muted loop plays and stays active (no hover on phones).
         card = page.locator('.card:has(.thumb.has-preview)').first
@@ -65,6 +83,7 @@ async def main():
                 count: figs.length,
                 paused: v ? v.paused : null,
                 currentTime: v ? v.currentTime : null,
+                playbackRate: v ? v.playbackRate : null,
                 coarse: matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches,
               };
             }"""
@@ -72,6 +91,8 @@ async def main():
         print('mobile tap preview:', playing)
         if playing.get('count') != 1 or playing.get('paused') is not False:
             errs.append(f'mobile-tap-preview:{playing}')
+        if playing.get('playbackRate') is None or abs(float(playing.get('playbackRate', 0)) - 0.5) > 0.05:
+            errs.append(f'mobile-halfspeed:{playing}')
         await page.wait_for_timeout(800)
         await page.screenshot(path=str(OUT / 'hub-mobile-tap-preview.png'))
 
@@ -118,7 +139,7 @@ async def main():
     for e in errs[:20]:
         print(' ERR', e)
     print('shots', sorted(p.name for p in OUT.glob('*.png')))
-    return 0
+    return 1 if errs else 0
 
 if __name__ == '__main__':
     raise SystemExit(asyncio.run(main()))

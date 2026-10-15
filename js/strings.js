@@ -2,7 +2,7 @@
 import { i18n } from '../vendor/cyber-kit/core/i18n.js';
 i18n.add({
   'doc.title': ['CYBER ARCADE 賽博街機', 'CYBER ARCADE'],
-  kicker: ['NEON KOWLOON · GAME HUB', 'NEON KOWLOON · GAME HUB'], sub: ['賽博街機 · 一個 App 玩晒全部遊戲', 'Every CYBER game in one app'],
+  kicker: ['NEON KOWLOON · GAME HUB', 'NEON KOWLOON · GAME HUB'], sub: ['<span class="nw">賽博街機 ·</span> <span class="nw">一個 App 玩晒全部遊戲</span>', '<span class="nw">Every CYBER game</span> <span class="nw">in one app</span>'],
   yourTier: ['你嘅級別', 'YOUR TIER'], unlock: ['解鎖', 'UNLOCK'], store: ['解鎖更多遊戲', 'UNLOCK MORE GAMES'],
   'tier.free': ['免費', 'FREE'], 'tier.silver': ['銀級', 'SILVER'], 'tier.gold': ['金級', 'GOLD'],
   'badge.free': ['免費 FREE', 'FREE'], 'badge.silver': ['銀 SILVER', 'SILVER'], 'badge.gold': ['金 GOLD', 'GOLD'],
