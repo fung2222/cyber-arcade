@@ -12,19 +12,21 @@
 <link rel="stylesheet" href="css/hub.css">
 </head>
 <body>
-<button class="lang-btn" id="btn-lang" aria-label="Language / 語言"></button>
-<header>
-  <div class="kicker" data-i18n="kicker"></div>
-  <h1>CYBER ARCADE</h1>
-  <div class="sub" data-i18n-html="sub"></div>
+<nav class="topbar" aria-label="Tier · language">
   <div class="tierbar">
     <button class="tier-chip" id="tier-chip" aria-haspopup="dialog"><span data-i18n="yourTier"></span> <b id="tier-name">—</b></button>
     <button class="unlock-btn" id="btn-unlock"><span data-i18n="unlock"></span></button>
   </div>
+  <button class="lang-btn" id="btn-lang" aria-label="Language / 語言"></button>
+</nav>
+<header>
+  <div class="kicker" data-i18n="kicker"></div>
+  <h1>CYBER ARCADE</h1>
+  <div class="sub" data-i18n-html="sub"></div>
   <div class="ads-line" id="ads-line"></div>
 </header>
 <main id="list"><div class="err" data-i18n="loading"></div></main>
-<p class="web-note" data-i18n="webNote"></p>
+<p class="web-note" data-i18n-html="webNote"></p>
 <footer data-i18n="footer"></footer>
 
 <!-- modal shell (store / trial / stub payment) -->

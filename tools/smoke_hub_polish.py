@@ -41,7 +41,7 @@ async def main():
             }"""
         )
         print('desktop hover preview:', rate)
-        if not rate or rate.get('paused') is not False or abs(float(rate.get('rate', 0)) - 0.5) > 0.05:
+        if not rate or rate.get('paused') is not False or abs(float(rate.get('rate', 0)) - 0.35) > 0.05:
             errs.append(f'desktop-halfspeed:{rate}')
         await page.screenshot(path=str(OUT / 'hub-hover-preview.png'))
         await page.screenshot(path=str(OUT / 'hub-preview-halfspeed.png'))
@@ -58,6 +58,52 @@ async def main():
         await page.goto(HUB + sep + 'lang=zh', wait_until='networkidle', timeout=90000)
         await page.wait_for_selector('.card', timeout=30000)
         await page.locator('header').screenshot(path=str(OUT / 'hub-tagline-mobile.png'))
+        await page.locator('.topbar').screenshot(path=str(OUT / 'hub-topbar-mobile.png'))
+        await page.screenshot(path=str(OUT / 'hub-ads-blurb-mobile.png'), clip={'x': 0, 'y': 0, 'width': 412, 'height': 280})
+
+        # Top bar: tier + unlock + lang on one row
+        top = await page.evaluate("""() => {
+          const bar = document.querySelector('.topbar');
+          const tier = document.querySelector('#tier-chip');
+          const unl = document.querySelector('#btn-unlock');
+          const lang = document.querySelector('#btn-lang');
+          if (!bar || !tier || !lang) return { ok: false };
+          const br = bar.getBoundingClientRect();
+          const tr = tier.getBoundingClientRect();
+          const lr = lang.getBoundingClientRect();
+          const ur = unl ? unl.getBoundingClientRect() : null;
+          const sameRow = Math.abs(tr.top - lr.top) < 12 && (!ur || Math.abs(ur.top - lr.top) < 12);
+          return { ok: true, sameRow, barTop: br.top, tierT: tr.top, langT: lr.top, unlockT: ur && ur.top };
+        }""")
+        print('mobile topbar:', top)
+        if not top.get('ok') or not top.get('sameRow'):
+            errs.append(f'topbar-row:{top}')
+
+        # Ads blurb: no orphan — last line should not be a single short CJK word alone if multi-line
+        ads = await page.evaluate("""() => {
+          const el = document.querySelector('.ads-line');
+          if (!el) return null;
+          const nws = [...el.querySelectorAll('.nw')];
+          const range = document.createRange();
+          // Count visual lines via phrase tops
+          const tops = nws.map(n => Math.round(n.getBoundingClientRect().top));
+          const lines = new Set(tops).size;
+          const byLine = {};
+          nws.forEach(n => {
+            const t = Math.round(n.getBoundingClientRect().top);
+            (byLine[t] = byLine[t] || []).push(n.textContent);
+          });
+          const lastKey = Math.max(...tops);
+          const lastPhrases = byLine[lastKey] || [];
+          const lastText = lastPhrases.join('');
+          return { lines, lastText, phrases: nws.map(n => n.textContent), html: el.innerHTML };
+        }""")
+        print('mobile ads:', ads)
+        if not ads or '廣告' not in ''.join(ads.get('phrases') or []):
+            # zh page should have 廣告 in adsOn
+            errs.append(f'ads-missing:{ads}')
+        elif ads.get('lines', 1) > 1 and ads.get('lastText') in ('廣告', '有廣告'):
+            errs.append(f'ads-orphan:{ads}')
 
         # Touch: tap a preview card → muted loop plays and stays active (no hover on phones).
         card = page.locator('.card:has(.thumb.has-preview)').first
@@ -91,7 +137,7 @@ async def main():
         print('mobile tap preview:', playing)
         if playing.get('count') != 1 or playing.get('paused') is not False:
             errs.append(f'mobile-tap-preview:{playing}')
-        if playing.get('playbackRate') is None or abs(float(playing.get('playbackRate', 0)) - 0.5) > 0.05:
+        if playing.get('playbackRate') is None or abs(float(playing.get('playbackRate', 0)) - 0.35) > 0.05:
             errs.append(f'mobile-halfspeed:{playing}')
         await page.wait_for_timeout(800)
         await page.screenshot(path=str(OUT / 'hub-mobile-tap-preview.png'))

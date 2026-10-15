@@ -1,4 +1,7 @@
-"""Capture 3–6 s muted looping gameplay previews for hub cards (WebGL-safe frame grab).
+"""Capture muted looping gameplay previews for hub cards (WebGL-safe frame grab).
+
+Encoded at half content speed (ffmpeg setpts=2.0*PTS ≈ 2× duration) so motion
+feels leisurely; hub.js also applies playbackRate ≈ 0.35.
 
 usage:
   python tools/make_previews.py [--ids id1,id2] [--out DIR]
@@ -79,9 +82,12 @@ def encode_frames(frames_dir: Path, dest: Path, fps: int) -> bool:
     pattern = str(frames_dir / 'f%04d.png')
     for crf, br in ((30, '480k'), (33, '360k'), (36, '260k'), (38, '180k')):
         tmp = dest.with_suffix('.tmp.webm')
+        # setpts=2.0*PTS → half content speed (~2× duration) so hub previews feel leisurely
+        # even before playbackRate; hub.js also sets playbackRate ≈ 0.35.
         cmd = [
             'ffmpeg', '-y', '-framerate', str(fps), '-i', pattern,
-            '-an', '-c:v', 'libvpx-vp9', '-b:v', br, '-crf', str(crf),
+            '-an', '-filter:v', 'setpts=2.0*PTS',
+            '-c:v', 'libvpx-vp9', '-b:v', br, '-crf', str(crf),
             '-row-mt', '1', '-speed', '2', '-pix_fmt', 'yuv420p',
             str(tmp),
         ]
@@ -89,11 +95,11 @@ def encode_frames(frames_dir: Path, dest: Path, fps: int) -> bool:
         if r.returncode != 0:
             print('ffmpeg fail', r.stderr[-400:], file=sys.stderr); continue
         sz = tmp.stat().st_size
-        if 150 * 1024 <= sz <= 520 * 1024 or crf == 38:
+        if 150 * 1024 <= sz <= 750 * 1024 or crf == 38:
             tmp.replace(dest)
             print(f'  encode {dest.name} {sz/1024:.1f} KB crf={crf}')
             return True
-        if sz > 520 * 1024:
+        if sz > 750 * 1024:
             tmp.unlink(missing_ok=True); continue
         if sz >= 100 * 1024:
             tmp.replace(dest)

@@ -163,7 +163,7 @@ function render() {
   const tier = ent ? ent.getTier() : 'free';
   $('tier-name').textContent = tierName(tier); $('tier-chip').dataset.tier = tier;
   $('btn-unlock').classList.toggle('hidden', tier === 'gold');
-  $('ads-line').textContent = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
+  $('ads-line').innerHTML = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
   if (!games.length || !ent) return;
   const list = $('list'); stopActivePreview(); list.innerHTML = '';
   const O = L() === 'zh' ? 'en' : 'zh';
@@ -221,7 +221,7 @@ function wirePreview(card) {
   const play = () => {
     if (reduceMotion() || playing) return;
     playing = true; fig.classList.add('playing');
-    try { vid.playbackRate = 0.5; } catch { /* older browsers */ }
+    try { vid.playbackRate = 0.35; } catch { /* older browsers */ }
     const p = vid.play(); if (p && p.catch) p.catch(() => { fig.classList.remove('playing'); playing = false; });
   };
   const stop = () => {
