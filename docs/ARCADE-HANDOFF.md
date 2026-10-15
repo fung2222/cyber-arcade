@@ -3,6 +3,7 @@
 ## Hub polish (2026-10-15)
 Commercial select-screen pass:
 - Card hover/focus-within: lift + stronger neon border; optional muted looping `<video>` preview (`games.json` `preview`) with poster = thumb; pause/reset on leave; `prefers-reduced-motion` keeps poster.
+- **Touch / coarse pointer:** tap/press a card (`pointerdown`) plays its muted loop and keeps that card as the active preview; tapping another card switches. Desktop hover/focus behaviour unchanged. On coarse pointers, the card nearest the viewport center can also become active via `IntersectionObserver` (still no video when `prefers-reduced-motion`).
 - PLAY/TRY: neon flash + brief scale + SynthAudio `confirm`/`whoosh` (lazy audio unlock on first gesture; soft chill BGM after unlock), then navigate.
 - Keyboard: cards are `tabIndex=0` with `:focus-visible` / `:focus-within`.
 - `ent.launchParams` appends same-origin `ret=` (encoded hub URL) so games can return when `history.back` is unreliable.

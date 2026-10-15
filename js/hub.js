@@ -163,7 +163,7 @@ function render() {
   $('btn-unlock').classList.toggle('hidden', tier === 'gold');
   $('ads-line').textContent = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
   if (!games.length || !ent) return;
-  const list = $('list'); list.innerHTML = '';
+  const list = $('list'); stopActivePreview(); list.innerHTML = '';
   const O = L() === 'zh' ? 'en' : 'zh';
   games.forEach((g, i) => {
     const access = ent.hasAccess(g.id), paid = g.tier !== 'free';
@@ -188,12 +188,30 @@ function render() {
     list.appendChild(el);
     wirePreview(el);
   });
+  setupTouchCenterPreview(list);
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => withConfirmThen(() => onPlay(b.dataset.play), b); });
   list.querySelectorAll('[data-unlock]').forEach((b) => { b.onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); }; });
   devMeta();
 }
 
-// hover / focus-within: play muted looping preview; leave → pause + reset. Respects prefers-reduced-motion.
+// Preview playback: desktop hover/focus-within; touch/coarse tap keeps one "active" card playing.
+// Optional: on coarse pointers, the card nearest viewport center also becomes active (IntersectionObserver).
+// Respects prefers-reduced-motion (no video autoplay).
+const coarsePointer = () => typeof matchMedia === 'function'
+  && (matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches);
+let activePreviewCard = null;
+let stickyPreview = false; // set by touch/coarse activate; cleared on mouse leave or re-render
+const previewCtl = new WeakMap(); // card → { play, stop, activate }
+let previewIO = null;
+
+function stopActivePreview() {
+  if (!activePreviewCard) return;
+  const ctl = previewCtl.get(activePreviewCard);
+  activePreviewCard = null;
+  stickyPreview = false;
+  if (ctl) ctl.stop();
+}
+
 function wirePreview(card) {
   const fig = card.querySelector('.thumb.has-preview'); if (!fig) return;
   const vid = fig.querySelector('video'); if (!vid) return;
@@ -208,10 +226,73 @@ function wirePreview(card) {
     playing = false; fig.classList.remove('playing');
     try { vid.pause(); vid.currentTime = 0; } catch { /* */ }
   };
-  card.addEventListener('pointerenter', play);
-  card.addEventListener('pointerleave', stop);
+  const activate = () => {
+    if (reduceMotion()) return;
+    if (activePreviewCard && activePreviewCard !== card) {
+      const prev = previewCtl.get(activePreviewCard);
+      if (prev) prev.stop();
+    }
+    activePreviewCard = card;
+    stickyPreview = true;
+    play();
+  };
+  previewCtl.set(card, { play, stop, activate });
+
+  // Desktop / fine pointer: hover plays, leave pauses (unchanged behaviour).
+  card.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'touch') return;
+    play();
+  });
+  card.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'touch') return;
+    // Mouse leave always ends hover preview; clears sticky if this was the active card.
+    if (activePreviewCard === card) { activePreviewCard = null; stickyPreview = false; }
+    stop();
+  });
   card.addEventListener('focusin', play);
-  card.addEventListener('focusout', (e) => { if (!card.contains(e.relatedTarget)) stop(); });
+  card.addEventListener('focusout', (e) => {
+    if (card.contains(e.relatedTarget)) return;
+    // Sticky touch/coarse preview keeps playing after blur (no hover to re-trigger).
+    if (activePreviewCard === card && stickyPreview) return;
+    stop();
+  });
+
+  // Phones / coarse pointer: tap/press sets this card as the active preview.
+  card.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'touch' && !coarsePointer()) return;
+    activate();
+  }, { passive: true });
+}
+
+function setupTouchCenterPreview(list) {
+  if (previewIO) { try { previewIO.disconnect(); } catch { /* */ } previewIO = null; }
+  if (!list || reduceMotion() || !coarsePointer() || typeof IntersectionObserver !== 'function') return;
+  const cards = [...list.querySelectorAll('.card')].filter((c) => previewCtl.has(c));
+  if (!cards.length) return;
+  const pickCenter = () => {
+    const mid = window.innerHeight / 2;
+    const bandTop = window.innerHeight * 0.18;
+    const bandBot = window.innerHeight * 0.82;
+    let best = null, bestDist = Infinity;
+    for (const card of cards) {
+      if (!card.isConnected) continue;
+      const r = card.getBoundingClientRect();
+      const cy = (r.top + r.bottom) / 2;
+      if (cy < bandTop || cy > bandBot) continue;
+      // Require a meaningful visible slice so off-screen cards stay quiet.
+      const visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      if (visible < r.height * 0.45) continue;
+      const dist = Math.abs(cy - mid);
+      if (dist < bestDist) { bestDist = dist; best = card; }
+    }
+    if (!best) return;
+    const ctl = previewCtl.get(best);
+    if (ctl) ctl.activate();
+  };
+  previewIO = new IntersectionObserver(() => { pickCenter(); }, {
+    threshold: [0.4, 0.55, 0.7, 0.85],
+  });
+  cards.forEach((c) => previewIO.observe(c));
 }
 
 // ---------------------------------------------------------------- hidden DEV panel (stub only)

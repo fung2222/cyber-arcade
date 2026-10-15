@@ -40,6 +40,58 @@ async def main():
         await page.goto(HUB + sep + 'lang=en', wait_until='networkidle', timeout=90000)
         await page.wait_for_selector('.card', timeout=30000)
         await page.screenshot(path=str(OUT / 'hub-mobile.png'), full_page=True)
+
+        # Touch: tap a preview card → muted loop plays and stays active (no hover on phones).
+        card = page.locator('.card:has(.thumb.has-preview)').first
+        await card.scroll_into_view_if_needed()
+        box = await card.bounding_box()
+        assert box, 'mobile preview card has no box'
+        # Tap the thumbnail area (not PLAY) so we stay on the hub.
+        await page.touchscreen.tap(box['x'] + box['width'] * 0.5, box['y'] + 40)
+        await page.wait_for_function(
+            """() => {
+              const fig = document.querySelector('.thumb.has-preview.playing');
+              if (!fig) return false;
+              const v = fig.querySelector('video');
+              return !!(v && !v.paused && v.readyState >= 2);
+            }""",
+            timeout=15000,
+        )
+        playing = await page.evaluate(
+            """() => {
+              const figs = [...document.querySelectorAll('.thumb.has-preview.playing')];
+              const v = figs[0] && figs[0].querySelector('video');
+              return {
+                count: figs.length,
+                paused: v ? v.paused : null,
+                currentTime: v ? v.currentTime : null,
+                coarse: matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches,
+              };
+            }"""
+        )
+        print('mobile tap preview:', playing)
+        if playing.get('count') != 1 or playing.get('paused') is not False:
+            errs.append(f'mobile-tap-preview:{playing}')
+        await page.wait_for_timeout(800)
+        await page.screenshot(path=str(OUT / 'hub-mobile-tap-preview.png'))
+
+        # Switch: tap a second preview card → only that one plays.
+        cards = page.locator('.card:has(.thumb.has-preview)')
+        if await cards.count() >= 2:
+            c2 = cards.nth(1)
+            await c2.scroll_into_view_if_needed()
+            b2 = await c2.bounding_box()
+            await page.touchscreen.tap(b2['x'] + b2['width'] * 0.5, b2['y'] + 40)
+            await page.wait_for_timeout(600)
+            switched = await page.evaluate(
+                """() => {
+                  const figs = [...document.querySelectorAll('.thumb.has-preview.playing')];
+                  return figs.length;
+                }"""
+            )
+            print('mobile switch active count:', switched)
+            if switched != 1:
+                errs.append(f'mobile-switch-preview:count={switched}')
         await ctx.close()
 
         for gid, name in (('neon-stick-duel', 'duel-home-menu.png'), ('cyber-snake', 'snake-home-menu.png')):
