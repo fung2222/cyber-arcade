@@ -3,7 +3,7 @@
 ## Hub polish (2026-10-15)
 Commercial select-screen pass:
 - Card hover/focus-within: lift + stronger neon border; optional muted looping `<video>` preview (`games.json` `preview`) with poster = thumb; pause/reset on leave; `prefers-reduced-motion` keeps poster.
-- **Preview speed:** webms are encoded at half content speed (`setpts=2.0*PTS` in `tools/make_previews.py`); player also sets `playbackRate = 0.35` on every play path (hover / focus / touch sticky / IO). Combined ≈ leisurely; still muted + loop.
+- **Preview speed:** capture @ 30fps (~7s gameplay), mild content stretch (`setpts=1.4*PTS,fps=30` → ~0.7× pace, **constant 30fps**). Hub always plays at `playbackRate = 1` — never rate-down in the browser (that caused judder). Still muted + loop.
 - **Top bar:** tier chip + unlock + language toggle share one fixed top row (right-aligned); ads blurb stays under the tagline with nowrap phrase groups so trailing words (e.g. 「廣告」) never orphan alone.
 - **Touch / coarse pointer:** tap/press a card (`pointerdown`) plays its muted loop and keeps that card as the active preview; tapping another card switches. Desktop hover/focus behaviour unchanged. On coarse pointers, the card nearest the viewport center can also become active via `IntersectionObserver` (still no video when `prefers-reduced-motion`).
 - **Typography:** hub tagline uses phrase `<span class="nw">` groups (`data-i18n-html`) so zh/EN wrap as whole lines/phrases (not mid-「賽博街機」/mid-word); card titles/genres get soft `<wbr>` after punctuation; CSS `text-wrap: pretty` / balanced headers.

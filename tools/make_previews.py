@@ -1,7 +1,10 @@
 """Capture muted looping gameplay previews for hub cards (WebGL-safe frame grab).
 
-Encoded at half content speed (ffmpeg setpts=2.0*PTS ≈ 2× duration) so motion
-feels leisurely; hub.js also applies playbackRate ≈ 0.35.
+Hub polish rules:
+  - Encode smooth 30fps VP9/webm loops (~6–10 s). Playback is always at rate 1.0 —
+    never use video.playbackRate < 1 (browser rate-down causes judder).
+  - Mild leisurely content (~0.7×) via setpts + fps=30 so every output frame is real;
+    do NOT use setpts alone without an fps filter (that drops effective fps).
 
 usage:
   python tools/make_previews.py [--ids id1,id2] [--out DIR]
@@ -15,17 +18,21 @@ OUT = ROOT / 'assets' / 'previews'
 CHROME = os.environ.get('CHROME', '/usr/bin/google-chrome')
 VENV_PW = os.environ.get('PW_PYTHON', '/workspace/.venv-pw/bin/python')
 
-# (id, url, boot_ms before frames, n_frames, fps)
+# Capture FPS and mild content stretch (1.0 = realtime; 1.4 ≈ 0.71× pace).
+CAPTURE_FPS = 30
+CONTENT_STRETCH = 1.4  # setpts factor; paired with fps=CAPTURE_FPS on encode
+
+# (id, url, boot_ms before frames, duration_s of capture)
 GAMES = [
-    ('cyber-snake', 'https://fung2222.github.io/cyber-snake/?demo=1&glow=low&lang=en', 10000, 96, 20),
-    ('data-fuse', 'https://fung2222.github.io/data-fuse/?demo=1&glow=low&lang=en', 9000, 96, 20),
-    ('neon-recall', 'https://fung2222.github.io/neon-recall/?demo=1&glow=low&lang=en', 10000, 96, 20),
-    ('cyber-ninja', 'https://fung2222.github.io/cyber-ninja/?demo=1&glow=low&lang=en', 9000, 96, 20),
-    ('cyber-mini-pack', 'https://fung2222.github.io/cyber-mini-pack/?demo=1&glow=low&lang=en', 10000, 96, 20),
-    ('neon-stick-duel', 'https://fung2222.github.io/neon-stick-duel/?demo=1&glow=low&lang=en', 11000, 100, 20),
-    ('neon-stick-run', 'https://fung2222.github.io/neon-stick-run/?demo=1&glow=low&lang=en', 10000, 96, 20),
-    ('cyber-board', 'https://fung2222.github.io/cyber-board/?demo=1&glow=low&lang=en', 10000, 96, 20),
-    ('cyber-tower', 'https://fung2222.github.io/cyber-tower/?demo=1&glow=low&lang=en', 12000, 100, 20),
+    ('cyber-snake', 'https://fung2222.github.io/cyber-snake/?demo=1&glow=low&lang=en', 10000, 7.0),
+    ('data-fuse', 'https://fung2222.github.io/data-fuse/?demo=1&glow=low&lang=en', 9000, 7.0),
+    ('neon-recall', 'https://fung2222.github.io/neon-recall/?demo=1&glow=low&lang=en', 10000, 7.0),
+    ('cyber-ninja', 'https://fung2222.github.io/cyber-ninja/?demo=1&glow=low&lang=en', 9000, 7.0),
+    ('cyber-mini-pack', 'https://fung2222.github.io/cyber-mini-pack/?demo=1&glow=low&lang=en', 10000, 7.0),
+    ('neon-stick-duel', 'https://fung2222.github.io/neon-stick-duel/?demo=1&glow=low&lang=en', 11000, 7.5),
+    ('neon-stick-run', 'https://fung2222.github.io/neon-stick-run/?demo=1&glow=low&lang=en', 10000, 7.0),
+    ('cyber-board', 'https://fung2222.github.io/cyber-board/?demo=1&glow=low&lang=en', 10000, 7.0),
+    ('cyber-tower', 'https://fung2222.github.io/cyber-tower/?demo=1&glow=low&lang=en', 12000, 7.5),
 ]
 
 CAPTURE = r'''
@@ -60,7 +67,6 @@ with sync_playwright() as p:
         except Exception:
             pass
     page.wait_for_timeout(boot_ms)
-    # reject pure-black / boot-text frames: require mean luma > threshold via canvas sample when possible
     ok = page.evaluate("""() => {
       const ld = document.getElementById('loading');
       const loadingGone = !ld || ld.classList.contains('done') || ld.classList.contains('hidden');
@@ -70,23 +76,28 @@ with sync_playwright() as p:
     if not ok:
         print('NOT_READY', file=sys.stderr)
     interval = 1.0 / fps
+    t0 = time.perf_counter()
     for i in range(n_frames):
         page.screenshot(path=str(frames_dir / f'f{i:04d}.png'), type='png')
-        time.sleep(interval)
+        target = t0 + (i + 1) * interval
+        delay = target - time.perf_counter()
+        if delay > 0:
+            time.sleep(delay)
     browser.close()
 print('frames', n_frames)
 '''
 
-def encode_frames(frames_dir: Path, dest: Path, fps: int) -> bool:
+def encode_frames(frames_dir: Path, dest: Path, fps: int, stretch: float) -> bool:
+    """Encode PNG sequence → smooth VP9 webm at `fps`, mild content stretch, rate-1 playback."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     pattern = str(frames_dir / 'f%04d.png')
-    for crf, br in ((30, '480k'), (33, '360k'), (36, '260k'), (38, '180k')):
+    # setpts stretches content; fps= keeps constant high frame rate (no judder at playbackRate 1).
+    vf = f'setpts={stretch}*PTS,fps={fps}' if stretch and abs(stretch - 1.0) > 0.01 else f'fps={fps}'
+    for crf, br in ((32, '420k'), (34, '320k'), (36, '240k'), (38, '180k')):
         tmp = dest.with_suffix('.tmp.webm')
-        # setpts=2.0*PTS → half content speed (~2× duration) so hub previews feel leisurely
-        # even before playbackRate; hub.js also sets playbackRate ≈ 0.35.
         cmd = [
             'ffmpeg', '-y', '-framerate', str(fps), '-i', pattern,
-            '-an', '-filter:v', 'setpts=2.0*PTS',
+            '-an', '-filter:v', vf,
             '-c:v', 'libvpx-vp9', '-b:v', br, '-crf', str(crf),
             '-row-mt', '1', '-speed', '2', '-pix_fmt', 'yuv420p',
             str(tmp),
@@ -95,15 +106,15 @@ def encode_frames(frames_dir: Path, dest: Path, fps: int) -> bool:
         if r.returncode != 0:
             print('ffmpeg fail', r.stderr[-400:], file=sys.stderr); continue
         sz = tmp.stat().st_size
-        if 150 * 1024 <= sz <= 750 * 1024 or crf == 38:
+        if 120 * 1024 <= sz <= 700 * 1024 or crf == 38:
             tmp.replace(dest)
-            print(f'  encode {dest.name} {sz/1024:.1f} KB crf={crf}')
+            print(f'  encode {dest.name} {sz/1024:.1f} KB crf={crf} vf={vf}')
             return True
-        if sz > 750 * 1024:
+        if sz > 700 * 1024:
             tmp.unlink(missing_ok=True); continue
-        if sz >= 100 * 1024:
+        if sz >= 80 * 1024:
             tmp.replace(dest)
-            print(f'  encode {dest.name} {sz/1024:.1f} KB crf={crf} (small ok)')
+            print(f'  encode {dest.name} {sz/1024:.1f} KB crf={crf} vf={vf} (small ok)')
             return True
         tmp.unlink(missing_ok=True)
     return False
@@ -112,32 +123,38 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--ids', default='')
     ap.add_argument('--out', default=str(OUT))
+    ap.add_argument('--fps', type=int, default=CAPTURE_FPS)
+    ap.add_argument('--stretch', type=float, default=CONTENT_STRETCH,
+                    help='setpts factor (>1 = slower content); always paired with fps filter')
     args = ap.parse_args()
     want = {x.strip() for x in args.ids.split(',') if x.strip()} or None
     out_dir = Path(args.out); out_dir.mkdir(parents=True, exist_ok=True)
+    fps = args.fps
     ok, skip = [], []
-    for gid, url, boot_ms, n_frames, fps in GAMES:
+    for gid, url, boot_ms, dur_s in GAMES:
         if want and gid not in want: continue
-        print(f'== {gid} ==', flush=True)
+        n_frames = max(60, int(round(dur_s * fps)))
+        print(f'== {gid} == capture {n_frames}f @ {fps}fps (~{dur_s}s) stretch={args.stretch}', flush=True)
         with tempfile.TemporaryDirectory(prefix=f'prev-{gid}-') as td:
             frames = Path(td) / 'frames'
+            # boot + capture + margin
+            timeout = max(480, int(boot_ms / 1000) + n_frames // fps + 120)
             r = subprocess.run(
                 [VENV_PW, '-c', CAPTURE, url, str(frames), str(boot_ms), str(n_frames), str(fps), CHROME],
-                capture_output=True, text=True, timeout=300,
+                capture_output=True, text=True, timeout=timeout,
             )
             sys.stdout.write(r.stdout)
-            if r.stderr: sys.stderr.write(r.stderr[-600:])
+            if r.stderr: sys.stderr.write(r.stderr[-800:])
             n = len(list(frames.glob('f*.png'))) if frames.exists() else 0
-            if r.returncode != 0 or n < 30:
+            if r.returncode != 0 or n < 45:
                 print('SKIP', gid, 'rc', r.returncode, 'frames', n, flush=True)
                 skip.append(gid); continue
-            # sanity: mid frame not tiny
             mid = frames / f'f{n//2:04d}.png'
             if mid.exists() and mid.stat().st_size < 8000:
                 print('SKIP', gid, 'mid frame too small (likely blank)', flush=True)
                 skip.append(gid); continue
             dest = out_dir / f'{gid}.webm'
-            if encode_frames(frames, dest, fps):
+            if encode_frames(frames, dest, fps, args.stretch):
                 ok.append(gid)
             else:
                 skip.append(gid)

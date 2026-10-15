@@ -41,10 +41,10 @@ async def main():
             }"""
         )
         print('desktop hover preview:', rate)
-        if not rate or rate.get('paused') is not False or abs(float(rate.get('rate', 0)) - 0.35) > 0.05:
+        if not rate or rate.get('paused') is not False or abs(float(rate.get('rate', 1)) - 1.0) > 0.01:
             errs.append(f'desktop-halfspeed:{rate}')
         await page.screenshot(path=str(OUT / 'hub-hover-preview.png'))
-        await page.screenshot(path=str(OUT / 'hub-preview-halfspeed.png'))
+        await page.screenshot(path=str(OUT / 'hub-preview-smooth.png'))
         await page.keyboard.press('Tab')
         await ctx.close()
 
@@ -137,7 +137,7 @@ async def main():
         print('mobile tap preview:', playing)
         if playing.get('count') != 1 or playing.get('paused') is not False:
             errs.append(f'mobile-tap-preview:{playing}')
-        if playing.get('playbackRate') is None or abs(float(playing.get('playbackRate', 0)) - 0.35) > 0.05:
+        if playing.get('playbackRate') is None or abs(float(playing.get('playbackRate', 1)) - 1.0) > 0.01:
             errs.append(f'mobile-halfspeed:{playing}')
         await page.wait_for_timeout(800)
         await page.screenshot(path=str(OUT / 'hub-mobile-tap-preview.png'))

@@ -221,7 +221,7 @@ function wirePreview(card) {
   const play = () => {
     if (reduceMotion() || playing) return;
     playing = true; fig.classList.add('playing');
-    try { vid.playbackRate = 0.35; } catch { /* older browsers */ }
+    try { vid.playbackRate = 1; } catch { /* older browsers */ }
     const p = vid.play(); if (p && p.catch) p.catch(() => { fig.classList.remove('playing'); playing = false; });
   };
   const stop = () => {
