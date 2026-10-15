@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-03",
+  "updated": "2026-10-15",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -25,7 +25,8 @@
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
-      "tier": "free"
+      "tier": "free",
+      "preview": "assets/previews/cyber-snake.webm"
     },
     {
       "id": "data-fuse",
@@ -50,7 +51,8 @@
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
-      "tier": "free"
+      "tier": "free",
+      "preview": "assets/previews/data-fuse.webm"
     },
     {
       "id": "neon-recall",
@@ -75,7 +77,8 @@
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
-      "tier": "free"
+      "tier": "free",
+      "preview": "assets/previews/neon-recall.webm"
     },
     {
       "id": "cyber-ninja",
@@ -107,7 +110,8 @@
           "zh": "每日 3 局；日後 App 版每局玩到第 5 波（第一隻巨獸）為止",
           "en": "3 runs per day; app build will cap each run at wave 5 (first boss)"
         }
-      }
+      },
+      "preview": "assets/previews/cyber-ninja.webm"
     },
     {
       "id": "cyber-mini-pack",
@@ -132,7 +136,8 @@
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
-      "tier": "free"
+      "tier": "free",
+      "preview": "assets/previews/cyber-mini-pack.webm"
     },
     {
       "id": "neon-stick-duel",
@@ -172,7 +177,8 @@
           "zh": "每日 3 局；四個職業都玩得，階梯模式只開放第 1–3 戰，無盡塔只開放第 1–3 層，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
           "en": "3 runs per day; all four classes, ladder fights 1–3 and endless floors 1–3 only, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
-      }
+      },
+      "preview": "assets/previews/neon-stick-duel.webm"
     },
     {
       "id": "neon-stick-run",
@@ -212,7 +218,8 @@
           "zh": "每日 3 局；只開放第 1–3 關，無盡模式跑到 800 米，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
           "en": "3 runs per day; stages 1–3 only and endless up to 800 m, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
-      }
+      },
+      "preview": "assets/previews/neon-stick-run.webm"
     },
     {
       "id": "cyber-board",
@@ -242,7 +249,8 @@
           "zh": "每日 3 局；日後 App 版試玩只開放 AI 第 1–2 級同無盡塔第 1–3 層",
           "en": "3 runs per day; app build will limit trials to AI levels 1–2 and tower floors 1–3"
         }
-      }
+      },
+      "preview": "assets/previews/cyber-board.webm"
     },
     {
       "id": "cyber-tower",
@@ -282,7 +290,8 @@
           "zh": "每日 3 局；戰役只開放地圖 1–2，無盡模式玩到第 10 波，之後彈解鎖提示返大廳（遊戲已實作 trial=1）",
           "en": "3 runs per day; campaign maps 1–2 only and endless up to wave 10, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
-      }
+      },
+      "preview": "assets/previews/cyber-tower.webm"
     }
   ],
   "retired": [

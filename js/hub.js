@@ -1,5 +1,6 @@
 // CYBER ARCADE hub — game list with tier badges, trials, store/unlock sheet, restore, hidden DEV panel.
 import { i18n, t } from '../vendor/cyber-kit/core/i18n.js';
+import { SynthAudio } from '../vendor/cyber-kit/audio/synth.js';
 import './strings.js';
 import { createEntitlements, RANK } from './entitlements.js';
 import { createWebStubBackend } from './billing/web-stub.js';
@@ -11,6 +12,32 @@ const NO_NAV = params.get('nonav') === '1';          // tests: record launches i
 const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
+
+// ---------------------------------------------------------------- audio (SynthAudio — lazy on first user gesture)
+const reduceMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hubAudio = new SynthAudio({ music: 'chill', musicTrimDb: -4, sfxTrimDb: -2 });
+let audioUnlocked = false, bgmStarted = false;
+function unlockAudio() {
+  if (audioUnlocked) { hubAudio.init(); return; }
+  audioUnlocked = true;
+  hubAudio.init();
+  if (!reduceMotion() && !bgmStarted && hubAudio.ready) {
+    try { hubAudio.startMusic(); bgmStarted = true; } catch { /* autoplay / ctx */ }
+  }
+}
+function withConfirmThen(fn, btn) {
+  unlockAudio();
+  try { hubAudio.confirm(); hubAudio.whoosh(0.04); } catch { /* audio optional */ }
+  if (btn) {
+    btn.classList.remove('neon-flash'); void btn.offsetWidth; btn.classList.add('neon-flash');
+  }
+  // brief neon flash, never block forever if audio fails
+  const go = () => { try { fn(); } catch (e) { console.warn(e); } };
+  setTimeout(go, reduceMotion() ? 0 : 280);
+}
+['pointerdown', 'keydown', 'touchstart'].forEach((ev) => {
+  document.addEventListener(ev, () => unlockAudio(), { once: true, passive: true });
+});
 
 // ---------------------------------------------------------------- modal helpers
 function openSheet(html, { small = false, layer = 'modal' } = {}) {
@@ -112,8 +139,14 @@ function openTrial(g) {
     ${rule ? `<p class="fine" style="text-align:center">${esc(t('trialRule', { rule }))}</p>` : ''}
     <div class="row"><button class="ghost" id="tr-unlock">${esc(t('unlock'))}</button><button id="tr-start">${esc(t('startTrial'))}</button></div>`, { small: true });
   $('modal').dataset.kind = 'trial';
-  s.querySelector('#tr-start').onclick = () => { const left = ent.consumeTrial(g.id); closeSheet(); render(); if (left >= 0) launch(g, { trial: true, trialLeft: left }); };
-  s.querySelector('#tr-unlock').onclick = () => openStore();
+  s.querySelector('#tr-start').onclick = (ev) => {
+    const btn = ev.currentTarget;
+    withConfirmThen(() => {
+      const left = ent.consumeTrial(g.id); closeSheet(); render();
+      if (left >= 0) launch(g, { trial: true, trialLeft: left });
+    }, btn);
+  };
+  s.querySelector('#tr-unlock').onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); };
 }
 function onPlay(id) {
   const g = games.find((x) => x.id === id); if (!g) return;
@@ -138,24 +171,47 @@ function render() {
     const state = !paid ? '' : access ? `<span class="state open">✓ ${esc(t('unlocked'))}</span>` : `<span class="state lock">🔒 ${esc(t('locked'))}</span>`;
     const trial = paid && !access ? `<div class="trial${left ? '' : ' none'}">${esc(left ? t('trialLeft', { n: left, max }) : t('trialNone'))}</div>` : '';
     const alt = g.thumbAlt?.[L()] || t('thumbAlt', { name: g.name[L()] });
-    // thumbnail with the tier badge, lock state and trial counter overlaid (always readable on top of the image)
-    const thumb = `<figure class="thumb">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}
+    const preview = g.preview ? `<video muted loop playsinline preload="none" poster="${esc(g.thumb || '')}" aria-hidden="true"><source src="${esc(g.preview)}" type="video/webm">${g.previewMp4 ? `<source src="${esc(g.previewMp4)}" type="video/mp4">` : ''}</video>` : '';
+    const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
       <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span></div>
       ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}</figure>`;
     const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const el = document.createElement('article');
     el.className = `card t-${g.tier}${access ? '' : ' locked'}`; el.dataset.game = g.id;
+    el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
     el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
       <div class="name">${esc(g.name[L()])}</div><div class="alt">${esc(g.name[O])}</div>
       <div class="genre">${esc(g.genre?.[L()])}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${esc(g.stage[L()])}</div>` : ''}
       <div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
     list.appendChild(el);
+    wirePreview(el);
   });
-  list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => onPlay(b.dataset.play); });
-  list.querySelectorAll('[data-unlock]').forEach((b) => { b.onclick = () => openStore(); });
+  list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => withConfirmThen(() => onPlay(b.dataset.play), b); });
+  list.querySelectorAll('[data-unlock]').forEach((b) => { b.onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); }; });
   devMeta();
+}
+
+// hover / focus-within: play muted looping preview; leave → pause + reset. Respects prefers-reduced-motion.
+function wirePreview(card) {
+  const fig = card.querySelector('.thumb.has-preview'); if (!fig) return;
+  const vid = fig.querySelector('video'); if (!vid) return;
+  let playing = false;
+  const play = () => {
+    if (reduceMotion() || playing) return;
+    playing = true; fig.classList.add('playing');
+    const p = vid.play(); if (p && p.catch) p.catch(() => { fig.classList.remove('playing'); playing = false; });
+  };
+  const stop = () => {
+    if (!playing && !fig.classList.contains('playing')) return;
+    playing = false; fig.classList.remove('playing');
+    try { vid.pause(); vid.currentTime = 0; } catch { /* */ }
+  };
+  card.addEventListener('pointerenter', play);
+  card.addEventListener('pointerleave', stop);
+  card.addEventListener('focusin', play);
+  card.addEventListener('focusout', (e) => { if (!card.contains(e.relatedTarget)) stop(); });
 }
 
 // ---------------------------------------------------------------- hidden DEV panel (stub only)

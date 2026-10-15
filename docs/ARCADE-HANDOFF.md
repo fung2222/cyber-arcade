@@ -1,5 +1,14 @@
 # CYBER ARCADE — Handoff
 
+## Hub polish (2026-10-15)
+Commercial select-screen pass:
+- Card hover/focus-within: lift + stronger neon border; optional muted looping `<video>` preview (`games.json` `preview`) with poster = thumb; pause/reset on leave; `prefers-reduced-motion` keeps poster.
+- PLAY/TRY: neon flash + brief scale + SynthAudio `confirm`/`whoosh` (lazy audio unlock on first gesture; soft chill BGM after unlock), then navigate.
+- Keyboard: cards are `tabIndex=0` with `:focus-visible` / `:focus-within`.
+- `ent.launchParams` appends same-origin `ret=` (encoded hub URL) so games can return when `history.back` is unreliable.
+- cyber-kit **v0.3.1**: `platform/hub.js` (`readHub` / `returnToHub` / `shouldShowArcadeMenu`) + `kit.arcadeMenu` i18n. Every game home shows 「選單 · 其他遊戲」 / ARCADE MENU when launched with `hub=1` or `ret` (calls `returnToHub` **without** `openStore`; trial unlock keeps its own path).
+- Preview clips: `tools/make_previews.py` → `assets/previews/<id>.webm`.
+
 Owner: fung2222 (Roy). Updated 2026-10-02. Series of cyberpunk 3D mini-games rebuilt from the old SONO site, one repo per game, all on `cyber-kit`, aiming at Google Play.
 
 ## 1. Goal & style guide

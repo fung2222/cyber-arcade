@@ -80,7 +80,7 @@ test('purchase silver → upgrade → gold; cancel; not-available', async () => 
   assert.equal(g.tier, 'gold');
   assert.equal(ent.hasAccess('cyber-board'), true);
   assert.deepEqual(ent.available(), []);
-  assert.match(ent.launchParams('cyber-board'), /^hub=1&tier=gold&ads=0$/);
+  assert.match(ent.launchParams('cyber-board'), /^hub=1&tier=gold&ads=0(&ret=.+)?$/);
 });
 
 test('restore after cache wipe (simulated reinstall)', async () => {

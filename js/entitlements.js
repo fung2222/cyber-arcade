@@ -110,10 +110,15 @@ export function createEntitlements({ games = [], backend, storage, now = () => n
       catch (e) { return { ok: false, tier: tier(), products: [...products], error: String(e && e.message || e) }; }
     },
     onChange(fn) { subs.add(fn); return () => subs.delete(fn); },
-    /** URL params for launching a game from the hub */
+    /** URL params for launching a game from the hub. Includes ret= (encoded hub URL) so games can return when history.back is unreliable. */
     launchParams(id, { trial = false, trialLeft = 0 } = {}) {
       const p = new URLSearchParams({ hub: '1', tier: tier(), ads: api.adsEnabled() ? '1' : '0' });
       if (trial) { p.set('trial', '1'); p.set('trialLeft', String(trialLeft)); }
+      try {
+        // same-origin hub URL only (pathname+search+hash stripped of store flag noise)
+        const u = new URL(location.href); u.hash = ''; u.searchParams.delete('store'); u.searchParams.delete('dev');
+        p.set('ret', u.href);
+      } catch { /* no location (tests) */ }
       return p.toString();
     },
     // ---- DEV helpers (used by the hidden dev panel and tests; harmless in production) ----

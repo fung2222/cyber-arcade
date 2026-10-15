@@ -1,4 +1,4 @@
-// CYBER ARCADE hub strings {key: [zh-HK, en]} — cyber-kit v0.2.1 i18n (vendor/cyber-kit/core/i18n.js).
+// CYBER ARCADE hub strings {key: [zh-HK, en]} — cyber-kit v0.3.1 i18n (hub + audio vendored) (vendor/cyber-kit/core/i18n.js).
 import { i18n } from '../vendor/cyber-kit/core/i18n.js';
 i18n.add({
   'doc.title': ['CYBER ARCADE 賽博街機', 'CYBER ARCADE'],
