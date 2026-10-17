@@ -203,7 +203,7 @@
         "zh": "網頁版 v1.0 完成 · 待 Roy 試玩 · 未包裝 Android",
         "en": "web v1.0 done · awaiting Roy's review · not packaged for Android"
       },
-      "kit": "v0.2.1",
+      "kit": "v0.3.15",
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
@@ -240,8 +240,10 @@
         "en": "CYBER BOARD gameplay: a neon 3D chess match in progress"
       },
       "status": "done",
-      "kit": "v0.2.1",
+      "kit": "v0.3.15",
       "play": "not-submitted",
+      "i18n": true,
+      "endless": true,
       "tier": "gold",
       "trial": {
         "runsPerDay": 3,
@@ -275,7 +277,7 @@
         "zh": "網頁版 v1.1 完成 · 待 Roy 試玩 · 未包裝 Android",
         "en": "web v1.1 done · awaiting Roy's review · not packaged for Android"
       },
-      "kit": "v0.2.1",
+      "kit": "v0.3.15",
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
