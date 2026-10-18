@@ -36,6 +36,7 @@ i18n.add({
   devBackend: ['付款後端：{id}', 'Billing backend: {id}'],
   launching: ['開緊「{name}」…', 'Launching "{name}"…'],
   demo: ['示範', 'DEMO'], thumbAlt: ['「{name}」遊戲畫面', '{name} gameplay screenshot'], stage: ['進度', 'STAGE'],
+  'status.wip': ['製作中', 'IN PROGRESS'],
   trialOver: ['「{name}」試玩到此為止。解鎖{tier}就可以玩晒全部地圖同無盡模式。', 'That is the end of the "{name}" trial. Unlock {tier} to play every map and the full endless mode.'],
 });
 export { i18n };

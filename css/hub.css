@@ -65,7 +65,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 18px 16px 8px; display: grid;
   background: linear-gradient(180deg, rgba(5,1,15,.55) 0%, rgba(5,1,15,0) 28%, rgba(5,1,15,0) 55%, rgba(8,3,22,.92) 100%), linear-gradient(90deg, rgba(255,43,214,.10), rgba(0,229,255,.06)); }
 .card.locked .thumb img { filter: saturate(.75) brightness(.85); }
 .thumb .ov { position: absolute; z-index: 2; display: flex; gap: 6px; align-items: center; }
-.thumb .ov-tl { top: 10px; left: 14px; } .thumb .ov-tr { top: 10px; right: 12px; } .thumb .ov-bl { left: 12px; bottom: 9px; }
+.thumb .ov-tl { top: 10px; left: 14px; flex-wrap: wrap; max-width: 70%; } .thumb .ov-tr { top: 10px; right: 12px; } .thumb .ov-bl { left: 12px; bottom: 9px; }
 .thumb .badge { background: rgba(5,1,15,.78); backdrop-filter: blur(3px); }
 .thumb .badge.free { background: rgba(5,1,15,.78); }
 .thumb .state { padding: 3px 8px; background: rgba(5,1,15,.8); border: 1px solid currentColor; backdrop-filter: blur(3px); font-weight: 700; }
@@ -85,7 +85,7 @@ html[data-lang="en"] .name { font-family: 'Orbitron', var(--zh); font-size: 20px
 .badge.silver { color: var(--silver); text-shadow: 0 0 6px rgba(207,227,255,.8); background: rgba(207,227,255,.08); }
 .badge.gold { color: var(--gold); text-shadow: 0 0 6px var(--gold); background: rgba(255,207,74,.1); }
 .state { font-size: 12px; letter-spacing: 1px; }
-.state.lock { color: #ff9ac8; } .state.open { color: var(--ok); }
+.state.lock { color: #ff9ac8; } .state.open { color: var(--ok); } .state.wip { color: var(--c3); text-shadow: 0 0 6px var(--c3); border-color: rgba(255,243,92,.7); }
 .trial { margin-top: 8px; font-size: 12px; color: var(--c3); letter-spacing: 1px; }
 .trial.none { color: #ff7a9a; }
 .links { display: flex; gap: 8px; margin-top: 14px; }

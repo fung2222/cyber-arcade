@@ -1,7 +1,8 @@
 """Thumbnail smoke test for the hub prototype + test portal (412x915 touch + 1280x800, zh + en).
 usage: python tests/smoke_thumbs.py REPO_ROOT_URL PORTAL_FOLDER [OUT_DIR]   (the portal folder name is passed in, never stored)
+Counts are derived from games.json (done + wip with thumbs) so new WIP cards do not hard-fail the suite.
 """
-import asyncio, json, sys
+import asyncio, json, sys, urllib.request
 from playwright.async_api import async_playwright
 BASE = sys.argv[1]   # repo root URL, e.g. http://127.0.0.1:18940/cyber-arcade/
 LAB = sys.argv[2]    # unlisted folder name (passed in, never written to files)
@@ -10,6 +11,18 @@ import os; os.makedirs(OUT, exist_ok=True)
 ARGS = ['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 fails = []
 def check(c, m): print(('  ok   ' if c else '  FAIL ') + m); (None if c else fails.append(m))
+
+def load_expect():
+    with urllib.request.urlopen(BASE.rstrip('/') + '/games.json') as r:
+        data = json.loads(r.read().decode())
+    live = [g for g in data['games'] if g.get('status') in ('done', 'wip')]
+    paid = [g for g in live if g.get('tier') in ('silver', 'gold')]
+    missing = [g['id'] for g in live if not g.get('thumb')]
+    return len(live), len(paid), missing
+
+EXPECT_N, EXPECT_PAID, MISSING_THUMBS = load_expect()
+check(not MISSING_THUMBS, f'games.json: every live card has thumb ({MISSING_THUMBS or "none missing"})')
+
 async def page(b, kind, w, h, mob, lang):
     ctx = await b.new_context(viewport={'width': w, 'height': h}, is_mobile=mob, has_touch=mob, device_scale_factor=2 if mob else 1)
     pg = await ctx.new_page(); errs = []; bad = []
@@ -18,15 +31,16 @@ async def page(b, kind, w, h, mob, lang):
     url = BASE + LAB + ('/hub/' if kind == 'hub' else '/') + f'?lang={lang}'
     await pg.goto(url); await pg.wait_for_selector('.card .thumb img')
     n = await pg.locator('.card').count(); ni = await pg.locator('.card .thumb img').count()
-    check(n == 9 and ni == 9, f'{kind} {w} {lang}: 9 cards with thumbnails ({n}/{ni})')
-    check(await pg.locator('.card .thumb img[loading="lazy"]').count() == 9, f'{kind} {w} {lang}: lazy-loaded')
+    check(n == EXPECT_N and ni == EXPECT_N, f'{kind} {w} {lang}: {EXPECT_N} cards with thumbnails ({n}/{ni})')
+    check(await pg.locator('.card .thumb img[loading="lazy"]').count() == EXPECT_N, f'{kind} {w} {lang}: lazy-loaded')
     alts = await pg.locator('.card .thumb img').evaluate_all('els => els.map(e => e.alt)')
     zh_ok = all(any('\u4e00' <= ch <= '\u9fff' for ch in a) for a in alts) if lang == 'zh' else not any('\u4e00' <= ch <= '\u9fff' for a in alts for ch in a)
-    check(zh_ok and all(alts), f'{kind} {w} {lang}: {lang} alt text ({alts[7][:40]}…)')
+    sample = alts[min(7, len(alts)-1)][:40] if alts else ''
+    check(zh_ok and all(alts), f'{kind} {w} {lang}: {lang} alt text ({sample}…)')
     # scroll through so every lazy image loads, then check they decoded
-    for y in range(0, 6000, 400): await pg.evaluate(f'scrollTo(0,{y})'); await pg.wait_for_timeout(120)
+    for y in range(0, max(6000, EXPECT_N * 700), 400): await pg.evaluate(f'scrollTo(0,{y})'); await pg.wait_for_timeout(120)
     await pg.wait_for_function("[...document.querySelectorAll('.card .thumb img')].every(i => i.complete && i.naturalWidth === 640)", timeout=20000)
-    check(True, f'{kind} {w} {lang}: all 9 images decoded 640×360')
+    check(True, f'{kind} {w} {lang}: all {EXPECT_N} images decoded 640×360')
     # overlays sit inside the image box and on top of it
     vis = await pg.evaluate("""[...document.querySelectorAll('.card')].map(c => { const f = c.querySelector('.thumb').getBoundingClientRect();
       return [...c.querySelectorAll('.thumb .ov')].map(o => { const r = o.getBoundingClientRect(), z = +getComputedStyle(o).zIndex;
@@ -35,11 +49,22 @@ async def page(b, kind, w, h, mob, lang):
     if kind == 'hub':
         check(all(vis), f'hub {w} {lang}: tier badge + lock/trial overlays inside the image on every card')
         locked = await pg.locator('.card.locked .thumb .state.lock').count(); trial = await pg.locator('.card.locked .thumb .trial').count()
-        check(locked == trial == 5, f'hub {w} {lang}: lock + trial overlay on the 5 Silver/Gold cards ({locked}/{trial})')
+        check(locked == trial == EXPECT_PAID, f'hub {w} {lang}: lock + trial overlay on the {EXPECT_PAID} Silver/Gold cards ({locked}/{trial})')
+        # WIP cards stay in the hub list and expose a play/try control
+        wip = await pg.evaluate("""() => (window.__hub.games||[]).filter(g => g.status==='wip').map(g => ({
+          id: g.id, card: !!document.querySelector('.card[data-game=\"'+g.id+'\"]'),
+          play: !!document.querySelector('[data-play=\"'+g.id+'\"]'), thumb: !!document.querySelector('.card[data-game=\"'+g.id+'\"] .thumb img')
+        }))""")
+        check(bool(wip) and all(x['card'] and x['play'] and x['thumb'] for x in wip), f'hub {w} {lang}: wip cards visible+playable+thumbed ({wip})')
     else:
-        check(await pg.locator('.card .thumb .tag').count() == 9 and await pg.locator('.card .thumb .pill').count() == 9, f'portal {w} {lang}: tier tag + stage pill on every image')
+        check(await pg.locator('.card .thumb .tag').count() == EXPECT_N and await pg.locator('.card .thumb .pill').count() == EXPECT_N, f'portal {w} {lang}: tier tag + stage pill on every image')
         play = await pg.locator('.card .links a').first.inner_text()
         check(play.replace('\n', ' ').split().count('PLAY') <= 1, f'portal {w} {lang}: play button label "{play.replace(chr(10), " / ")}"')
+        wip_play = await pg.evaluate("""() => [...document.querySelectorAll('.card.wip')].map(c => {
+          const a = c.querySelector('.links a:not(.demo):not(.repo)');
+          return {name: (c.querySelector('.name-zh,.name-en')||{}).textContent, href: a && a.href, off: a && a.classList.contains('off')};
+        })""")
+        check(bool(wip_play) and all(x['href'] and not x['off'] for x in wip_play), f'portal {w} {lang}: wip PLAY links live ({wip_play})')
     await pg.evaluate('scrollTo(0,0)'); await pg.wait_for_timeout(400)
     await pg.screenshot(path=f'{OUT}/{kind}-{"mobile" if mob else "desktop"}-{lang}.png')
     await pg.screenshot(path=f'{OUT}/{kind}-{"mobile" if mob else "desktop"}-{lang}-full.png', full_page=True)
@@ -47,6 +72,7 @@ async def page(b, kind, w, h, mob, lang):
     check(not errs and not bad, f'{kind} {w} {lang}: zero console errors / failed requests')
     await ctx.close()
 async def main():
+    print(f'expect live={EXPECT_N} paid={EXPECT_PAID}')
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path='/usr/bin/google-chrome', args=ARGS)
         for kind in ('portal', 'hub'):

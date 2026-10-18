@@ -172,15 +172,17 @@ function render() {
     const left = ent.trialRemaining(g.id), max = ent.trialRuns(g.id);
     const state = !paid ? '' : access ? `<span class="state open">✓ ${esc(t('unlocked'))}</span>` : `<span class="state lock">🔒 ${esc(t('locked'))}</span>`;
     const trial = paid && !access ? `<div class="trial${left ? '' : ' none'}">${esc(left ? t('trialLeft', { n: left, max }) : t('trialNone'))}</div>` : '';
+    const wipPill = g.status === 'wip' ? `<span class="state wip">${esc(t('status.wip'))}</span>` : '';
     const alt = g.thumbAlt?.[L()] || t('thumbAlt', { name: g.name[L()] });
     const preview = g.preview ? `<video muted loop playsinline preload="none" poster="${esc(g.thumb || '')}" aria-hidden="true"><source src="${esc(g.preview)}" type="video/webm">${g.previewMp4 ? `<source src="${esc(g.previewMp4)}" type="video/mp4">` : ''}</video>` : '';
-    const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
-      <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span></div>
+    // Always keep the 16:9 thumb slot; missing thumb falls back to gradient (never omit the figure).
+    const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}${g.thumb ? '' : ' no-img'}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
+      <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${wipPill}</div>
       ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}</figure>`;
     const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const el = document.createElement('article');
-    el.className = `card t-${g.tier}${access ? '' : ' locked'}`; el.dataset.game = g.id;
+    el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
     el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>

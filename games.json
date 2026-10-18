@@ -308,6 +308,11 @@
       "repo": "https://github.com/fung2222/neon-swarm",
       "url": "https://fung2222.github.io/neon-swarm/",
       "demo": "https://fung2222.github.io/neon-swarm/?demo=1",
+      "thumb": "assets/thumbs/neon-swarm.webp",
+      "thumbAlt": {
+        "zh": "霓虹洪流遊戲畫面：圓形霓虹戰場上自動開火對抗蟲潮",
+        "en": "NEON SWARM gameplay: auto-firing in a neon circular arena against a swarm"
+      },
       "status": "wip",
       "stage": {
         "zh": "網頁版 v0.1 playable slice · 待完善 · 未包裝 Android",
@@ -342,6 +347,11 @@
       "repo": "https://github.com/fung2222/neon-sort",
       "url": "https://fung2222.github.io/neon-sort/",
       "demo": "https://fung2222.github.io/neon-sort/?demo=1",
+      "thumb": "assets/thumbs/neon-sort.webp",
+      "thumbAlt": {
+        "zh": "霓虹歸位遊戲畫面：透明管柱入面分類發光彩球",
+        "en": "NEON SORT gameplay: sorting glowing orbs inside neon transparent tubes"
+      },
       "status": "wip",
       "stage": {
         "zh": "網頁版 v0.1 playable slice · 待完善 · 未包裝 Android",

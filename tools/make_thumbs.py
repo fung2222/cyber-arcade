@@ -18,6 +18,8 @@ SHOTS = {
     'cyber-board':     ('cyber-board-3.png',      1.25, 0.50, 0.47),
     'cyber-tower':     ('cyber-tower-ff1.png',    1.30, 0.50, 0.44),
     'neon-stick-run':  ('neon-stick-run-2.png',   1.25, 0.40, 0.62),
+    'neon-swarm':      ('neon-swarm-1.png',       1.20, 0.50, 0.48),
+    'neon-sort':       ('neon-sort-1.png',        1.25, 0.50, 0.55),
 }
 W, H, MAX_BYTES = 640, 360, 58 * 1024
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
