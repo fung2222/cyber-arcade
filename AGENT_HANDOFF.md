@@ -26,7 +26,7 @@
 ### New games
 | Game | Tier | HEAD | Live |
 |---|---|---|---|
-| **neon-swarm** 霓虹洪流 | **Gold** · wip | **`4fef9ba`** v0.3.3 stick / EVA-mech / wilderness | https://fung2222.github.io/neon-swarm/ |
+| **neon-swarm** 暴走機甲 RAMPAGE MECH | **Gold** · wip | **`832096d`** v0.5.0 rebrand / three frames / human manhunt | https://fung2222.github.io/neon-swarm/ |
 | **neon-sort** 霓虹歸位 | **Silver** · wip | **`77536f0`** v0.2 · 12 boards + endless | https://fung2222.github.io/neon-sort/ |
 
 Per-game detail: `neon-swarm/docs/HANDOFF.md` (full) · `neon-sort/docs/HANDOFF.md` (brief).
@@ -64,7 +64,7 @@ Trial: 3 runs/day + per-game caps. Source: root `games.json`.
 ```
 fung2222/cyber-arcade   ← this repo (hub + games.json + docs)
 fung2222/cyber-kit      ← shared kit (tag v0.3.16)
-fung2222/neon-swarm     ← Gold survivor WIP
+fung2222/neon-swarm     ← Gold survivor WIP (display name 暴走機甲 / RAMPAGE MECH)
 fung2222/neon-sort      ← Silver sort puzzle WIP
 fung2222/neon-stick-duel← fighter PAUSED
 ```
