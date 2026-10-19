@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18",
+  "updated": "2026-10-19",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -310,13 +310,13 @@
       "demo": "https://fung2222.github.io/neon-swarm/?demo=1",
       "thumb": "assets/thumbs/neon-swarm.webp",
       "thumbAlt": {
-        "zh": "霓虹洪流遊戲畫面：圓形霓虹戰場上自動開火對抗蟲潮",
-        "en": "NEON SWARM gameplay: auto-firing in a neon circular arena against a swarm"
+        "zh": "霓虹洪流遊戲畫面：紫綠角盔機甲喺開闊荒野對抗敵機潮",
+        "en": "NEON SWARM gameplay: violet horned mech in open wilderness vs hostile mechs"
       },
       "status": "wip",
       "stage": {
-        "zh": "網頁版 v0.2 polish · 武器卡／蟲潮波次 · 待 Roy 試玩 · 未包裝 Android",
-        "en": "web v0.2 polish · weapon cards / wave bursts · awaiting Roy · not packaged for Android"
+        "zh": "網頁版 v0.3.3 playfield-stick / EVA-mech · 開闊荒野 · 待 Roy 試玩 · 未包裝 Android",
+        "en": "web v0.3.3 playfield-stick / EVA-mech · open wilderness · awaiting Roy · not packaged for Android"
       },
       "kit": "v0.3.16",
       "play": "not-submitted",
@@ -329,8 +329,8 @@
           "surviveSec": 480
         },
         "rule": {
-          "zh": "每日 3 局；試玩約 8 分鐘後彈解鎖提示返大廳（待完整實作）",
-          "en": "3 runs per day; trial ends around 8 min then unlock prompt (full wiring pending)"
+          "zh": "每日 3 局；試玩約 8 分鐘／第一個精英里程碑後彈解鎖提示返大廳（待完整實作）",
+          "en": "3 runs per day; trial ends around 8 min / first elite milestone, then unlock prompt (full wiring pending)"
         }
       }
     },
