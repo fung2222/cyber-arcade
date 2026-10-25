@@ -2,6 +2,9 @@
 
 > 一系列賽博朋克 3D 小遊戲 · 適合搭車時玩幾分鐘 · 手機優先，電腦都玩得 · Three.js
 
+> **Product split 2026-10-25:** Hub = **short casual cyberpunk mini-games** only. **機甲雷台** (`neon-stick-duel`) is a **standalone Play fighter** — see [`docs/PRODUCT-SPLIT.md`](docs/PRODUCT-SPLIT.md).
+
+
 ## 簡介 Overview
 CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系列。每隻遊戲都係獨立 repo，共用 [cyber-kit](https://github.com/fung2222/cyber-kit) 引擎（霓虹城市、bloom、粒子、合成音效、觸控、AdMob 封裝），目標係逐隻上架 Google Play。
 
@@ -15,9 +18,10 @@ CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系
 | 霓虹記憶 NEON RECALL | 3D 記憶配對 | [neon-recall](https://github.com/fung2222/neon-recall) | ✅ 完成 |
 | 賽博忍者 CYBER NINJA | 3D 直向射擊 | [cyber-ninja](https://github.com/fung2222/cyber-ninja) | ✅ 完成 |
 | 賽博小遊戲合集 CYBER MINI PACK | 包剪揼 · 過三關 · 神經反射 | [cyber-mini-pack](https://github.com/fung2222/cyber-mini-pack) | ✅ 完成 |
-| 霓虹火柴人 NEON STICK DUEL | 單手 3D 對決 | [neon-stick-duel](https://github.com/fung2222/neon-stick-duel) | ✅ 完成 |
+| 機甲雷台 MECH THUNDER ARENA | 獨立格鬥作（非 hub 休閒） | [neon-stick-duel](https://github.com/fung2222/neon-stick-duel) | 原型／抽出中 · [PRODUCT-SPLIT](docs/PRODUCT-SPLIT.md) |
 
 ## 文件 Docs
+- [docs/PRODUCT-SPLIT.md](docs/PRODUCT-SPLIT.md) — **2026-10-25** hub vs 機甲雷台 standalone fighter split
 - [docs/ARCADE-HANDOFF.md](docs/ARCADE-HANDOFF.md) — 風格指引、技術、結構、製作次序、Play/AdMob 計劃、命名規則
 - [docs/MONETIZATION.md](docs/MONETIZATION.md) — 收費模式：免費／銀級／金級、試玩、廣告、Google Play Billing 計劃 · monetisation model
 - [docs/SONO-AUDIT.md](docs/SONO-AUDIT.md) — 舊 SONO 遊戲審查報告

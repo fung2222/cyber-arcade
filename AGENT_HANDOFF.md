@@ -1,18 +1,17 @@
-# CYBER ARCADE — Agent session handoff (2026-10-17 → 2026-10-19)
+# CYBER ARCADE — Agent session handoff
 
-> Short bridge for the **next AI**. Deep series bible: [`docs/ARCADE-HANDOFF.md`](docs/ARCADE-HANDOFF.md) · monetisation: [`docs/MONETIZATION.md`](docs/MONETIZATION.md).  
-> **Do not put the unlisted lab/portal path in any public commit.** Say: *use Roy’s unlisted lab URL from memory/owner*.
-
-**Contact style (Roy):** 解釋用繁體中文（廣東話都睇得明）；code、路徑、指令、commit message 用英文。遊戲 UI：**zh-HK 先行**，英文細字喺下面。Timezone **Asia/Hong_Kong**.
-
-**This repo HEAD at handoff write:** see git after push · prior hub WIP commit `501e4e6`.
+> **PRODUCT SPLIT 2026-10-25 — read [`docs/PRODUCT-SPLIT.md`](docs/PRODUCT-SPLIT.md) first.**  
+> **機甲雷台** (`neon-stick-duel`) = **standalone Google Play fighter** (SF/KOF-style, heavy sprites, landscape, two-hand) — NOT a one-hand casual time-killer.  
+> **This hub** = short, fun, quick cyberpunk mini-games only (free + Silver HK$18 / Gold HK$28, zh-HK/EN, endless).
 
 ---
+
+# Prior session notes (2026-10-17 → 2026-10-19)
 
 ## Session outcomes
 
 ### Paused
-- **neon-stick-duel** (fighter) — paused after sprite **FULL RESTART** `c1c82ab` (2026-10-17). Do not resume phys/anime tracks unless Roy asks. Live still Pages-enabled; treat as paused R&D.
+- **neon-stick-duel / 機甲雷台** — **standalone fighter product** (see `docs/PRODUCT-SPLIT.md`). Not hub-casual. Prototype: bitmap mech swordsman, Action Test, arena BG, landscape. Deep work in that repo; do not force one-hand casual scope here.
 
 ### Polished (existing)
 | Area | What | Key SHAs / notes |
@@ -55,7 +54,7 @@ Trial: 3 runs/day + per-game caps. Source: root `games.json`.
 
 ## Suggested next for the next agent
 1. Roy playtest swarm + sort; fix feedback.
-2. Keep fighter paused.
+2. Fighter = separate product (`neon-stick-duel` PRODUCT-SPLIT); hub stays casual only.
 3. Sync hub stage/thumbAlt if still lagging swarm v0.3.3 wilderness copy.
 4. Finish trial → hub `openStore` wiring on both new games.
 5. No public lab path; no sono ports; no trademarked EVA naming.
@@ -66,5 +65,5 @@ fung2222/cyber-arcade   ← this repo (hub + games.json + docs)
 fung2222/cyber-kit      ← shared kit (tag v0.3.16)
 fung2222/neon-swarm     ← Gold survivor WIP (display name 暴走機甲 / RAMPAGE MECH)
 fung2222/neon-sort      ← Silver sort puzzle WIP
-fung2222/neon-stick-duel← fighter PAUSED
+fung2222/neon-stick-duel← 機甲雷台 STANDALONE fighter (PRODUCT-SPLIT 2026-10-25)
 ```

@@ -1,3 +1,5 @@
+> **2026-10-25 product split:** hub = casual mini-games only; **機甲雷台** (`neon-stick-duel`) = standalone Play fighter. See [`PRODUCT-SPLIT.md`](PRODUCT-SPLIT.md).
+
 # CYBER ARCADE — Handoff
 
 ## Hub polish (2026-10-15)
