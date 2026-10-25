@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-25",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -142,25 +142,25 @@
     {
       "id": "neon-stick-duel",
       "name": {
-        "zh": "霓虹火柴人",
-        "en": "NEON STICK DUEL"
+        "zh": "機甲雷台",
+        "en": "MECH THUNDER ARENA"
       },
       "genre": {
-        "zh": "3D 職業格鬥：劍士／魔法師／拳師／刺客（十連戰 + 無盡塔）",
-        "en": "3D class fighter: Swordsman / Mage / Brawler / Assassin (10-fight ladder + endless tower)"
+        "zh": "3D 機甲格鬥：機甲劍士／魔法師／拳師／刺客（十連戰 + 無盡塔）",
+        "en": "3D mech fighter: Mech Sword / Mage / Brawler / Assassin (10-fight ladder + endless tower)"
       },
       "repo": "https://github.com/fung2222/neon-stick-duel",
       "url": "https://fung2222.github.io/neon-stick-duel/",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
       "thumb": "assets/thumbs/neon-stick-duel.webp",
       "thumbAlt": {
-        "zh": "霓虹火柴人遊戲畫面：刺客同劍士喺城市天台近身對砍",
-        "en": "NEON STICK DUEL gameplay: an assassin and a swordsman trading blows up close on a city rooftop"
+        "zh": "機甲雷台遊戲畫面：炭黑青能機甲劍士喺霓虹大賽舞台近身對打",
+        "en": "MECH THUNDER ARENA gameplay: charcoal+cyan mech sword fighters dueling on a neon tournament stage"
       },
       "status": "done",
       "stage": {
-        "zh": "網頁版 v2.0：四職業、搖桿＋按鍵、階梯十連戰＋無盡塔 · 待 Roy 試玩 · 未包裝 Android",
-        "en": "web v2.0: four classes, joystick + buttons, 10-fight ladder + endless tower · awaiting Roy's review · not packaged for Android"
+        "zh": "網頁版 v0.5.0：機甲雷台主題 + 劍士 28 姿勢幀 · 待 Roy 試玩 · 未包裝 Android",
+        "en": "web v0.5.0: Mech Thunder Arena theme + sword 28 pose frames · awaiting Roy · not packaged for Android"
       },
       "kit": "v0.2.1",
       "play": "not-submitted",
