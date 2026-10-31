@@ -13,12 +13,12 @@ CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系
 
 | 遊戲 | 類型 | Repo | 狀態 |
 |---|---|---|---|
-| 賽博蛇 CYBER SNAKE | 3D 貪食蛇 | [cyber-snake](https://github.com/fung2222/cyber-snake) | ✅ 完成 |
-| 數據熔合 DATA FUSE | 3D 數字合併 | [data-fuse](https://github.com/fung2222/data-fuse) | ✅ 完成 |
+| 賽博蛇 CYBER SNAKE | 3D 貪食蛇 · **精選** | [cyber-snake](https://github.com/fung2222/cyber-snake) | ✅ 完成 |
+| 數據熔合 DATA FUSE | 3D 數字合併 · **精選** | [data-fuse](https://github.com/fung2222/data-fuse) | ✅ 完成 |
 | 霓虹記憶 NEON RECALL | 3D 記憶配對 | [neon-recall](https://github.com/fung2222/neon-recall) | ✅ 完成 |
-| 賽博忍者 CYBER NINJA | 3D 直向射擊 | [cyber-ninja](https://github.com/fung2222/cyber-ninja) | ✅ 完成 |
 | 賽博小遊戲合集 CYBER MINI PACK | 包剪揼 · 過三關 · 神經反射 | [cyber-mini-pack](https://github.com/fung2222/cyber-mini-pack) | ✅ 完成 |
-| 機甲雷台 MECH THUNDER ARENA | 獨立格鬥作（非 hub 休閒） | [neon-stick-duel](https://github.com/fung2222/neon-stick-duel) | 原型／抽出中 · [PRODUCT-SPLIT](docs/PRODUCT-SPLIT.md) |
+| 賽博忍者 CYBER NINJA | 3D 直向射擊 | [cyber-ninja](https://github.com/fung2222/cyber-ninja) | ✅ 完成 |
+| 機甲雷台 MECH THUNDER ARENA | 獨立格鬥作（非 hub 休閒 · 列表靠後） | [neon-stick-duel](https://github.com/fung2222/neon-stick-duel) | 原型／抽出中 · [PRODUCT-SPLIT](docs/PRODUCT-SPLIT.md) |
 
 ## 文件 Docs
 - [docs/PRODUCT-SPLIT.md](docs/PRODUCT-SPLIT.md) — **2026-10-25** hub vs 機甲雷台 standalone fighter split
