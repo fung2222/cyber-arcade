@@ -513,8 +513,6 @@ footer {
 }
 .fav-btn:active { transform: scale(.92); }
 .fav-btn:focus-visible { outline: 2px solid var(--c1); outline-offset: 2px; }
-/* when lock/open state sits top-right, nudge it left of the star */
-.thumb .ov-tr { right: 52px; }
 
 /* settings panel */
 #view-settings {

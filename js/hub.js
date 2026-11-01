@@ -541,8 +541,8 @@ function render() {
       : '';
     // Always keep the 16:9 thumb slot; missing thumb falls back to gradient (never omit the figure).
     const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}${g.thumb ? '' : ' no-img'}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
-      <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${featPill}${wipPill}</div>
-      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${verOv}${favBtn}</figure>`;
+      <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${state}${featPill}${wipPill}</div>
+      ${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${verOv}${favBtn}</figure>`;
     const btn = access ? `<button class="play-main" data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const howtoBtn = g.howto
