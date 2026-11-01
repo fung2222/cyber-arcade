@@ -290,8 +290,6 @@ function render() {
   document.title = t('doc.title');
   const tier = ent ? ent.getTier() : 'free';
   syncTierChrome(tier);
-  const ads = $('ads-line');
-  if (ads) ads.innerHTML = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
   if (activeTab === 'settings') { renderSettings(); return; }
   if (activeTab === 'profile') { renderProfile(); return; }
   if (!games.length || !ent) return;
@@ -299,19 +297,16 @@ function render() {
   const list = $('list'); stopActivePreview(); list.innerHTML = '';
   const visible = gamesForView();
   const empty = $('empty-state');
-  const webNote = document.querySelector('#view-home .web-note');
   if (!visible.length) {
     if (empty) {
       empty.classList.remove('hidden');
       empty.textContent = activeTab === 'favs' ? t('fav.empty') : t('cats.empty');
     }
-    if (webNote) webNote.classList.add('hidden');
     setupTouchCenterPreview(list);
     devMeta();
     return;
   }
   if (empty) empty.classList.add('hidden');
-  if (webNote) webNote.classList.remove('hidden');
   const O = L() === 'zh' ? 'en' : 'zh';
   // Keep original catalog index for ranking polish (featured order from games.json)
   const indexOf = new Map(games.map((g, i) => [g.id, i]));

@@ -501,8 +501,7 @@ footer {
   header.hub-compact {
     padding-bottom: 0;
   }
-  header.hub-compact .sub,
-  header.hub-compact .ads-line { display: none; }
+  header.hub-compact .sub { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tabbar .tab, .tabbar .tab-fab .tab-fab-core, .fav-btn { transition: none; }
