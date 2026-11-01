@@ -74,7 +74,7 @@
         "en": "Evil cyber Tamagotchi · short care · long corruption"
       },
       "repo": "https://github.com/fung2222/corrupt-pet",
-      "url": "https://fung2222.github.io/corrupt-pet/?v=0.1.1",
+      "url": "https://fung2222.github.io/corrupt-pet/?v=0.1.2",
       "thumb": "assets/thumbs/corrupt-pet.webp",
       "thumbAlt": {
         "zh": "腐核寵遊戲畫面：Q版罪晶蛋站喺遠景霓虹城市夜空前",
@@ -82,10 +82,10 @@
       },
       "status": "wip",
       "stage": {
-        "zh": "網頁 MVP v0.1.1：孵化→幼體→企業傀儡／街頭病毒分叉→熔毀 · Q版遠景 · 待 Roy 試玩",
-        "en": "web MVP v0.1.1: hatch→larva→Corporate Drone / Street Virus fork→melt · Q + far cityscape · awaiting Roy"
+        "zh": "網頁 MVP v0.1.2：軟填色＋霓虹描邊光暈＋更深遠景層 · 待 Roy 肉眼",
+        "en": "web MVP v0.1.2: soft fill + neon rim glow + deeper cityscape · awaiting Roy eye-check"
       },
-      "kit": "v0.1.1",
+      "kit": "v0.1.2",
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
