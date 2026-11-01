@@ -139,8 +139,8 @@ Note: Play Billing Library 7 is blocked for new uploads after 31 Aug 2026 — us
 
 ## 9. 網頁版 vs App 版 Web vs app（Roy 2026-10-02：網頁版暫不公開，直接做 App · web not public for now, go straight to the app）
 
-- **公開根目錄** `https://fung2222.github.io/cyber-arcade/` 只係一個中性「開發中 · 即將推出」頁（noindex，冇遊戲列表、冇商店、冇任何遊戲連結）· the public root is a neutral "in development / coming soon" placeholder — no game list, no store, no links.
-- **收費大廳原型**搬咗去未公開嘅測試入口（路徑私下俾 Roy，唔寫入任何文件）；頁面用 `<base>` 指返 repo 根目錄嘅 `js/`、`css/`、`games.json` · the monetised hub prototype now lives inside the unlisted test portal (path shared privately, never written in docs); it uses `<base>` to load the hub code from the repo root.
+- **公開根目錄** `https://fung2222.github.io/cyber-arcade/` 而家直接係真正大廳（遊戲列表／商店／試玩原型），但仍然 `noindex,nofollow`、`robots.txt` 全站 Disallow，未當正式公開 · the public root now serves the real hub directly, but stays noindex/nofollow with robots disallowing everything until launch.
+- **收費大廳原型**已經合併去 root；舊 `lab-kqsverjfjd/` 測試入口只保留跳轉去 root · the monetised hub prototype is merged into root; old `lab-kqsverjfjd/` test-portal paths only redirect to root.
 - 每隻遊戲 repo 繼續 `noindex,nofollow` + `robots.txt` Disallow，唔會由 SONO 或任何公開頁面連過去；Pages 保持開啟（Roy 測試要用）· every game stays noindex and unlinked from SONO or any public page; Pages stays on for Roy's testing.
 - 網頁版保持免費、唔宣傳；真正收費只喺 Google Play App 版 · the web stays free and unpromoted; paid gating is app-only.
 - **限制 Limitation:** repo 係公開嘅，GitHub file tree 睇得到所有資料夾，知道網址就玩得 —— 只係「冇連結 + 唔收錄」，唔係真正隱藏。要真正隱藏需要：(a) 私人 repo + GitHub 付費方案（私人 repo 開 Pages 要 Pro/Team，但網站本身仍然公開；要登入先睇到嘅 Pages 只限 Enterprise Cloud），或者 (b) Cloudflare Pages + Cloudflare Access 登入保護（細團隊有免費額度）。 · The repos are public, so folders are visible in the GitHub file tree and anyone with a URL can play — it is unlinked + unindexed, not truly hidden. True hiding needs (a) private repos on a paid GitHub plan (Pages from private repos needs Pro/Team, but the site itself is still public; access-controlled Pages is Enterprise Cloud only), or (b) Cloudflare Pages behind Cloudflare Access login (free tier for small teams).
