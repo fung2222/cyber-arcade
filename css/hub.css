@@ -55,6 +55,17 @@ main { max-width: 1100px; margin: 0 auto; padding: 18px 16px 8px; display: grid;
 .card.locked .thumb img { filter: saturate(.75) brightness(.85); }
 .thumb .ov { position: absolute; z-index: 2; display: flex; gap: 6px; align-items: center; }
 .thumb .ov-tl { top: 10px; left: 14px; flex-wrap: wrap; max-width: 70%; } .thumb .ov-tr { top: 10px; right: 12px; } .thumb .ov-bl { left: 12px; bottom: 9px; }
+.thumb .ov-br { right: 12px; bottom: 9px; flex-wrap: wrap; justify-content: flex-end; max-width: 55%; }
+.thumb .badge.ver {
+  color: #9ef6ff; border-color: rgba(0,229,255,.55); background: rgba(5,1,15,.82);
+  font: 700 10px 'Orbitron', ui-monospace, monospace; letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgba(0,229,255,.55); padding: 3px 8px;
+}
+.thumb .badge.ver-fresh {
+  color: var(--c3); border-color: rgba(255,243,92,.55); background: rgba(5,1,15,.78);
+  font: 700 9px 'Orbitron', var(--zh); letter-spacing: 1.5px; padding: 3px 7px;
+  text-shadow: 0 0 6px rgba(255,243,92,.45);
+}
 .thumb .badge { background: rgba(5,1,15,.78); backdrop-filter: blur(3px); }
 .thumb .badge.free { background: rgba(5,1,15,.78); }
 .thumb .state { padding: 3px 8px; background: rgba(5,1,15,.8); border: 1px solid currentColor; backdrop-filter: blur(3px); font-weight: 700; }

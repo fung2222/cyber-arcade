@@ -322,10 +322,30 @@ function render() {
     const preview = g.preview ? `<video muted loop playsinline preload="none" poster="${esc(g.thumb || '')}" aria-hidden="true"><source src="${esc(g.preview)}" type="video/webm">${g.previewMp4 ? `<source src="${esc(g.previewMp4)}" type="video/mp4">` : ''}</video>` : '';
     const favOn = isFav(g.id);
     const favBtn = `<button type="button" class="fav-btn${favOn ? ' on' : ''}" data-fav="${esc(g.id)}" aria-pressed="${favOn ? 'true' : 'false'}" aria-label="${esc(favOn ? t('fav.remove') : t('fav.add'))}">★</button>`;
+    const verRaw = String(g.version || '').trim().replace(/^v/i, '');
+    const verLabel = verRaw ? `v${verRaw}` : '';
+    const verPill = verLabel
+      ? `<span class="badge ver" title="${esc(verLabel)}">${esc(verLabel)}</span>`
+      : '';
+    // Subtle UPDATED cue only when game.updated is within ~14 days of catalog.updated (no fake urgency).
+    const catUpdated = String(window.__hub?.catalogUpdated || '').slice(0, 10);
+    const gUpdated = String(g.updated || '').slice(0, 10);
+    let freshPill = '';
+    if (verPill && catUpdated && gUpdated && /^\d{4}-\d{2}-\d{2}$/.test(catUpdated) && /^\d{4}-\d{2}-\d{2}$/.test(gUpdated)) {
+      const catMs = Date.parse(catUpdated + 'T00:00:00Z');
+      const gMs = Date.parse(gUpdated + 'T00:00:00Z');
+      if (Number.isFinite(catMs) && Number.isFinite(gMs)) {
+        const days = Math.abs(catMs - gMs) / 86400000;
+        if (days <= 14) freshPill = `<span class="badge ver-fresh">${esc(t('version.updated'))}</span>`;
+      }
+    }
+    const verOv = (verPill || freshPill)
+      ? `<div class="ov ov-br" aria-label="${esc(verLabel || t('version.updated'))}">${verPill}${freshPill}</div>`
+      : '';
     // Always keep the 16:9 thumb slot; missing thumb falls back to gradient (never omit the figure).
     const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}${g.thumb ? '' : ' no-img'}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
       <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${featPill}${wipPill}</div>
-      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${favBtn}</figure>`;
+      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${verOv}${favBtn}</figure>`;
     const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const el = document.createElement('article');
@@ -524,10 +544,11 @@ i18n.onChange(() => {
   if (storeOpen()) renderStore();
   syncMuteBtn();
 });
-window.__hub = { get ent() { return ent; }, get games() { return games; }, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
+window.__hub = { get ent() { return ent; }, get games() { return games; }, catalogUpdated: null, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
 (async () => {
   try {
     const data = await (await fetch('./games.json', { cache: 'no-store' })).json();
+    window.__hub.catalogUpdated = data.updated || null;
     games = data.games.filter((g) => g.status === 'done' || g.status === 'wip');
     const backend = createWebStubBackend({ confirm: stubConfirm });   // app build: createRevenueCatBackend (js/billing/play-revenuecat.js)
     ent = createEntitlements({ games, backend });

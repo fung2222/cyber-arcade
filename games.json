@@ -21,6 +21,7 @@
         "en": "CYBER SNAKE gameplay: a neon snake chasing an energy orb across a glowing grid"
       },
       "status": "done",
+      "version": "0.3.16",
       "kit": "v0.2.1 (i18n only)",
       "play": "not-submitted",
       "i18n": true,
@@ -44,7 +45,7 @@
         "en": "3D merge puzzle"
       },
       "repo": "https://github.com/fung2222/data-fuse",
-      "url": "https://fung2222.github.io/data-fuse/",
+      "url": "https://fung2222.github.io/data-fuse/?v=1.2.3",
       "demo": "https://fung2222.github.io/data-fuse/?demo=1",
       "thumb": "assets/thumbs/data-fuse.webp",
       "thumbAlt": {
@@ -52,6 +53,7 @@
         "en": "DATA FUSE gameplay: glowing number blocks merging on a neon 4×4 board"
       },
       "status": "done",
+      "version": "1.2.3",
       "kit": "v0.2.1",
       "play": "not-submitted",
       "i18n": true,
@@ -81,11 +83,13 @@
         "en": "CORRUPT.PET: a Q-version sin-chip egg against a far neon cityscape"
       },
       "status": "wip",
+      "version": "0.1.2",
+      "updated": "2026-11-01",
       "stage": {
         "zh": "網頁 MVP v0.1.2：軟填色＋霓虹描邊光暈＋更深遠景層 · 待 Roy 肉眼",
         "en": "web MVP v0.1.2: soft fill + neon rim glow + deeper cityscape · awaiting Roy eye-check"
       },
-      "kit": "v0.1.2",
+      "kit": "procedural Canvas2D (no full cyber-kit HUD yet)",
       "play": "not-submitted",
       "i18n": true,
       "endless": true,
@@ -115,6 +119,7 @@
         "en": "NEON RECALL gameplay: neon holo cards flipped to find matching pairs"
       },
       "status": "done",
+      "version": "0.3.13",
       "kit": "v0.2.1",
       "play": "not-submitted",
       "i18n": true,
@@ -145,6 +150,7 @@
         "en": "CYBER MINI PACK gameplay: a rock-paper-scissors round on a neon arena"
       },
       "status": "done",
+      "version": "1.2.0",
       "kit": "v0.2.1",
       "play": "not-submitted",
       "i18n": true,
@@ -175,6 +181,7 @@
         "en": "NEON STICK RUN gameplay: a neon stick runner dashing across rooftops"
       },
       "status": "done",
+      "version": "1.0.0",
       "stage": {
         "zh": "網頁版 v1.0 完成 · 待 Roy 試玩 · 未包裝 Android",
         "en": "web v1.0 done · awaiting Roy's review · not packaged for Android"
@@ -220,6 +227,7 @@
         "en": "CYBER NINJA gameplay: auto-firing over a neon city while enemies attack"
       },
       "status": "done",
+      "version": "0.3.13",
       "kit": "v0.2.1",
       "play": "not-submitted",
       "i18n": true,
@@ -257,6 +265,7 @@
         "en": "CYBER BOARD gameplay: a neon 3D chess match in progress"
       },
       "status": "done",
+      "version": "0.3.16",
       "kit": "v0.3.15",
       "play": "not-submitted",
       "i18n": true,
@@ -294,6 +303,7 @@
         "en": "NEON BASTION gameplay: towers on a neon city grid stopping viruses on the path to the core"
       },
       "status": "done",
+      "version": "1.1.0",
       "stage": {
         "zh": "網頁版 v1.1 完成 · 待 Roy 試玩 · 未包裝 Android",
         "en": "web v1.1 done · awaiting Roy's review · not packaged for Android"
@@ -339,6 +349,7 @@
         "en": "NEON SORT gameplay: sorting glowing orbs inside neon transparent tubes"
       },
       "status": "wip",
+      "version": "0.2.0",
       "stage": {
         "zh": "網頁版 v0.2 polish · 12 關 + 無盡 · 待 Roy 試玩 · 未包裝 Android",
         "en": "web v0.2 polish · 12 stages + endless · awaiting Roy · not packaged for Android"
@@ -375,7 +386,7 @@
         "en": "3D bullet heaven: a runaway mech vs the lab and its army (3 frames)"
       },
       "repo": "https://github.com/fung2222/neon-swarm",
-      "url": "https://fung2222.github.io/neon-swarm/",
+      "url": "https://fung2222.github.io/neon-swarm/?v=0.9.205",
       "demo": "https://fung2222.github.io/neon-swarm/?demo=1",
       "thumb": "assets/thumbs/neon-swarm.webp",
       "thumbAlt": {
@@ -383,9 +394,10 @@
         "en": "RAMPAGE MECH gameplay: a violet horned mech fighting lab soldiers and support mechs"
       },
       "status": "wip",
+      "version": "0.9.205",
       "stage": {
-        "zh": "網頁版 v0.5.0 暴走機甲：三款機體（角盔／重裝／原創）· 人類追捕 + 機甲支援 · 待 Roy 試玩 · 未包裝 Android",
-        "en": "web v0.5.0 RAMPAGE MECH: three frames (horn / heavy / proto) · human manhunt + mech support · awaiting Roy · not packaged for Android"
+        "zh": "網頁版 v0.9.205 COMBAT-FEEL-V1 HOLD · 三款機體 · 待 Roy 肉眼／未包裝 Android · tip 唔自動推",
+        "en": "web v0.9.205 COMBAT-FEEL-V1 HOLD · three frames · awaiting Roy eye-check / not packaged for Android · tip stays HOLD"
       },
       "kit": "v0.3.16",
       "play": "not-submitted",
@@ -418,7 +430,7 @@
         "en": "3D mech fighter: Mech Sword / Mage / Brawler / Assassin (10-fight ladder + endless tower)"
       },
       "repo": "https://github.com/fung2222/neon-stick-duel",
-      "url": "https://fung2222.github.io/neon-stick-duel/",
+      "url": "https://fung2222.github.io/neon-stick-duel/?v=0.5.5",
       "demo": "https://fung2222.github.io/neon-stick-duel/?demo=1",
       "thumb": "assets/thumbs/neon-stick-duel.webp",
       "thumbAlt": {
@@ -426,6 +438,7 @@
         "en": "MECH THUNDER ARENA gameplay: charcoal+cyan mech sword fighters dueling on a neon tournament stage"
       },
       "status": "done",
+      "version": "0.5.5",
       "stage": {
         "zh": "獨立格鬥產品路線（2026-10-25 split）：網頁原型機甲劍士 bitmap + 動作測試 · 見 docs/PRODUCT-SPLIT.md · 未包裝 Android",
         "en": "Standalone fighter track (2026-10-25 split): web prototype bitmap mech sword + Action Test · see docs/PRODUCT-SPLIT.md · not packaged for Android"
