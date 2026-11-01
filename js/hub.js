@@ -15,7 +15,7 @@ const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
 // bottom tabs: profile | cats | browse | favs | settings
-const HUB_VERSION = '0.5.0'; // hub shell (About); per-game product versions live in games.json
+const HUB_VERSION = '0.5.1'; // hub shell (About); per-game product versions live in games.json
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
@@ -467,9 +467,7 @@ function render() {
     const demoBtn = g.demo
       ? `<a class="demo" href="${esc(g.demo)}" rel="noopener">${esc(t('demo'))}</a>`
       : '';
-    const sec = (howtoBtn || demoBtn)
-      ? `<div class="links links-sec">${howtoBtn}${demoBtn}</div>`
-      : '';
+    // One action row: Start/Play leftmost, then smaller 教學／示範 to its right (wraps on narrow phones).
     const el = document.createElement('article');
     el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}${g.featured ? ' featured' : ''}${g.productSplit ? ' standalone' : ''}${favOn ? ' is-fav' : ''}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
@@ -477,7 +475,7 @@ function render() {
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
       <div class="genre">${softBreak(g.genre?.[L()])}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${softBreak(g.stage[L()])}</div>` : ''}
-      <div class="links links-pri">${btn}</div>${sec}</div>`;
+      <div class="links links-pri">${btn}${howtoBtn}${demoBtn}</div></div>`;
     list.appendChild(el);
     wirePreview(el, g);
   });
