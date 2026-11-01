@@ -276,3 +276,163 @@ html[data-lang="en"] .stage, html[data-lang="en"] .trial {
   overflow-wrap: break-word; text-wrap: balance;
 }
 .tier .games, .tier ul { line-height: 1.55; overflow-wrap: break-word; text-wrap: pretty; }
+
+/* —— sticky bottom 4-tab nav (browse / cats / favs / settings) —— */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  padding: 6px 4px max(6px, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(5,1,15,.72) 0%, rgba(5,1,15,.96) 35%, #05010f 100%);
+  border-top: 1px solid rgba(0,229,255,.45);
+  box-shadow: 0 -8px 28px rgba(0,0,0,.45), 0 -1px 18px rgba(255,43,214,.18);
+  backdrop-filter: blur(8px);
+}
+.tabbar .tab {
+  appearance: none; -webkit-appearance: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; min-height: 48px; padding: 4px 2px;
+  background: transparent; border: 0; color: #8f88b8;
+  font: 700 11px var(--zh); letter-spacing: 1px; cursor: pointer;
+  transition: color .15s ease, text-shadow .15s ease, transform .15s ease;
+}
+.tabbar .tab .tab-ico {
+  font-size: 16px; line-height: 1; color: inherit;
+  text-shadow: 0 0 8px transparent;
+}
+.tabbar .tab.active, .tabbar .tab[aria-selected="true"] {
+  color: var(--c1);
+  text-shadow: 0 0 10px rgba(0,229,255,.55);
+}
+.tabbar .tab.active .tab-ico, .tabbar .tab[aria-selected="true"] .tab-ico {
+  color: var(--c2);
+  text-shadow: 0 0 10px rgba(255,43,214,.7);
+}
+.tabbar .tab:active { transform: scale(.96); }
+.tabbar .tab:focus-visible {
+  outline: 2px solid var(--c3); outline-offset: -2px;
+}
+html[data-lang="en"] .tabbar .tab { font-family: 'Orbitron', var(--zh); font-size: 10px; letter-spacing: 1.5px; }
+
+/* pad page content so cards / footer clear the sticky tab bar */
+body {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+.hub-view.hidden { display: none !important; }
+#view-home main {
+  padding-bottom: 12px;
+}
+footer {
+  padding-bottom: 16px;
+}
+.toast {
+  bottom: calc(72px + env(safe-area-inset-bottom));
+}
+.dev {
+  bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* category chip bar (分類 tab) */
+.cat-bar {
+  max-width: 1100px; margin: 0 auto; padding: 4px 12px 2px;
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.cat-bar.hidden { display: none; }
+.cat-chip {
+  min-height: 34px; padding: 0 12px;
+  font: 700 12px var(--zh); letter-spacing: 1px; color: #cfc8ff; cursor: pointer;
+  border: 1px solid rgba(0,229,255,.35); background: rgba(10,4,30,.7);
+  border-radius: 999px;
+}
+.cat-chip.active {
+  color: #05010f; background: linear-gradient(90deg, var(--c1), #7af0ff);
+  border-color: var(--c1); box-shadow: 0 0 14px rgba(0,229,255,.45);
+  font-weight: 800;
+}
+.cat-chip:focus-visible { outline: 2px solid var(--c3); outline-offset: 2px; }
+
+/* empty states (favorites / filtered categories) */
+.empty-state {
+  max-width: 520px; margin: 28px auto; padding: 18px 20px;
+  text-align: center; color: #a49dd0; font-size: 14px; line-height: 1.6;
+  border: 1px dashed rgba(0,229,255,.35); background: rgba(10,4,30,.45);
+}
+.empty-state.hidden { display: none; }
+
+/* favorite star on cards */
+.fav-btn {
+  position: absolute; z-index: 3; top: 10px; right: 12px;
+  width: 36px; height: 36px; padding: 0;
+  border: 1px solid rgba(255,243,92,.45); border-radius: 50%;
+  background: rgba(5,1,15,.78); color: #8f88b8; cursor: pointer;
+  font-size: 16px; line-height: 1; backdrop-filter: blur(3px);
+  box-shadow: 0 0 10px rgba(0,0,0,.35);
+  transition: color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.fav-btn.on {
+  color: var(--c3); border-color: var(--c3);
+  text-shadow: 0 0 8px var(--c3); box-shadow: 0 0 14px rgba(255,243,92,.35);
+}
+.fav-btn:active { transform: scale(.92); }
+.fav-btn:focus-visible { outline: 2px solid var(--c1); outline-offset: 2px; }
+/* when lock/open state sits top-right, nudge it left of the star */
+.thumb .ov-tr { right: 52px; }
+
+/* settings panel */
+#view-settings {
+  max-width: 560px; margin: 0 auto; padding: 8px 16px 24px;
+}
+.settings-sheet {
+  padding: 18px 16px 22px;
+  background: linear-gradient(160deg, rgba(20,10,48,.9), rgba(8,3,22,.92));
+  border: 1px solid rgba(0,229,255,.4);
+  box-shadow: inset 0 0 24px rgba(0,229,255,.08), 0 0 22px rgba(255,43,214,.12);
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+.settings-sheet h2 {
+  margin: 0 0 14px; text-align: center;
+  font: 900 20px 'Orbitron', var(--zh); letter-spacing: 4px; color: #fff;
+  text-shadow: 0 0 10px var(--c1);
+}
+.set-block {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.set-block:first-of-type { border-top: 0; padding-top: 0; }
+.set-label {
+  display: block; font: 700 13px var(--zh); letter-spacing: 2px; color: var(--c1);
+  margin-bottom: 6px;
+}
+.set-hint { margin: 4px 0 10px; font-size: 12px; color: #8f88b8; line-height: 1.5; }
+.set-input {
+  width: 100%; min-height: 44px; padding: 10px 12px; margin-bottom: 8px;
+  color: #fff; background: rgba(5,1,15,.75);
+  border: 1px solid rgba(0,229,255,.45); font: 600 15px var(--zh);
+}
+.set-input:focus { outline: 2px solid var(--c2); outline-offset: 1px; }
+.set-btn {
+  width: 100%; min-height: 46px; padding: 0 14px;
+  font: 700 14px var(--zh); letter-spacing: 2px; color: #fff; cursor: pointer;
+  border: 1px solid var(--c1); background: rgba(0,229,255,.12);
+  box-shadow: 0 0 12px rgba(0,229,255,.2);
+}
+.set-btn[aria-pressed="true"] {
+  border-color: var(--c2); background: rgba(255,43,214,.16);
+  box-shadow: 0 0 14px rgba(255,43,214,.3);
+}
+.set-btn:focus-visible { outline: 2px solid var(--c3); outline-offset: 2px; }
+.set-tier { margin: 0; font: 900 18px 'Orbitron', var(--zh); color: #fff; letter-spacing: 2px; }
+.muted-tier .set-tier { color: var(--silver); }
+
+@media (max-width: 759px) {
+  .tabbar .tab { font-size: 10px; letter-spacing: .5px; min-height: 46px; }
+  .tabbar .tab .tab-ico { font-size: 15px; }
+  #view-settings { padding: 4px 12px 20px; }
+  header.hub-compact {
+    padding-bottom: 0;
+  }
+  header.hub-compact .sub,
+  header.hub-compact .ads-line { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tabbar .tab, .fav-btn { transition: none; }
+}

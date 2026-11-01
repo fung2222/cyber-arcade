@@ -27,7 +27,11 @@
       "endless": true,
       "tier": "free",
       "preview": "assets/previews/cyber-snake.webm",
-      "featured": true
+      "featured": true,
+      "tags": [
+        "arcade",
+        "action"
+      ]
     },
     {
       "id": "data-fuse",
@@ -54,7 +58,10 @@
       "endless": true,
       "tier": "free",
       "preview": "assets/previews/data-fuse.webm",
-      "featured": true
+      "featured": true,
+      "tags": [
+        "puzzle"
+      ]
     },
     {
       "id": "corrupt-pet",
@@ -83,7 +90,11 @@
       "i18n": true,
       "endless": true,
       "tier": "free",
-      "featured": true
+      "featured": true,
+      "tags": [
+        "pet",
+        "casual"
+      ]
     },
     {
       "id": "neon-recall",
@@ -109,7 +120,11 @@
       "i18n": true,
       "endless": true,
       "tier": "free",
-      "preview": "assets/previews/neon-recall.webm"
+      "preview": "assets/previews/neon-recall.webm",
+      "tags": [
+        "puzzle",
+        "memory"
+      ]
     },
     {
       "id": "cyber-mini-pack",
@@ -135,7 +150,11 @@
       "i18n": true,
       "endless": true,
       "tier": "free",
-      "preview": "assets/previews/cyber-mini-pack.webm"
+      "preview": "assets/previews/cyber-mini-pack.webm",
+      "tags": [
+        "casual",
+        "mini"
+      ]
     },
     {
       "id": "neon-stick-run",
@@ -176,7 +195,11 @@
           "en": "3 runs per day; stages 1–3 only and endless up to 800 m, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
       },
-      "preview": "assets/previews/neon-stick-run.webm"
+      "preview": "assets/previews/neon-stick-run.webm",
+      "tags": [
+        "runner",
+        "action"
+      ]
     },
     {
       "id": "cyber-ninja",
@@ -209,7 +232,11 @@
           "en": "3 runs per day; app build will cap each run at wave 5 (first boss)"
         }
       },
-      "preview": "assets/previews/cyber-ninja.webm"
+      "preview": "assets/previews/cyber-ninja.webm",
+      "tags": [
+        "shooter",
+        "action"
+      ]
     },
     {
       "id": "cyber-board",
@@ -242,7 +269,11 @@
           "en": "3 runs per day; app build will limit trials to AI levels 1–2 and tower floors 1–3"
         }
       },
-      "preview": "assets/previews/cyber-board.webm"
+      "preview": "assets/previews/cyber-board.webm",
+      "tags": [
+        "board",
+        "strategy"
+      ]
     },
     {
       "id": "cyber-tower",
@@ -283,7 +314,11 @@
           "en": "3 runs per day; campaign maps 1–2 only and endless up to wave 10, then an unlock prompt back to the hub (implemented in-game via trial=1)"
         }
       },
-      "preview": "assets/previews/cyber-tower.webm"
+      "preview": "assets/previews/cyber-tower.webm",
+      "tags": [
+        "tower",
+        "strategy"
+      ]
     },
     {
       "id": "neon-sort",
@@ -323,7 +358,11 @@
           "zh": "每日 3 局；只開放第 1–5 關，無盡模式分數閘門後彈解鎖提示（待完整實作）",
           "en": "3 runs per day; stages 1–5 only and endless until a score gate, then unlock prompt (full wiring pending)"
         }
-      }
+      },
+      "tags": [
+        "puzzle",
+        "casual"
+      ]
     },
     {
       "id": "neon-swarm",
@@ -362,7 +401,11 @@
           "zh": "每日 3 局；試玩約 8 分鐘／第一個精英里程碑後彈解鎖提示返大廳（待完整實作）",
           "en": "3 runs per day; trial ends around 8 min / first elite milestone, then unlock prompt (full wiring pending)"
         }
-      }
+      },
+      "tags": [
+        "survivor",
+        "action"
+      ]
     },
     {
       "id": "neon-stick-duel",
@@ -404,7 +447,11 @@
         }
       },
       "preview": "assets/previews/neon-stick-duel.webm",
-      "productSplit": "Standalone Google Play fighter (SF/KOF-style); NOT hub casual. See docs/PRODUCT-SPLIT.md + neon-stick-duel/docs/PRODUCT-SPLIT.md"
+      "productSplit": "Standalone Google Play fighter (SF/KOF-style); NOT hub casual. See docs/PRODUCT-SPLIT.md + neon-stick-duel/docs/PRODUCT-SPLIT.md",
+      "tags": [
+        "fighter",
+        "action"
+      ]
     }
   ],
   "retired": [

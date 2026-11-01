@@ -14,6 +14,52 @@ const NO_NAV = params.get('nonav') === '1';          // tests: record launches i
 const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
+// bottom tabs: browse | cats | favs | settings
+const FAV_KEY = 'cyber.arcade.favorites';
+const NAME_KEY = 'cyber.arcade.displayName';
+const MUTE_KEY = 'cyber.arcade.muted';
+let activeTab = 'browse';
+let activeTag = 'all';
+function readFavs() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    return Array.isArray(raw) ? raw.map(String) : [];
+  } catch { return []; }
+}
+function writeFavs(ids) {
+  try { localStorage.setItem(FAV_KEY, JSON.stringify([...new Set(ids)])); } catch { /* */ }
+}
+function isFav(id) { return readFavs().includes(id); }
+function toggleFav(id) {
+  const set = new Set(readFavs());
+  if (set.has(id)) set.delete(id); else set.add(id);
+  writeFavs([...set]);
+  return set.has(id);
+}
+function readDisplayName() {
+  try { return String(localStorage.getItem(NAME_KEY) || '').slice(0, 24); } catch { return ''; }
+}
+function writeDisplayName(name) {
+  try { localStorage.setItem(NAME_KEY, String(name || '').trim().slice(0, 24)); } catch { /* */ }
+}
+function readMuted() {
+  try { return localStorage.getItem(MUTE_KEY) === '1'; } catch { return false; }
+}
+function writeMuted(m) {
+  try { localStorage.setItem(MUTE_KEY, m ? '1' : '0'); } catch { /* */ }
+}
+function allTags() {
+  const s = new Set();
+  games.forEach((g) => (g.tags || []).forEach((t) => s.add(t)));
+  return [...s];
+}
+function gamesForView() {
+  if (activeTab === 'favs') return games.filter((g) => isFav(g.id));
+  if (activeTab === 'cats' && activeTag !== 'all') {
+    return games.filter((g) => (g.tags || []).includes(activeTag));
+  }
+  return games;
+}
 
 // ---------------------------------------------------------------- audio (SynthAudio — lazy on first user gesture)
 const reduceMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -23,9 +69,27 @@ function unlockAudio() {
   if (audioUnlocked) { hubAudio.init(); return; }
   audioUnlocked = true;
   hubAudio.init();
-  if (!reduceMotion() && !bgmStarted && hubAudio.ready) {
+  try { hubAudio.setMuted(readMuted()); } catch { /* */ }
+  if (!reduceMotion() && !bgmStarted && hubAudio.ready && !hubAudio.muted) {
     try { hubAudio.startMusic(); bgmStarted = true; } catch { /* autoplay / ctx */ }
   }
+}
+function applyMute(muted) {
+  writeMuted(!!muted);
+  try { hubAudio.setMuted(!!muted); } catch { /* */ }
+  if (!muted && audioUnlocked && !bgmStarted && !reduceMotion()) {
+    try { hubAudio.startMusic(); bgmStarted = true; } catch { /* */ }
+  }
+  if (muted && bgmStarted) {
+    try { hubAudio.stopMusic(0.2); bgmStarted = false; } catch { /* */ }
+  }
+  syncMuteBtn();
+}
+function syncMuteBtn() {
+  const b = $('btn-mute'); if (!b) return;
+  const muted = readMuted();
+  b.setAttribute('aria-pressed', muted ? 'true' : 'false');
+  b.textContent = muted ? t('settings.muteOn') : t('settings.muteOff');
 }
 function withConfirmThen(fn, btn) {
   unlockAudio();
@@ -158,16 +222,83 @@ function onPlay(id) {
 }
 
 // ---------------------------------------------------------------- list
+function renderCatBar() {
+  const bar = $('cat-bar'); if (!bar) return;
+  const show = activeTab === 'cats';
+  bar.classList.toggle('hidden', !show);
+  if (!show) return;
+  const tags = ['all', ...allTags()];
+  bar.innerHTML = tags.map((tag) => {
+    const label = tag === 'all' ? t('cat.all') : t('tag.' + tag);
+    const on = activeTag === tag ? ' active' : '';
+    return `<button type="button" class="cat-chip${on}" data-tag="${esc(tag)}">${esc(label)}</button>`;
+  }).join('');
+  bar.querySelectorAll('[data-tag]').forEach((b) => {
+    b.onclick = () => { activeTag = b.dataset.tag; render(); };
+  });
+}
+
+function renderSettings() {
+  const nameEl = $('profile-name');
+  if (nameEl && document.activeElement !== nameEl) {
+    nameEl.value = readDisplayName();
+    nameEl.placeholder = t('settings.namePlaceholder');
+  }
+  const st = $('settings-tier');
+  if (st && ent) st.textContent = tierName(ent.getTier());
+  syncMuteBtn();
+}
+
+function setTab(tab) {
+  if (!['browse', 'cats', 'favs', 'settings'].includes(tab)) tab = 'browse';
+  activeTab = tab;
+  if (tab !== 'cats') activeTag = 'all';
+  document.querySelectorAll('#tabbar .tab').forEach((b) => {
+    const on = b.dataset.tab === tab;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  const home = $('view-home');
+  const settings = $('view-settings');
+  const isSettings = tab === 'settings';
+  if (home) home.classList.toggle('hidden', isSettings);
+  if (settings) settings.classList.toggle('hidden', !isSettings);
+  const header = $('hub-header');
+  if (header) header.classList.toggle('hub-compact', tab === 'cats' || tab === 'favs' || tab === 'settings');
+  if (isSettings) renderSettings();
+  else render();
+}
+
 function render() {
   document.title = t('doc.title');
   const tier = ent ? ent.getTier() : 'free';
   $('tier-name').textContent = tierName(tier); $('tier-chip').dataset.tier = tier;
   $('btn-unlock').classList.toggle('hidden', tier === 'gold');
   $('ads-line').innerHTML = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
+  if (activeTab === 'settings') { renderSettings(); return; }
   if (!games.length || !ent) return;
+  renderCatBar();
   const list = $('list'); stopActivePreview(); list.innerHTML = '';
+  const visible = gamesForView();
+  const empty = $('empty-state');
+  const webNote = document.querySelector('#view-home .web-note');
+  if (!visible.length) {
+    if (empty) {
+      empty.classList.remove('hidden');
+      empty.textContent = activeTab === 'favs' ? t('fav.empty') : t('cats.empty');
+    }
+    if (webNote) webNote.classList.add('hidden');
+    setupTouchCenterPreview(list);
+    devMeta();
+    return;
+  }
+  if (empty) empty.classList.add('hidden');
+  if (webNote) webNote.classList.remove('hidden');
   const O = L() === 'zh' ? 'en' : 'zh';
-  games.forEach((g, i) => {
+  // Keep original catalog index for ranking polish (featured order from games.json)
+  const indexOf = new Map(games.map((g, i) => [g.id, i]));
+  visible.forEach((g) => {
+    const i = indexOf.get(g.id) ?? 0;
     const access = ent.hasAccess(g.id), paid = g.tier !== 'free';
     const left = ent.trialRemaining(g.id), max = ent.trialRuns(g.id);
     const state = !paid ? '' : access ? `<span class="state open">✓ ${esc(t('unlocked'))}</span>` : `<span class="state lock">🔒 ${esc(t('locked'))}</span>`;
@@ -176,14 +307,16 @@ function render() {
     const featPill = g.featured ? `<span class="state featured">${esc(t('featured'))}</span>` : '';
     const alt = g.thumbAlt?.[L()] || t('thumbAlt', { name: g.name[L()] });
     const preview = g.preview ? `<video muted loop playsinline preload="none" poster="${esc(g.thumb || '')}" aria-hidden="true"><source src="${esc(g.preview)}" type="video/webm">${g.previewMp4 ? `<source src="${esc(g.previewMp4)}" type="video/mp4">` : ''}</video>` : '';
+    const favOn = isFav(g.id);
+    const favBtn = `<button type="button" class="fav-btn${favOn ? ' on' : ''}" data-fav="${esc(g.id)}" aria-pressed="${favOn ? 'true' : 'false'}" aria-label="${esc(favOn ? t('fav.remove') : t('fav.add'))}">★</button>`;
     // Always keep the 16:9 thumb slot; missing thumb falls back to gradient (never omit the figure).
     const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}${g.thumb ? '' : ' no-img'}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
       <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${featPill}${wipPill}</div>
-      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}</figure>`;
+      ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${favBtn}</figure>`;
     const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
     const el = document.createElement('article');
-    el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}${g.featured ? ' featured' : ''}${g.productSplit ? ' standalone' : ''}`; el.dataset.game = g.id;
+    el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}${g.featured ? ' featured' : ''}${g.productSplit ? ' standalone' : ''}${favOn ? ' is-fav' : ''}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
     el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
@@ -196,6 +329,15 @@ function render() {
   setupTouchCenterPreview(list);
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => withConfirmThen(() => onPlay(b.dataset.play), b); });
   list.querySelectorAll('[data-unlock]').forEach((b) => { b.onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); }; });
+  list.querySelectorAll('[data-fav]').forEach((b) => {
+    b.onclick = (ev) => {
+      ev.stopPropagation();
+      unlockAudio();
+      try { hubAudio.click(); } catch {}
+      toggleFav(b.dataset.fav);
+      render();
+    };
+  });
   devMeta();
 }
 
@@ -323,6 +465,38 @@ $('dev').addEventListener('click', async (e) => {
 $('btn-unlock').onclick = () => openStore();
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('modal2') && !$('modal2').classList.contains('hidden')) return; closeSheet(); } });
 
+// sticky bottom tabs
+$('tabbar')?.querySelectorAll('[data-tab]').forEach((b) => {
+  b.addEventListener('click', () => {
+    unlockAudio();
+    try { hubAudio.click(); } catch {}
+    setTab(b.dataset.tab);
+  });
+});
+$('btn-mute')?.addEventListener('click', () => {
+  unlockAudio();
+  applyMute(!readMuted());
+});
+$('btn-save-profile')?.addEventListener('click', () => {
+  const v = ($('profile-name')?.value || '').trim().slice(0, 24);
+  writeDisplayName(v);
+  if ($('profile-name')) $('profile-name').value = v;
+  toast(t('settings.nameSaved'));
+});
+$('btn-restore-settings')?.addEventListener('click', () => { restore(); });
+$('btn-lang-settings')?.addEventListener('click', () => {
+  // reuse the same toggle control cyber-kit binds on #btn-lang
+  const main = $('btn-lang');
+  if (main) main.click();
+  else {
+    try { i18n.toggle(); } catch { /* */ }
+  }
+});
+// hydrate mute before first gesture where possible (setMuted applies once audio inits)
+try { if (readMuted()) hubAudio.muted = true; } catch { /* */ }
+syncMuteBtn();
+
+
 // a game's trial "unlock" button leaves {game, t} here and goes history.back() → open the unlock sheet (same origin, no hub path in game URLs)
 const RETURN_KEY = 'cyber.arcade.openStore';
 function checkReturnNote() {
@@ -335,8 +509,8 @@ window.addEventListener('pageshow', (e) => { if (e.persisted) checkReturnNote();
 
 // ---------------------------------------------------------------- boot
 i18n.bindToggle($('btn-lang'));
-i18n.onChange(() => { render(); if (storeOpen()) renderStore(); });
-window.__hub = { get ent() { return ent; }, get games() { return games; }, openStore, onPlay, lastLaunch: null };
+i18n.onChange(() => { if (activeTab === 'settings') renderSettings(); else render(); if (storeOpen()) renderStore(); syncMuteBtn(); });
+window.__hub = { get ent() { return ent; }, get games() { return games; }, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
 (async () => {
   try {
     const data = await (await fetch('./games.json', { cache: 'no-store' })).json();
