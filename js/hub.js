@@ -1,6 +1,6 @@
 // CYBER ARCADE hub — game list with tier badges, trials, store/unlock sheet, restore, hidden DEV panel.
 import { i18n, t } from '../vendor/cyber-kit/core/i18n.js';
-import { SynthAudio } from '../vendor/cyber-kit/audio/synth.js';
+import { SynthAudio, MUSIC } from '../vendor/cyber-kit/audio/synth.js';
 import './strings.js';
 import { createEntitlements, RANK } from './entitlements.js';
 import { createWebStubBackend } from './billing/web-stub.js';
@@ -15,7 +15,7 @@ const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
 // bottom tabs: profile | cats | browse | favs | settings
-const HUB_VERSION = '0.4.0'; // hub shell (About); per-game product versions live in games.json
+const HUB_VERSION = '0.5.0'; // hub shell (About); per-game product versions live in games.json
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
@@ -63,27 +63,113 @@ function gamesForView() {
 }
 
 // ---------------------------------------------------------------- audio (SynthAudio — lazy on first user gesture)
+// Hub BGM starts only on card dwell (not on hub load). Optional games.json bgm/previewAudio
+// plays at playbackRate 1.0; otherwise a kit music preset (drive/chill) at normal sequencer rate.
 const reduceMotion = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hubAudio = new SynthAudio({ music: 'chill', musicTrimDb: -4, sfxTrimDb: -2 });
 let audioUnlocked = false, bgmStarted = false;
+let cardBgmId = null;          // game id owning current card preview BGM
+let cardHtmlAudio = null;      // HTMLAudioElement when using file preview
+let cardHtmlFade = null;
+
 function unlockAudio() {
   if (audioUnlocked) { hubAudio.init(); return; }
   audioUnlocked = true;
   hubAudio.init();
   try { hubAudio.setMuted(readMuted()); } catch { /* */ }
-  if (!reduceMotion() && !bgmStarted && hubAudio.ready && !hubAudio.muted) {
-    try { hubAudio.startMusic(); bgmStarted = true; } catch { /* autoplay / ctx */ }
+  // intentionally no startMusic here — card dwell owns ambient/preview BGM
+}
+
+function musicPresetFor(g) {
+  const named = String(g?.music || '').toLowerCase();
+  if (named === 'drive' || named === 'chill') return named;
+  const tags = g?.tags || [];
+  if (tags.some((t) => ['action', 'runner', 'shooter', 'survivor', 'fighter', 'arcade'].includes(t))) return 'drive';
+  return 'chill';
+}
+
+function stopHtmlCardAudio(fadeSec = 0.2) {
+  const el = cardHtmlAudio;
+  if (!el) return;
+  cardHtmlAudio = null;
+  if (cardHtmlFade) { try { clearInterval(cardHtmlFade); } catch { /* */ } cardHtmlFade = null; }
+  const steps = Math.max(1, Math.round(fadeSec * 20));
+  let i = 0;
+  const startVol = el.volume;
+  cardHtmlFade = setInterval(() => {
+    i += 1;
+    el.volume = Math.max(0, startVol * (1 - i / steps));
+    if (i >= steps) {
+      clearInterval(cardHtmlFade); cardHtmlFade = null;
+      try { el.pause(); el.removeAttribute('src'); el.load(); } catch { /* */ }
+    }
+  }, 50);
+}
+
+function stopSynthCardBgm(fadeSec = 0.25) {
+  if (!bgmStarted) return;
+  try { hubAudio.stopMusic(fadeSec); } catch { /* */ }
+  bgmStarted = false;
+}
+
+function stopCardBgm(fadeSec = 0.25) {
+  cardBgmId = null;
+  stopHtmlCardAudio(fadeSec);
+  stopSynthCardBgm(fadeSec);
+}
+
+function startCardBgm(g) {
+  if (!g || readMuted() || reduceMotion()) return;
+  unlockAudio();
+  if (hubAudio.muted || readMuted()) return;
+  const id = g.id;
+  if (cardBgmId === id && (cardHtmlAudio || bgmStarted)) return;
+  // switch cards: stop previous, then play
+  stopCardBgm(0.18);
+  cardBgmId = id;
+  const url = String(g.bgm || g.previewAudio || '').trim();
+  if (url) {
+    try {
+      const el = new Audio(url);
+      el.loop = true;
+      el.preload = 'auto';
+      el.volume = 0;
+      try { el.playbackRate = 1; } catch { /* */ }
+      cardHtmlAudio = el;
+      const p = el.play();
+      if (p && p.catch) p.catch(() => { if (cardHtmlAudio === el) { cardHtmlAudio = null; cardBgmId = null; } });
+      // fade in ~0.25s at normal rate (never chipmunk / accelerated)
+      let i = 0;
+      const steps = 8;
+      cardHtmlFade = setInterval(() => {
+        i += 1;
+        if (cardHtmlAudio !== el) { clearInterval(cardHtmlFade); cardHtmlFade = null; return; }
+        el.volume = Math.min(0.85, i / steps * 0.85);
+        try { el.playbackRate = 1; } catch { /* */ }
+        if (i >= steps) { clearInterval(cardHtmlFade); cardHtmlFade = null; }
+      }, 40);
+    } catch {
+      cardBgmId = null;
+    }
+    return;
+  }
+  // No file clip yet — reuse kit SynthAudio music at normal rate (drive/chill).
+  try {
+    const preset = musicPresetFor(g);
+    hubAudio.preset = MUSIC[preset] || MUSIC.chill;
+    hubAudio.startMusic();
+    bgmStarted = true;
+  } catch {
+    cardBgmId = null;
+    bgmStarted = false;
   }
 }
+
 function applyMute(muted) {
   writeMuted(!!muted);
   try { hubAudio.setMuted(!!muted); } catch { /* */ }
-  if (!muted && audioUnlocked && !bgmStarted && !reduceMotion()) {
-    try { hubAudio.startMusic(); bgmStarted = true; } catch { /* */ }
-  }
-  if (muted && bgmStarted) {
-    try { hubAudio.stopMusic(0.2); bgmStarted = false; } catch { /* */ }
-  }
+  if (muted) stopCardBgm(0.15);
+  // unmute: wait for next card dwell — do not auto-restart hub music
   syncMuteBtn();
 }
 function syncMuteBtn() {
@@ -320,7 +406,8 @@ function render() {
   if (activeTab === 'profile') { renderProfile(); return; }
   if (!games.length || !ent) return;
   renderCatBar();
-  const list = $('list'); stopActivePreview(); list.innerHTML = '';
+  const list = $('list'); stopActivePreview();
+  list.innerHTML = '';
   const visible = gamesForView();
   const empty = $('empty-state');
   if (!visible.length) {
@@ -372,8 +459,17 @@ function render() {
     const thumb = `<figure class="thumb${g.preview ? ' has-preview' : ''}${g.thumb ? '' : ' no-img'}">${g.thumb ? `<img src="${esc(g.thumb)}" alt="${esc(alt)}" loading="lazy" decoding="async" width="640" height="360">` : ''}${preview}
       <div class="ov ov-tl"><span class="badge ${esc(g.tier)}">${esc(t('badge.' + g.tier))}</span>${featPill}${wipPill}</div>
       ${state ? `<div class="ov ov-tr">${state}</div>` : ''}${trial ? `<div class="ov ov-bl">${trial}</div>` : ''}${verOv}${favBtn}</figure>`;
-    const btn = access ? `<button data-play="${esc(g.id)}">${esc(t('play'))}</button>`
+    const btn = access ? `<button class="play-main" data-play="${esc(g.id)}">${esc(t('play'))}</button>`
       : `<button class="try" data-play="${esc(g.id)}">${esc(left ? t('tryIt') : t('trialNone'))}</button><button class="unl" data-unlock="${esc(g.id)}">🔒 ${esc(t('unlock'))}</button>`;
+    const howtoBtn = g.howto
+      ? `<button type="button" class="howto" data-howto="${esc(g.id)}">${esc(t('howto'))}</button>`
+      : '';
+    const demoBtn = g.demo
+      ? `<a class="demo" href="${esc(g.demo)}" rel="noopener">${esc(t('demo'))}</a>`
+      : '';
+    const sec = (howtoBtn || demoBtn)
+      ? `<div class="links links-sec">${howtoBtn}${demoBtn}</div>`
+      : '';
     const el = document.createElement('article');
     el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}${g.featured ? ' featured' : ''}${g.productSplit ? ' standalone' : ''}${favOn ? ' is-fav' : ''}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
@@ -381,9 +477,9 @@ function render() {
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
       <div class="genre">${softBreak(g.genre?.[L()])}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${softBreak(g.stage[L()])}</div>` : ''}
-      <div class="links">${btn}<button type="button" class="howto" data-howto="${esc(g.id)}">${esc(t('howto'))}</button>${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
+      <div class="links links-pri">${btn}</div>${sec}</div>`;
     list.appendChild(el);
-    wirePreview(el);
+    wirePreview(el, g);
   });
   setupTouchCenterPreview(list);
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => withConfirmThen(() => onPlay(b.dataset.play), b); });
@@ -420,30 +516,46 @@ const previewCtl = new WeakMap(); // card → { play, stop, activate }
 let previewIO = null;
 
 function stopActivePreview() {
-  if (!activePreviewCard) return;
+  if (!activePreviewCard) {
+    stopCardBgm(0.2);
+    return;
+  }
   const ctl = previewCtl.get(activePreviewCard);
   activePreviewCard = null;
   stickyPreview = false;
   if (ctl) ctl.stop();
+  else stopCardBgm(0.2);
 }
 
-function wirePreview(card) {
-  const fig = card.querySelector('.thumb.has-preview'); if (!fig) return;
-  const vid = fig.querySelector('video'); if (!vid) return;
+function wirePreview(card, game) {
+  const fig = card.querySelector('.thumb');
+  const hasVideo = !!(fig && fig.classList.contains('has-preview') && fig.querySelector('video'));
+  const vid = hasVideo ? fig.querySelector('video') : null;
   let playing = false;
-  const play = () => {
-    if (reduceMotion() || playing) return;
+  const playVideo = () => {
+    if (!vid || reduceMotion() || playing) return;
     playing = true; fig.classList.add('playing');
     try { vid.playbackRate = 1; } catch { /* older browsers */ }
     const p = vid.play(); if (p && p.catch) p.catch(() => { fig.classList.remove('playing'); playing = false; });
   };
-  const stop = () => {
+  const stopVideo = () => {
+    if (!vid) return;
     if (!playing && !fig.classList.contains('playing')) return;
     playing = false; fig.classList.remove('playing');
     try { vid.pause(); vid.currentTime = 0; } catch { /* */ }
   };
+  const play = () => {
+    playVideo();
+    startCardBgm(game);
+    card.classList.add('is-previewing');
+  };
+  const stop = () => {
+    stopVideo();
+    if (cardBgmId === game?.id) stopCardBgm(0.22);
+    card.classList.remove('is-previewing');
+  };
   const activate = () => {
-    if (reduceMotion()) return;
+    if (reduceMotion() && !game) return;
     if (activePreviewCard && activePreviewCard !== card) {
       const prev = previewCtl.get(activePreviewCard);
       if (prev) prev.stop();
@@ -454,28 +566,28 @@ function wirePreview(card) {
   };
   previewCtl.set(card, { play, stop, activate });
 
-  // Desktop / fine pointer: hover plays, leave pauses (unchanged behaviour).
+  // Desktop / fine pointer: hover plays, leave pauses.
   card.addEventListener('pointerenter', (e) => {
     if (e.pointerType === 'touch') return;
     play();
   });
   card.addEventListener('pointerleave', (e) => {
     if (e.pointerType === 'touch') return;
-    // Mouse leave always ends hover preview; clears sticky if this was the active card.
     if (activePreviewCard === card) { activePreviewCard = null; stickyPreview = false; }
     stop();
   });
   card.addEventListener('focusin', play);
   card.addEventListener('focusout', (e) => {
     if (card.contains(e.relatedTarget)) return;
-    // Sticky touch/coarse preview keeps playing after blur (no hover to re-trigger).
     if (activePreviewCard === card && stickyPreview) return;
     stop();
   });
 
-  // Phones / coarse pointer: tap/press sets this card as the active preview.
+  // Phones / coarse pointer: tap/press sets this card as the active preview (video + BGM).
+  // Does not steal the Play button — buttons stopPropagation via their own handlers.
   card.addEventListener('pointerdown', (e) => {
     if (e.pointerType !== 'touch' && !coarsePointer()) return;
+    if (e.target.closest('button, a')) return;
     activate();
   }, { passive: true });
 }
