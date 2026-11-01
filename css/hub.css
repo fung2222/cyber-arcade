@@ -228,13 +228,9 @@ button.btn-press {
   border-color: rgba(0,229,255,.95);
   box-shadow: inset 0 0 32px rgba(0,229,255,.18), 0 0 28px rgba(255,43,214,.4), 0 0 26px rgba(0,229,255,.5), 0 12px 28px rgba(0,0,0,.35);
 }
-.card.featured .links button:not(.try):not(.unl) {
-  min-height: 48px;
-  font-size: 14px;
-  letter-spacing: 3px;
+.card.featured .links-pri .play-main {
   border-color: var(--c1);
   background: linear-gradient(90deg, rgba(0,229,255,.22), rgba(255,43,214,.16));
-  box-shadow: 0 0 16px rgba(0,229,255,.35), 0 0 12px rgba(255,43,214,.2);
 }
 /* Standalone fighter (product split): still listed for discovery, visually quieter */
 .card.standalone {
@@ -277,8 +273,8 @@ button.btn-press {
   .name { font-size: 22px; }
   .links, .links-pri { gap: 6px; margin-top: 10px; }
   .links-pri .play-main, .links-pri .try, .links-pri .unl { min-height: 46px; }
-  .links-pri .howto, .links-pri .demo { min-height: 34px; padding: 6px 10px; font-size: 11px; }
-  .card.featured .links-pri .play-main { min-height: 50px; }
+  .links-pri .howto, .links-pri .demo { min-height: 46px; padding: 10px 8px; font-size: 13px; }
+  .card.featured .links-pri .play-main { min-height: 46px; }
   .web-note { margin-top: 6px; padding: 0 14px; }
   footer { padding-top: 8px; }
 }
@@ -613,10 +609,10 @@ footer {
   margin-top: auto; padding-top: 14px;
 }
 .links-pri .play-main {
-  flex: 1 1 auto;
-  min-width: min(100%, 120px);
+  flex: 1.6 1 auto;
+  min-width: min(100%, 110px);
   min-height: 48px;
-  font-size: 14px; letter-spacing: 3px;
+  font-size: 13px; letter-spacing: 1px;
   border-color: var(--c1);
   background: linear-gradient(180deg, rgba(0,229,255,.22), rgba(0,229,255,.08));
   box-shadow: 0 0 16px rgba(0,229,255,.35), inset 0 0 12px rgba(0,229,255,.08);
@@ -626,16 +622,16 @@ footer {
 /* Secondary: 教學／示範 share compact chrome; accent color may differ */
 .links.links-pri > .howto,
 .links.links-pri > .demo {
-  flex: 0 0 auto;
-  min-height: 36px;
-  padding: 6px 12px;
-  font-size: 11px;
+  flex: 1 1 0;
+  min-width: 64px;
+  min-height: 48px;
+  padding: 10px 8px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   line-height: 1.2;
-  box-shadow: none;
+  white-space: nowrap;
   align-self: center;
-  border-radius: 2px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -647,14 +643,16 @@ footer {
   border-color: rgba(255,43,214,.55);
   background: rgba(255,43,214,.08);
   color: #ffb8ec;
+  box-shadow: 0 0 10px rgba(255,43,214,.25);
 }
 .links-pri .demo {
   border-color: rgba(0,229,255,.55);
   background: rgba(0,229,255,.08);
   color: #9ef6ff;
+  box-shadow: 0 0 10px rgba(0,229,255,.25);
 }
 .card.featured .links-pri .play-main {
-  min-height: 52px;
+  min-height: 48px;
   box-shadow: 0 0 20px rgba(0,229,255,.45), inset 0 0 14px rgba(0,229,255,.1);
 }
 .howto-list {
