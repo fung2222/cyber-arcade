@@ -518,3 +518,25 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .tabbar .tab, .tabbar .tab-fab .tab-fab-core, .fav-btn { transition: none; }
 }
+
+
+/* About (Settings) + per-game howto */
+.about-blurb {
+  margin: 8px 0 0; font-size: 13px; line-height: 1.7; color: #cfc8ff;
+  text-wrap: pretty;
+}
+.about-meta {
+  margin: 10px 0 0; font: 700 11px 'Orbitron', var(--zh); letter-spacing: 1.5px;
+  color: #9ef6ff; text-shadow: 0 0 8px rgba(0,229,255,.35);
+}
+.links .howto {
+  flex: 0 0 auto; padding: 10px 12px;
+  border-color: rgba(255,43,214,.55); background: rgba(255,43,214,.08);
+  box-shadow: 0 0 10px rgba(255,43,214,.18);
+  font-size: 12px; letter-spacing: 1px;
+}
+.howto-list {
+  margin: 14px 0 8px; padding-left: 18px;
+  font-size: 14px; line-height: 1.7; color: #cfc8ff; text-align: left;
+}
+.howto-list li { margin: 0 0 8px; }

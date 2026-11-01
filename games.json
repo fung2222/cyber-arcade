@@ -32,7 +32,11 @@
       "tags": [
         "arcade",
         "action"
-      ]
+      ],
+      "howto": {
+        "zh": "• 滑動或方向鍵轉向；唔可以 180° 掉頭\n• 食數據核長大，快速連食有連擊\n• Shift／B／衝刺掣：短爆發加速（有冷卻）\n• 食夠本關目標就升級；之後係無盡，背景主題會換\n• H 開關食物方向提示；P／Esc 暫停",
+        "en": "• Swipe or arrow keys to turn (no 180° reverse)\n• Eat data cores to grow; quick chains score combos\n• Shift / B / BOOST for a short dash (cooldown)\n• Hit the level target to rank up; then endless with theme swaps\n• H toggles food-direction hint; P / Esc pauses"
+      }
     },
     {
       "id": "data-fuse",
@@ -63,7 +67,11 @@
       "featured": true,
       "tags": [
         "puzzle"
-      ]
+      ],
+      "howto": {
+        "zh": "• 任意位置滑動（或方向鍵／WASD）推晒所有方塊\n• 相同數字相撞就熔合成雙倍\n• 慢慢諗，冇時間限制；卡住可用復原\n• 長按滑動／脈衝掣／X：脈衝熔合相鄰同號\n• 熔出高倍數會換區域，永遠有下一個目標",
+        "en": "• Swipe anywhere (or arrows / WASD) to slide every cube\n• Equal numbers merge into double\n• No timer — think calmly; use Undo when stuck\n• Hold swipe / pulse / X for adjacent-only pulse merge\n• High merges open new zones; there is always a next goal"
+      }
     },
     {
       "id": "corrupt-pet",
@@ -98,7 +106,11 @@
       "tags": [
         "pet",
         "casual"
-      ]
+      ],
+      "howto": {
+        "zh": "• 撳罪晶蛋孵化，之後用行動養一隻邪惡電子寵\n• 留意五條錶：飢餓、穩定、過熱、忠誠、故障\n• 餵食／忽視／注入／接駁／懲罰會推高唔同路線\n• 忠誠穩 → 企業工蜂；故障餓 → 街頭病毒\n• 離線都會慢慢變化；熔掉可以再孵",
+        "en": "• Tap the sin-chip egg to hatch, then tend an evil cyber pet\n• Watch five meters: hunger, stability, heat, loyalty, glitch\n• Feed / Neglect / Inject / Jack-in / Punish steer the fork\n• Loyalty+stability → Corporate Drone; glitch+hunger → Street Virus\n• It simmers offline; melt fail lets you re-hatch"
+      }
     },
     {
       "id": "neon-recall",
@@ -129,7 +141,11 @@
       "tags": [
         "puzzle",
         "memory"
-      ]
+      ],
+      "howto": {
+        "zh": "• 開關會短暫預覽全部卡，記住先再翻\n• 撳兩張一樣就配對；連擊有加分\n• 冇時間限制；失誤越少星星越多\n• 透視可短暫睇晒牌；長按透視＝超載透視\n• 後段關卡會有錯亂／修飾器，保持冷靜",
+        "en": "• Each level previews every card briefly — memorise, then flip\n• Match two identical cards; streaks boost score\n• No timer; fewer misses mean more stars\n• Peek shows all cards briefly; hold Peek for Overload Peek\n• Later levels add scramble modifiers — stay calm"
+      }
     },
     {
       "id": "cyber-mini-pack",
@@ -160,7 +176,11 @@
       "tags": [
         "casual",
         "mini"
-      ]
+      ],
+      "howto": {
+        "zh": "• 一個 App 三個模式：包剪揼、過三關、神經反射\n• 包剪揼：出招對 AI；小心假訊號，可長按下注\n• 過三關：你係 ✕；打和都過關，後段有舞台修飾\n• 神經反射：綠先撳、洋紅唔好撳；留意三跑道同按住鬆手\n• 每個模式都有無盡挑戰",
+        "en": "• Three modes in one app: RPS, Tic-Tac-Toe ladder, Reaction\n• RPS: beat AI tells; watch Fake Tell; hold to wager\n• Tic-Tac-Toe: you are X; draws clear stages; later stage mods\n• Reaction: tap green, skip magenta; tri-lane + hold-release rounds\n• Each mode has an endless climb"
+      }
     },
     {
       "id": "neon-stick-run",
@@ -206,7 +226,11 @@
       "tags": [
         "runner",
         "action"
-      ]
+      ],
+      "howto": {
+        "zh": "• 角色自動向前跑，單手操作\n• 撳／上掃＝跳（長按更高；半空再撳＝二段跳）\n• 下掃＝滑鏟；右掃＝衝刺／飛踢可撞無人機\n• 自動跨越矮箱；廣告牆可走壁；鈎點可擺盪\n• 關卡攞星，或者跑無盡衝距離",
+        "en": "• Auto-run forward; one-thumb controls\n• Tap / swipe ↑ to jump (hold higher; mid-air = double jump)\n• Swipe ↓ slide; swipe → dash / kick drones\n• Auto-step low boxes; wall-run ads; swing on hooks\n• Clear staged maps for stars, or go endless for distance"
+      }
     },
     {
       "id": "cyber-ninja",
@@ -244,7 +268,11 @@
       "tags": [
         "shooter",
         "action"
-      ]
+      ],
+      "howto": {
+        "zh": "• 任意位置拖動移動；忍者會自動開火\n• 打敵機儲能量，撳「居合斬」清彈幕兼重創巨獸\n• 拾取 P 火力、S 護盾、E 能量\n• 每 5 波打星海魔獸；護盾歸零就失敗（可復活一次）\n• 無盡波數一直有下一個挑戰",
+        "en": "• Drag anywhere to move; the ninja auto-fires\n• Build energy, then Iai Slash to clear bullets and hurt bosses\n• Pick up P power, S shield, E energy\n• Boss every 5 waves; shield zero fails the run (one revive)\n• Endless waves keep raising the next challenge"
+      }
     },
     {
       "id": "cyber-board",
@@ -282,7 +310,11 @@
       "tags": [
         "board",
         "strategy"
-      ]
+      ],
+      "howto": {
+        "zh": "• 揀棋種：國際象棋、象棋、黑白棋、飛行棋\n• 撳棋子再撳目標格（綠＝可走，紅＝可食）\n• 飛行棋撳擲骰；對決動畫可撳跳過\n• 單指拖相機旋轉，捏合縮放\n• 每款棋都有無盡之塔同 AI 對手",
+        "en": "• Pick Chess, Xiangqi, Flip, or Sky Race\n• Tap a piece, then a legal square (green move / red capture)\n• Sky Race uses the dice button; tap to skip capture cinema\n• Drag to orbit the camera; pinch to zoom\n• Each game has an Endless Tower vs stronger AI"
+      }
     },
     {
       "id": "cyber-tower",
@@ -328,7 +360,11 @@
       "tags": [
         "tower",
         "strategy"
-      ]
+      ],
+      "howto": {
+        "zh": "• 病毒沿數據通道衝向核心，核心歸零就失守\n• 點發光格起塔；再點塔升級或出售\n• 五種塔：激光、冷凍、導彈、電弧、超頻節點\n• 可 1×／2× 加速；提早召喚下一波有獎\n• 戰役 8 圖攞星，或打無盡波數",
+        "en": "• Viruses rush the core along data lanes — core HP zero loses\n• Tap a lit pad to build; tap a tower to upgrade or sell\n• Five towers: laser, freeze, missile, arc, overclock node\n• Use 1×/2× speed; early-call the next wave for a bonus\n• Campaign maps for stars, or endless waves"
+      }
     },
     {
       "id": "neon-sort",
@@ -373,7 +409,11 @@
       "tags": [
         "puzzle",
         "casual"
-      ]
+      ],
+      "howto": {
+        "zh": "• 拖霓虹磚／彩球去正確管道堆疊歸位\n• 合法落點會亮綠環；非法會閃震\n• 清晒目標就過關；有悔棋同重開\n• 12 關之後係無盡模式\n• 手機請用較大觸控，慢慢堆",
+        "en": "• Drag neon bricks / orbs into the right pipes to stack-clear\n• Valid drops show a green ring; illegal moves flash\n• Clear the board to win; Undo and Restart are available\n• 12 stages, then endless\n• Use larger hit targets on phone — stack patiently"
+      }
     },
     {
       "id": "neon-swarm",
@@ -417,7 +457,11 @@
       "tags": [
         "survivor",
         "action"
-      ]
+      ],
+      "howto": {
+        "zh": "• 選一款失控機甲，生存實驗室同軍隊嘅追捕\n• 虛擬搖桿移動；自動／技能武器清敵人\n• 拾取 X 經驗、H 修復、武器升級方塊\n• 完成 HUD 合約擊殺目標攞分\n• 存活越耐，來襲單位級別越高（目前 tip HOLD）",
+        "en": "• Pick a runaway mech and survive the lab’s hunt\n• Move with the virtual stick; weapons clear hunters\n• Pick up X XP, H repair, and weapon upgrade cubes\n• Finish HUD contract kill goals for score\n• Longer runs draw higher-tier enemies (live tip on HOLD)"
+      }
     },
     {
       "id": "neon-stick-duel",
@@ -464,7 +508,11 @@
       "tags": [
         "fighter",
         "action"
-      ]
+      ],
+      "howto": {
+        "zh": "• 揀職業：劍士／魔法師／拳師／刺客\n• 左搖桿走位；右掣攻擊連段、技能、跳、防禦\n• 攻擊連撳出 3–4 下；儲滿能量放必殺\n• 防禦＋方向＝閃避；空中可二段跳\n• 階梯十戰或無盡塔往上打",
+        "en": "• Pick Swordsman, Mage, Brawler, or Assassin\n• Left stick moves; right cluster: attack string, skills, jump, guard\n• Mash attack for 3–4 hits; fill the meter for Ult\n• Guard + direction = dodge; double-jump in air\n• Climb the 10-fight ladder or Endless Tower"
+      }
     }
   ],
   "retired": [

@@ -15,6 +15,7 @@ const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
 // bottom tabs: profile | cats | browse | favs | settings
+const HUB_VERSION = '0.4.0'; // hub shell (About); per-game product versions live in games.json
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
@@ -214,6 +215,25 @@ function openTrial(g) {
   };
   s.querySelector('#tr-unlock').onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); };
 }
+
+function openHowto(g) {
+  const body = (g.howto && g.howto[L()]) || '';
+  if (!body) { toast(t('howto')); return; }
+  const items = String(body).split(/\n+/).map((line) => line.trim()).filter(Boolean)
+    .map((line) => `<li>${esc(line.replace(/^[•\-\*]\s*/, ''))}</li>`).join('');
+  const s = openSheet(`<h2>${esc(t('howtoTitle', { name: g.name[L()] }))}</h2>
+    <ul class="howto-list">${items}</ul>
+    <div class="row"><button class="ghost" id="howto-close">${esc(t('close'))}</button>
+    <button id="howto-play">${esc(ent && ent.hasAccess(g.id) ? t('play') : t('tryIt'))}</button></div>`);
+  $('modal').dataset.kind = 'howto';
+  s.querySelector('#howto-close').onclick = () => closeSheet();
+  s.querySelector('#howto-play').onclick = (ev) => {
+    const btn = ev.currentTarget;
+    closeSheet();
+    withConfirmThen(() => onPlay(g.id), btn);
+  };
+}
+
 function onPlay(id) {
   const g = games.find((x) => x.id === id); if (!g) return;
   if (ent.hasAccess(id)) return launch(g);
@@ -260,6 +280,12 @@ function renderProfile() {
 
 function renderSettings() {
   syncMuteBtn();
+  try { i18n.apply($('view-settings') || document); } catch { /* */ }
+  const meta = $('about-meta');
+  if (meta) {
+    const updated = window.__hub?.catalogUpdated || '—';
+    meta.textContent = t('about.meta', { hub: 'v' + HUB_VERSION, updated });
+  }
 }
 
 function setTab(tab) {
@@ -355,7 +381,7 @@ function render() {
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
       <div class="genre">${softBreak(g.genre?.[L()])}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${softBreak(g.stage[L()])}</div>` : ''}
-      <div class="links">${btn}${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
+      <div class="links">${btn}<button type="button" class="howto" data-howto="${esc(g.id)}">${esc(t('howto'))}</button>${g.demo ? `<a class="demo" href="${esc(g.demo)}">${esc(t('demo'))}</a>` : ''}</div></div>`;
     list.appendChild(el);
     wirePreview(el);
   });
@@ -369,6 +395,15 @@ function render() {
       try { hubAudio.click(); } catch {}
       toggleFav(b.dataset.fav);
       render();
+    };
+  });
+  list.querySelectorAll('[data-howto]').forEach((b) => {
+    b.onclick = (ev) => {
+      ev.stopPropagation();
+      unlockAudio();
+      try { hubAudio.click(); } catch {}
+      const g = games.find((x) => x.id === b.dataset.howto);
+      if (g) openHowto(g);
     };
   });
   devMeta();
@@ -544,7 +579,7 @@ i18n.onChange(() => {
   if (storeOpen()) renderStore();
   syncMuteBtn();
 });
-window.__hub = { get ent() { return ent; }, get games() { return games; }, catalogUpdated: null, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
+window.__hub = { get ent() { return ent; }, get games() { return games; }, hubVersion: HUB_VERSION, catalogUpdated: null, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
 (async () => {
   try {
     const data = await (await fetch('./games.json', { cache: 'no-store' })).json();

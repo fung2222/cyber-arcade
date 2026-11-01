@@ -80,5 +80,11 @@ i18n.add({
   'settings.langToggle': ['切換語言 中／EN', 'Switch language 中 / EN'],
   'settings.billing': ['購買', 'Purchases'],
   'settings.restoreHint': ['恢復 Google Play 購買（網頁版為模擬）。', 'Restore Google Play purchases (simulated on web).'],
+  'about.title': ['關於', 'ABOUT'],
+  'about.body': ['CYBER ARCADE 係一座會持續升級嘅賽博街機館：每隻短篇遊戲都有自己嘅版本號，會一路改、一路好。免費／銀級／金級係一次性解鎖（唔係訂閱）。唔同遊戲可以交俾唔同嘅建造者／AI 打理，但共用同一套霓虹美術聖經。Google Play 路線會係一個館殼 App，入面繼續更新目錄同各遊戲。', 'CYBER ARCADE is a living hub of short cyberpunk games. Each title carries its own version and keeps improving. Free / Silver / Gold are one-time unlocks — not a subscription. Different games can be tended by different builders or AIs under one neon art bible. The Google Play path is a hub shell app that keeps shipping catalog and per-game updates.'],
+  'about.meta': ['館殼 {hub} · 目錄更新 {updated}', 'Hub shell {hub} · catalog updated {updated}'],
+  'about.restoreCue': ['已購買可用上面嘅「恢復購買」取回（網頁版為模擬）。', 'Use Restore purchases above if you already unlocked (simulated on web).'],
+  'howto': ['教學', 'HOW TO'],
+  'howtoTitle': ['{name} · 教學', '{name} · How to play'],
 });
 export { i18n };
