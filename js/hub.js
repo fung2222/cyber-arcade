@@ -14,7 +14,7 @@ const NO_NAV = params.get('nonav') === '1';          // tests: record launches i
 const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
-// bottom tabs: browse | cats | favs | settings
+// bottom tabs: profile | cats | browse | favs | settings
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
@@ -238,19 +238,36 @@ function renderCatBar() {
   });
 }
 
-function renderSettings() {
+function syncTierChrome(tier) {
+  const name = tierName(tier);
+  const chip = $('tier-chip');
+  const tn = $('tier-name');
+  if (tn) tn.textContent = name;
+  if (chip) chip.dataset.tier = tier;
+  const tabTier = $('tab-tier');
+  if (tabTier) {
+    tabTier.textContent = name;
+    tabTier.dataset.tier = tier;
+  }
+  const unlock = $('btn-unlock');
+  if (unlock) unlock.classList.toggle('hidden', tier === 'gold');
+}
+
+function renderProfile() {
   const nameEl = $('profile-name');
   if (nameEl && document.activeElement !== nameEl) {
     nameEl.value = readDisplayName();
     nameEl.placeholder = t('settings.namePlaceholder');
   }
-  const st = $('settings-tier');
-  if (st && ent) st.textContent = tierName(ent.getTier());
+  if (ent) syncTierChrome(ent.getTier());
+}
+
+function renderSettings() {
   syncMuteBtn();
 }
 
 function setTab(tab) {
-  if (!['browse', 'cats', 'favs', 'settings'].includes(tab)) tab = 'browse';
+  if (!['browse', 'cats', 'favs', 'settings', 'profile'].includes(tab)) tab = 'browse';
   activeTab = tab;
   if (tab !== 'cats') activeTag = 'all';
   document.querySelectorAll('#tabbar .tab').forEach((b) => {
@@ -260,22 +277,27 @@ function setTab(tab) {
   });
   const home = $('view-home');
   const settings = $('view-settings');
+  const profile = $('view-profile');
   const isSettings = tab === 'settings';
-  if (home) home.classList.toggle('hidden', isSettings);
+  const isProfile = tab === 'profile';
+  if (home) home.classList.toggle('hidden', isSettings || isProfile);
   if (settings) settings.classList.toggle('hidden', !isSettings);
+  if (profile) profile.classList.toggle('hidden', !isProfile);
   const header = $('hub-header');
-  if (header) header.classList.toggle('hub-compact', tab === 'cats' || tab === 'favs' || tab === 'settings');
+  if (header) header.classList.toggle('hub-compact', tab === 'cats' || tab === 'favs' || tab === 'settings' || tab === 'profile');
   if (isSettings) renderSettings();
+  else if (isProfile) renderProfile();
   else render();
 }
 
 function render() {
   document.title = t('doc.title');
   const tier = ent ? ent.getTier() : 'free';
-  $('tier-name').textContent = tierName(tier); $('tier-chip').dataset.tier = tier;
-  $('btn-unlock').classList.toggle('hidden', tier === 'gold');
-  $('ads-line').innerHTML = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
+  syncTierChrome(tier);
+  const ads = $('ads-line');
+  if (ads) ads.innerHTML = ent && ent.adsEnabled() ? t('adsOn') : t('adsOff');
   if (activeTab === 'settings') { renderSettings(); return; }
+  if (activeTab === 'profile') { renderProfile(); return; }
   if (!games.length || !ent) return;
   renderCatBar();
   const list = $('list'); stopActivePreview(); list.innerHTML = '';
@@ -485,12 +507,7 @@ $('btn-save-profile')?.addEventListener('click', () => {
 });
 $('btn-restore-settings')?.addEventListener('click', () => { restore(); });
 $('btn-lang-settings')?.addEventListener('click', () => {
-  // reuse the same toggle control cyber-kit binds on #btn-lang
-  const main = $('btn-lang');
-  if (main) main.click();
-  else {
-    try { i18n.toggle(); } catch { /* */ }
-  }
+  try { i18n.toggle(); } catch { /* */ }
 });
 // hydrate mute before first gesture where possible (setMuted applies once audio inits)
 try { if (readMuted()) hubAudio.muted = true; } catch { /* */ }
@@ -508,8 +525,14 @@ function checkReturnNote() {
 window.addEventListener('pageshow', (e) => { if (e.persisted) checkReturnNote(); });
 
 // ---------------------------------------------------------------- boot
-i18n.bindToggle($('btn-lang'));
-i18n.onChange(() => { if (activeTab === 'settings') renderSettings(); else render(); if (storeOpen()) renderStore(); syncMuteBtn(); });
+// language toggle lives in Settings only (no homepage top-right 中/英)
+i18n.onChange(() => {
+  if (activeTab === 'settings') renderSettings();
+  else if (activeTab === 'profile') renderProfile();
+  else render();
+  if (storeOpen()) renderStore();
+  syncMuteBtn();
+});
 window.__hub = { get ent() { return ent; }, get games() { return games; }, openStore, onPlay, lastLaunch: null, setTab, get tab() { return activeTab; }, get favs() { return readFavs(); } };
 (async () => {
   try {

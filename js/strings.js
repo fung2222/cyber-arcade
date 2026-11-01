@@ -39,11 +39,14 @@ i18n.add({
   'status.wip': ['製作中', 'IN PROGRESS'],
   featured: ['精選', 'PICK'],
   trialOver: ['「{name}」試玩到此為止。解鎖{tier}就可以玩晒全部地圖同無盡模式。', 'That is the end of the "{name}" trial. Unlock {tier} to play every map and the full endless mode.'],
-  // bottom tab bar + settings / favorites / categories
-  'tab.browse': ['瀏覽', 'Browse'],
+  // bottom tab bar + profile / settings / favorites / categories
+  'tab.profile': ['級別', 'Tier'],
+  'tab.browse': ['遊戲瀏覽', 'Games'],
   'tab.cats': ['分類', 'Categories'],
   'tab.favs': ['最愛', 'Favorites'],
   'tab.settings': ['設定', 'Settings'],
+  'profile.title': ['個人帳號', 'ACCOUNT'],
+  'profile.tierHint': ['撳級別可開解鎖頁；連撳七下開 DEV 工具。', 'Tap tier to open unlocks; tap 7× for DEV tools.'],
   'cat.all': ['全部', 'All'],
   'tag.arcade': ['街機', 'Arcade'],
   'tag.action': ['動作', 'Action'],

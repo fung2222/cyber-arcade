@@ -12,13 +12,6 @@
 <link rel="stylesheet" href="css/hub.css">
 </head>
 <body>
-<nav class="topbar" aria-label="Tier · language">
-  <div class="tierbar">
-    <button class="tier-chip" id="tier-chip" aria-haspopup="dialog"><span data-i18n="yourTier"></span> <b id="tier-name">—</b></button>
-    <button class="unlock-btn" id="btn-unlock"><span data-i18n="unlock"></span></button>
-  </div>
-  <button class="lang-btn" id="btn-lang" aria-label="Language / 語言"></button>
-</nav>
 <header id="hub-header">
   <div class="kicker" data-i18n="kicker"></div>
   <h1>CYBER ARCADE</h1>
@@ -26,7 +19,7 @@
   <div class="ads-line" id="ads-line"></div>
 </header>
 
-<!-- tab panels: browse / categories / favorites share the game grid; settings is its own view -->
+<!-- tab panels: browse / categories / favorites share the game grid; profile + settings are own views -->
 <section id="view-home" class="hub-view" data-view="browse">
   <div class="cat-bar hidden" id="cat-bar" role="toolbar" aria-label="Categories"></div>
   <main id="list"><div class="err" data-i18n="loading"></div></main>
@@ -35,15 +28,27 @@
   <footer data-i18n="footer"></footer>
 </section>
 
-<section id="view-settings" class="hub-view hidden" data-view="settings" aria-label="Settings">
-  <div class="settings-sheet">
-    <h2 data-i18n="settings.title"></h2>
+<section id="view-profile" class="hub-view hidden" data-view="profile" aria-label="Profile">
+  <div class="settings-sheet profile-sheet">
+    <h2 data-i18n="profile.title"></h2>
+    <div class="set-block">
+      <div class="set-label" data-i18n="yourTier"></div>
+      <button type="button" class="tier-chip profile-tier" id="tier-chip" aria-haspopup="dialog"><span data-i18n="yourTier"></span> <b id="tier-name">—</b></button>
+      <p class="set-hint" data-i18n="profile.tierHint"></p>
+      <button type="button" class="unlock-btn profile-unlock" id="btn-unlock"><span data-i18n="unlock"></span></button>
+    </div>
     <div class="set-block">
       <label class="set-label" for="profile-name" data-i18n="settings.profile"></label>
       <p class="set-hint" data-i18n="settings.profileHint"></p>
       <input id="profile-name" class="set-input" type="text" maxlength="24" autocomplete="nickname" spellcheck="false">
       <button type="button" id="btn-save-profile" class="set-btn" data-i18n="settings.saveName"></button>
     </div>
+  </div>
+</section>
+
+<section id="view-settings" class="hub-view hidden" data-view="settings" aria-label="Settings">
+  <div class="settings-sheet">
+    <h2 data-i18n="settings.title"></h2>
     <div class="set-block">
       <div class="set-label" data-i18n="settings.audio"></div>
       <button type="button" id="btn-mute" class="set-btn" aria-pressed="false"></button>
@@ -57,25 +62,30 @@
       <button type="button" id="btn-restore-settings" class="set-btn" data-i18n="restore"></button>
       <p class="set-hint" data-i18n="settings.restoreHint"></p>
     </div>
-    <div class="set-block muted-tier">
-      <div class="set-label" data-i18n="yourTier"></div>
-      <p class="set-tier"><b id="settings-tier">—</b></p>
-    </div>
   </div>
 </section>
 
+<!-- 5-slot hub bar: profile · cats · browse FAB · favs · settings -->
 <nav class="tabbar" id="tabbar" role="tablist" aria-label="Hub navigation">
-  <button type="button" role="tab" class="tab active" data-tab="browse" aria-selected="true" id="tab-browse">
-    <span class="tab-ico" aria-hidden="true">▣</span><span class="tab-label" data-i18n="tab.browse"></span>
+  <button type="button" role="tab" class="tab tab-profile" data-tab="profile" aria-selected="false" id="tab-profile">
+    <span class="tab-ico tab-tier" id="tab-tier" aria-hidden="true">—</span>
+    <span class="tab-label" data-i18n="tab.profile"></span>
   </button>
   <button type="button" role="tab" class="tab" data-tab="cats" aria-selected="false" id="tab-cats">
-    <span class="tab-ico" aria-hidden="true">▤</span><span class="tab-label" data-i18n="tab.cats"></span>
+    <span class="tab-ico" aria-hidden="true">▤</span>
+    <span class="tab-label" data-i18n="tab.cats"></span>
+  </button>
+  <button type="button" role="tab" class="tab tab-fab active" data-tab="browse" aria-selected="true" id="tab-browse">
+    <span class="tab-fab-core" aria-hidden="true"><span class="tab-fab-ico">▣</span></span>
+    <span class="tab-label" data-i18n="tab.browse"></span>
   </button>
   <button type="button" role="tab" class="tab" data-tab="favs" aria-selected="false" id="tab-favs">
-    <span class="tab-ico" aria-hidden="true">★</span><span class="tab-label" data-i18n="tab.favs"></span>
+    <span class="tab-ico" aria-hidden="true">★</span>
+    <span class="tab-label" data-i18n="tab.favs"></span>
   </button>
   <button type="button" role="tab" class="tab" data-tab="settings" aria-selected="false" id="tab-settings">
-    <span class="tab-ico" aria-hidden="true">⚙</span><span class="tab-label" data-i18n="tab.settings"></span>
+    <span class="tab-ico" aria-hidden="true">⚙</span>
+    <span class="tab-label" data-i18n="tab.settings"></span>
   </button>
 </nav>
 
