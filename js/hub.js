@@ -244,11 +244,7 @@ function syncTierChrome(tier) {
   const tn = $('tier-name');
   if (tn) tn.textContent = name;
   if (chip) chip.dataset.tier = tier;
-  const tabTier = $('tab-tier');
-  if (tabTier) {
-    tabTier.textContent = name;
-    tabTier.dataset.tier = tier;
-  }
+  // bottom-left 級別 tab uses the same geometric icon language as cats/favs/settings
   const unlock = $('btn-unlock');
   if (unlock) unlock.classList.toggle('hidden', tier === 'gold');
 }
