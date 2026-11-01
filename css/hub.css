@@ -493,11 +493,11 @@ footer {
 }
 
 @media (max-width: 759px) {
-  .tabbar .tab { font-size: 12px; letter-spacing: .5px; min-height: 74px; font-weight: 800; }
-  .tabbar .tab .tab-ico { font-size: 38px; }
-  .tabbar .tab .tab-label { font-size: 12px; }
-  .tabbar .tab-fab .tab-fab-core { width: 88px; height: 88px; bottom: 26px; }
-  .tabbar .tab-fab .tab-fab-ico { font-size: 40px; }
+  .tabbar .tab { font-size: 10.5px; letter-spacing: .5px; min-height: 56px; font-weight: 800; }
+  .tabbar .tab .tab-ico { font-size: 24px; }
+  .tabbar .tab .tab-label { font-size: 10.5px; }
+  .tabbar .tab-fab .tab-fab-core { width: 60px; height: 60px; bottom: 22px; }
+  .tabbar .tab-fab .tab-fab-ico { font-size: 26px; }
   #view-settings, #view-profile { padding: 4px 12px 20px; }
   header.hub-compact {
     padding-bottom: 0;
