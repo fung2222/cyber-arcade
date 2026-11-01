@@ -15,12 +15,13 @@ const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
 // bottom tabs: profile | cats | browse | favs | settings
-const HUB_VERSION = '0.5.2'; // hub shell (About); per-game product versions live in games.json
+const HUB_VERSION = '0.5.3'; // hub shell (About); per-game product versions live in games.json
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
 let activeTab = 'browse';
 let activeTag = 'all';
+let searchQ = ''; // hub search: card # / version / id / name
 function readFavs() {
   try {
     const raw = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
@@ -54,12 +55,48 @@ function allTags() {
   games.forEach((g) => (g.tags || []).forEach((t) => s.add(t)));
   return [...s];
 }
-function gamesForView() {
-  if (activeTab === 'favs') return games.filter((g) => isFav(g.id));
-  if (activeTab === 'cats' && activeTag !== 'all') {
-    return games.filter((g) => (g.tags || []).includes(activeTag));
+function catalogNo(g) {
+  const i = games.findIndex((x) => x.id === g.id);
+  return i >= 0 ? String(i + 1).padStart(2, '0') : '';
+}
+
+/** Match query against card # (01 / 1 / #01), version, id, and bilingual names. */
+function matchesSearch(g, q) {
+  const raw = String(q || '').trim().toLowerCase();
+  if (!raw) return true;
+  const stripped = raw.replace(/^#/, '');
+  const no = catalogNo(g);                 // "01"
+  const noInt = no ? String(parseInt(no, 10)) : '';
+  const ver = String(g.version || '').trim().toLowerCase().replace(/^v/i, '');
+  const id = String(g.id || '').toLowerCase();
+  const nameZh = String(g.name?.zh || '').toLowerCase();
+  const nameEn = String(g.name?.en || '').toLowerCase();
+  // Card catalog #: exact ("1", "01", "#01") — memorable badge players type.
+  if (no) {
+    if (raw === `#${no}` || raw === `#${noInt}` || stripped === no || stripped === noInt) return true;
+    if (/^\d+$/.test(stripped) && no === stripped.padStart(2, '0')) return true;
   }
-  return games;
+  // Version string on the card badge (v0.3.16 / 0.3.16). Pure single-digit queries
+  // stay catalog-# only so "1" → #01, not every 1.x semver.
+  if (ver) {
+    const qVer = stripped.replace(/^v/, '');
+    const versionLike = qVer.includes('.') || raw.startsWith('v') || stripped.startsWith('v');
+    if (versionLike && (ver === qVer || ver.startsWith(qVer) || ver.includes(qVer) || (`v${ver}`).includes(raw))) return true;
+    if (/^\d+$/.test(qVer) && qVer.length >= 2 && ver.includes(qVer)) return true;
+  }
+  if (id.includes(stripped) || id.includes(raw)) return true;
+  if (nameZh.includes(raw) || nameEn.includes(raw) || nameZh.includes(stripped) || nameEn.includes(stripped)) return true;
+  return false;
+}
+
+function gamesForView() {
+  let list = games;
+  if (activeTab === 'favs') list = games.filter((g) => isFav(g.id));
+  else if (activeTab === 'cats' && activeTag !== 'all') {
+    list = games.filter((g) => (g.tags || []).includes(activeTag));
+  }
+  if (searchQ.trim()) list = list.filter((g) => matchesSearch(g, searchQ));
+  return list;
 }
 
 // ---------------------------------------------------------------- audio (SynthAudio — lazy on first user gesture)
@@ -433,6 +470,7 @@ function setTab(tab) {
 
 function render() {
   document.title = t('doc.title');
+  syncSearchChrome();
   const tier = ent ? ent.getTier() : 'free';
   syncTierChrome(tier);
   if (activeTab === 'settings') { renderSettings(); return; }
@@ -446,7 +484,9 @@ function render() {
   if (!visible.length) {
     if (empty) {
       empty.classList.remove('hidden');
-      empty.textContent = activeTab === 'favs' ? t('fav.empty') : t('cats.empty');
+      empty.textContent = searchQ.trim()
+        ? t('search.empty')
+        : (activeTab === 'favs' ? t('fav.empty') : t('cats.empty'));
     }
     setupTouchCenterPreview(list);
     devMeta();
@@ -504,7 +544,9 @@ function render() {
     const el = document.createElement('article');
     el.className = `card t-${g.tier}${access ? '' : ' locked'}${g.status === 'wip' ? ' wip' : ''}${g.featured ? ' featured' : ''}${g.productSplit ? ' standalone' : ''}${favOn ? ' is-fav' : ''}`; el.dataset.game = g.id;
     el.tabIndex = 0; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name[L()]);
-    el.innerHTML = `${thumb}<div class="body"><div class="idx">${String(i + 1).padStart(2, '0')}</div>
+    const no = String(i + 1).padStart(2, '0');
+    el.dataset.no = no;
+    el.innerHTML = `${thumb}<div class="body"><div class="idx" title="#${esc(no)}" aria-label="#${esc(no)}">#${esc(no)}</div>
       <div class="name">${softBreak(g.name[L()])}</div><div class="alt">${softBreak(g.name[O])}</div>
       <div class="genre">${softBreak(g.genre?.[L()])}</div>
       ${g.stage ? `<div class="stage">${esc(t('stage'))}: ${softBreak(g.stage[L()])}</div>` : ''}
@@ -701,6 +743,63 @@ $('btn-unlock').onclick = () => openStore();
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('modal2') && !$('modal2').classList.contains('hidden')) return; closeSheet(); } });
 
 // sticky bottom tabs
+function syncSearchChrome() {
+  const input = $('game-search');
+  const clear = $('game-search-clear');
+  if (input) {
+    if (document.activeElement !== input) input.value = searchQ;
+    input.placeholder = t('search.placeholder');
+    const lab = document.querySelector('label[for="game-search"]');
+    if (lab) lab.textContent = t('search.label');
+  }
+  if (clear) {
+    clear.classList.toggle('hidden', !searchQ.trim());
+    clear.setAttribute('aria-label', t('search.clear'));
+  }
+}
+
+function wireSearch() {
+  const input = $('game-search');
+  const clear = $('game-search-clear');
+  if (!input || input.dataset.wired === '1') return;
+  input.dataset.wired = '1';
+  let timer = 0;
+  const apply = () => {
+    searchQ = input.value || '';
+    syncSearchChrome();
+    if (activeTab === 'settings' || activeTab === 'profile') return;
+    render();
+    // keep caret: restore focus if we had it
+    if (document.activeElement !== input) {
+      try { input.focus({ preventScroll: true }); } catch { try { input.focus(); } catch { /* */ } }
+      try {
+        const n = input.value.length;
+        input.setSelectionRange(n, n);
+      } catch { /* */ }
+    }
+  };
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(apply, 120);
+  });
+  input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape') {
+      input.value = '';
+      apply();
+    }
+  });
+  if (clear) {
+    clear.addEventListener('click', () => {
+      input.value = '';
+      apply();
+      try { input.focus(); } catch { /* */ }
+    });
+  }
+  syncSearchChrome();
+}
+
+wireSearch();
+
 $('tabbar')?.querySelectorAll('[data-tab]').forEach((b) => {
   b.addEventListener('click', () => {
     unlockAudio();
