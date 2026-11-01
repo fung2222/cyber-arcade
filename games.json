@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -54,6 +54,35 @@
       "endless": true,
       "tier": "free",
       "preview": "assets/previews/data-fuse.webm",
+      "featured": true
+    },
+    {
+      "id": "corrupt-pet",
+      "name": {
+        "zh": "腐核寵",
+        "en": "CORRUPT.PET"
+      },
+      "genre": {
+        "zh": "邪惡電子寵物 · 短局照料 · 長期腐化",
+        "en": "Evil cyber Tamagotchi · short care · long corruption"
+      },
+      "repo": "https://github.com/fung2222/corrupt-pet",
+      "url": "https://fung2222.github.io/corrupt-pet/?v=0.1.1",
+      "thumb": "assets/thumbs/corrupt-pet.webp",
+      "thumbAlt": {
+        "zh": "腐核寵遊戲畫面：Q版罪晶蛋站喺遠景霓虹城市夜空前",
+        "en": "CORRUPT.PET: a Q-version sin-chip egg against a far neon cityscape"
+      },
+      "status": "wip",
+      "stage": {
+        "zh": "網頁 MVP v0.1.1：孵化→幼體→企業傀儡／街頭病毒分叉→熔毀 · Q版遠景 · 待 Roy 試玩",
+        "en": "web MVP v0.1.1: hatch→larva→Corporate Drone / Street Virus fork→melt · Q + far cityscape · awaiting Roy"
+      },
+      "kit": "v0.1.1",
+      "play": "not-submitted",
+      "i18n": true,
+      "endless": true,
+      "tier": "free",
       "featured": true
     },
     {
