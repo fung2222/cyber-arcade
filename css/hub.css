@@ -126,21 +126,25 @@ footer { text-align: center; padding: 12px 16px max(30px, env(safe-area-inset-bo
 .sheet .s-sub { text-align: center; color: #a49dd0; font-size: 13px; margin-top: 4px; letter-spacing: 2px; }
 .sheet p { line-height: 1.6; }
 .reason { margin: 14px 0 0; padding: 10px 12px; border: 1px solid rgba(255,122,154,.6); color: #ffc2d1; font-size: 13px; background: rgba(255,43,100,.08); }
-.stub-tag { display: block; width: max-content; margin: 10px auto 0; padding: 3px 10px; font: 700 10px 'Orbitron', var(--zh); letter-spacing: 2px; color: #000; background: var(--c3); }
-.tiers { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 16px; }
+.stub-tag { display: block; width: max-content; margin: 10px auto 0; padding: 4px 12px; font: 700 10px 'Orbitron', var(--zh); letter-spacing: 2px; color: rgba(207,200,255,.7); border: 1px solid rgba(207,200,255,.28); border-radius: 999px; background: transparent; }
+.tiers { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
 @media (min-width: 760px) { .tiers { grid-template-columns: repeat(3, 1fr); } }
-.tier { padding: 16px; border: 1px solid rgba(255,255,255,.2); background: rgba(10,4,30,.6); display: flex; flex-direction: column; }
-.tier.silver { border-color: rgba(207,227,255,.6); } .tier.gold { border-color: var(--gold); box-shadow: 0 0 18px rgba(255,207,74,.25); }
+.tier { padding: 20px; border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: linear-gradient(165deg, rgba(22,10,50,.72), rgba(8,3,22,.72)); box-shadow: 0 0 20px rgba(0,229,255,.1), inset 0 0 26px rgba(0,229,255,.04); display: flex; flex-direction: column; }
+.tier.silver { border-color: rgba(207,227,255,.55); box-shadow: 0 0 20px rgba(207,227,255,.18); }
+.tier.gold { border-color: var(--gold); box-shadow: 0 0 26px rgba(255,207,74,.32), inset 0 0 26px rgba(255,207,74,.05); }
 .tier.cur { outline: 2px solid var(--ok); outline-offset: -2px; }
-.tier-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tier-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tier-h b { font: 900 18px 'Orbitron', var(--zh); letter-spacing: 3px; }
 .tier.silver .tier-h b { color: var(--silver); } .tier.gold .tier-h b { color: var(--gold); } .tier.free .tier-h b { color: var(--ok); }
-.price { font: 900 20px 'Orbitron', var(--zh); color: #fff; }
-.tier ul { margin: 10px 0 12px; padding-left: 18px; font-size: 13px; line-height: 1.7; color: #cfc8ff; flex: 1; }
+.price { font: 900 18px 'Orbitron', var(--zh); color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 3px 12px; }
+.tier ul { margin: 12px 0 14px; padding-left: 0; list-style: none; font-size: 13px; line-height: 1.8; color: #cfc8ff; flex: 1; }
+.tier ul li { position: relative; padding-left: 22px; }
+.tier ul li::before { content: '✓'; position: absolute; left: 0; color: var(--ok); text-shadow: 0 0 6px var(--ok); }
 .tier li.future { color: var(--c3); font-weight: 700; }
-.tier .games { font-size: 12px; color: #a49dd0; margin-top: 6px; }
-.tier button, .sheet .row button { width: 100%; min-height: 46px; font: 700 14px var(--zh); letter-spacing: 2px; color: #fff; cursor: pointer; border: 1px solid var(--c1); background: rgba(0,229,255,.12); }
-.tier.gold button { border-color: var(--gold); background: rgba(255,207,74,.16); }
+.tier li.future::before { content: '＋'; color: var(--c3); }
+.tier .games { font-size: 12px; color: #a49dd0; margin-top: 8px; line-height: 1.7; }
+.tier button, .sheet .row button { width: 100%; min-height: 48px; font: 700 14px var(--zh); letter-spacing: 2px; color: #fff; cursor: pointer; border: 1px solid var(--c1); border-radius: 8px; background: linear-gradient(180deg, rgba(0,229,255,.2), rgba(0,229,255,.05)); box-shadow: 0 0 14px rgba(0,229,255,.22); transition: box-shadow .15s, transform .15s; }
+.tier.gold button { border-color: var(--gold); background: linear-gradient(180deg, rgba(255,207,74,.24), rgba(255,207,74,.05)); box-shadow: 0 0 16px rgba(255,207,74,.28); }
 .tier button[disabled] { opacity: .55; cursor: default; border-color: var(--ok); color: var(--ok); background: transparent; }
 .upnote { font-size: 12px; color: var(--gold); margin: 0 0 8px; }
 .fine { font-size: 11.5px; line-height: 1.6; color: #8f88b8; margin: 14px 0 0; }

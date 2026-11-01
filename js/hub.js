@@ -817,7 +817,7 @@ $('btn-save-profile')?.addEventListener('click', () => {
   if ($('profile-name')) $('profile-name').value = v;
   toast(t('settings.nameSaved'));
 });
-$('btn-restore-settings')?.addEventListener('click', () => { restore(); });
+$('btn-restore-settings')?.addEventListener('click', () => { openStore(); });
 $('btn-lang-settings')?.addEventListener('click', () => {
   try { i18n.toggle(); } catch { /* */ }
 });
