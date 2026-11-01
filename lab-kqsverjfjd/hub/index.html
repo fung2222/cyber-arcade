@@ -32,21 +32,11 @@
   <p class="empty-state hidden" id="empty-state"></p>
 </section>
 
-<section id="view-profile" class="hub-view hidden" data-view="profile" aria-label="Profile">
+<section id="view-profile" class="hub-view hidden" data-view="profile" aria-label="Tier">
   <div class="settings-sheet profile-sheet">
-    <h2 data-i18n="profile.title"></h2>
-    <div class="set-block">
-      <div class="set-label" data-i18n="yourTier"></div>
-      <button type="button" class="tier-chip profile-tier" id="tier-chip" aria-haspopup="dialog"><span data-i18n="yourTier"></span> <b id="tier-name">—</b></button>
-      <p class="set-hint" data-i18n="profile.tierHint"></p>
-      <button type="button" class="unlock-btn profile-unlock" id="btn-unlock"><span data-i18n="unlock"></span></button>
-    </div>
-    <div class="set-block">
-      <label class="set-label" for="profile-name" data-i18n="settings.profile"></label>
-      <p class="set-hint" data-i18n="settings.profileHint"></p>
-      <input id="profile-name" class="set-input" type="text" maxlength="24" autocomplete="nickname" spellcheck="false">
-      <button type="button" id="btn-save-profile" class="set-btn" data-i18n="settings.saveName"></button>
-    </div>
+    <h2 data-i18n="storeTitle"></h2>
+    <div class="s-sub" data-i18n="storeSub"></div>
+    <div id="tier-cards"></div>
   </div>
 </section>
 
@@ -60,6 +50,12 @@
     <div class="set-block">
       <div class="set-label" data-i18n="settings.language"></div>
       <button type="button" class="set-btn" id="btn-lang-settings" data-i18n="settings.langToggle"></button>
+    </div>
+    <div class="set-block">
+      <label class="set-label" for="profile-name" data-i18n="settings.profile"></label>
+      <p class="set-hint" data-i18n="settings.profileHint"></p>
+      <input id="profile-name" class="set-input" type="text" maxlength="24" autocomplete="nickname" spellcheck="false">
+      <button type="button" id="btn-save-profile" class="set-btn" data-i18n="settings.saveName"></button>
     </div>
     <div class="set-block">
       <div class="set-label" data-i18n="settings.billing"></div>
@@ -115,6 +111,6 @@
   <button data-dev="wipe" data-i18n="devWipe"></button>
   <button data-dev="reset" data-i18n="devReset"></button>
 </div>
-<script type="module" src="js/hub.js?v=0.5.4"></script>
+<script type="module" src="js/hub.js?v=0.5.5"></script>
 </body>
 </html>

@@ -318,17 +318,24 @@ function tierCol(tier) {
     <div class="games">${esc(t('includes'))}: ${esc(tier === 'gold' ? gamesOf('silver') + ' · ' + gamesOf('gold') : gamesOf(tier))}</div>
     <ul>${li}</ul>${note}${btn}</section>`;
 }
-function renderStore() {
-  const s = openSheet(`<h2>${esc(t('storeTitle'))}</h2><div class="s-sub">${esc(t('storeSub'))}</div>
-    ${ent.backend.isStub ? `<span class="stub-tag">${esc(t('stubTag'))}</span>` : ''}
+function tierCardsHtml() {
+  return `${ent.backend.isStub ? `<span class="stub-tag">${esc(t('stubTag'))}</span>` : ''}
     ${storeReason ? `<div class="reason">${esc(storeReason)}</div>` : ''}
     <div class="tiers">${['free', 'silver', 'gold'].map(tierCol).join('')}</div>
     <div class="restore"><button id="btn-restore">${esc(t('restore'))}</button></div>
-    <p class="fine">${esc(t('fine'))}</p>
+    <p class="fine">${esc(t('fine'))}</p>`;
+}
+function bindTierCards(root) {
+  root.querySelectorAll('[data-buy]').forEach((b) => { b.onclick = () => buy(b.dataset.buy); });
+  const r = root.querySelector('#btn-restore');
+  if (r) r.onclick = restore;
+}
+function renderStore() {
+  const s = openSheet(`<h2>${esc(t('storeTitle'))}</h2><div class="s-sub">${esc(t('storeSub'))}</div>
+    ${tierCardsHtml()}
     <div class="row"><button class="ghost" id="store-close">${esc(t('close'))}</button></div>`);
   $('modal').dataset.kind = 'store';
-  s.querySelectorAll('[data-buy]').forEach((b) => { b.onclick = () => buy(b.dataset.buy); });
-  s.querySelector('#btn-restore').onclick = restore;
+  bindTierCards(s);
   s.querySelector('#store-close').onclick = () => closeSheet();
 }
 function openStore(reason = null) { storeReason = reason; renderStore(); }
@@ -426,16 +433,20 @@ function syncTierChrome(tier) {
 }
 
 function renderProfile() {
+  const cards = $('tier-cards');
+  if (cards && ent) {
+    cards.innerHTML = tierCardsHtml();
+    bindTierCards(cards);
+  }
+}
+
+function renderSettings() {
+  syncMuteBtn();
   const nameEl = $('profile-name');
   if (nameEl && document.activeElement !== nameEl) {
     nameEl.value = readDisplayName();
     nameEl.placeholder = t('settings.namePlaceholder');
   }
-  if (ent) syncTierChrome(ent.getTier());
-}
-
-function renderSettings() {
-  syncMuteBtn();
   try { i18n.apply($('view-settings') || document); } catch { /* */ }
   const meta = $('about-meta');
   if (meta) {
@@ -724,10 +735,9 @@ function setupTouchCenterPreview(list) {
 let chipTaps = 0, chipT = 0;
 function devMeta() { const m = $('dev-meta'); if (m && ent) m.textContent = `${t('devBackend', { id: ent.backend.id })} · tier=${ent.getTier()} · owned=[${ent.ownedProducts().join(',')}]`; }
 function showDev() { if (!ent.backend.isStub) return; $('dev').classList.remove('hidden'); devMeta(); }
-$('tier-chip').addEventListener('click', () => {
+$('tier-chip')?.addEventListener('click', () => {
   clearTimeout(chipT); chipT = setTimeout(() => { chipTaps = 0; }, 1500);
-  if (++chipTaps >= 7) { chipTaps = 0; showDev(); return; }
-  if (chipTaps === 1) setTimeout(() => { if (chipTaps === 1) openStore(); }, 350);
+  if (++chipTaps >= 7) { chipTaps = 0; showDev(); }
 });
 $('dev-close').onclick = () => $('dev').classList.add('hidden');
 $('dev').addEventListener('click', async (e) => {
@@ -739,7 +749,7 @@ $('dev').addEventListener('click', async (e) => {
   if (a === 'silver' || a === 'gold') { stub.devReset(); localStorage.setItem('cyber.arcade.devstub.owned', JSON.stringify([a === 'silver' ? 'tier_silver' : 'tier_gold'])); await ent.restore(); }
   render(); if (storeOpen()) renderStore();
 });
-$('btn-unlock').onclick = () => openStore();
+{ const b = $('btn-unlock'); if (b) b.onclick = () => openStore(); }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('modal2') && !$('modal2').classList.contains('hidden')) return; closeSheet(); } });
 
 // sticky bottom tabs
