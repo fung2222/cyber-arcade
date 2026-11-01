@@ -418,26 +418,26 @@
     {
       "id": "neon-swarm",
       "name": {
-        "zh": "暴走機甲",
-        "en": "RAMPAGE MECH"
+        "zh": "失控飛碟",
+        "en": "ROGUE UFO"
       },
       "genre": {
-        "zh": "3D 子彈天堂：失控機甲反抗科學家同軍隊（三款機體）",
-        "en": "3D bullet heaven: a runaway mech vs the lab and its army (3 frames)"
+        "zh": "3D 逃亡射擊：實驗室飛碟脫離控制，軍隊一路追",
+        "en": "3D run-and-gun: a lab UFO breaks out while the army hunts it"
       },
       "repo": "https://github.com/fung2222/neon-swarm",
-      "url": "https://fung2222.github.io/neon-swarm/?v=0.9.205",
+      "url": "https://fung2222.github.io/neon-swarm/?v=home1",
       "demo": "https://fung2222.github.io/neon-swarm/?demo=1",
       "thumb": "assets/thumbs/neon-swarm.webp",
       "thumbAlt": {
-        "zh": "暴走機甲遊戲畫面：紫綠角盔機甲喺實驗室禁區對抗人類士兵同支援機甲",
-        "en": "RAMPAGE MECH gameplay: a violet horned mech fighting lab soldiers and support mechs"
+        "zh": "失控飛碟遊戲畫面：青色圓碟飛碟喺實驗室禁區對抗軍隊",
+        "en": "ROGUE UFO gameplay: a cyan saucer fleeing the army in a lab lockdown"
       },
       "status": "wip",
       "version": "0.9.205",
       "stage": {
-        "zh": "網頁版 v0.9.205 COMBAT-FEEL-V1 HOLD · 三款機體 · 待 Roy 肉眼／未包裝 Android · tip 唔自動推",
-        "en": "web v0.9.205 COMBAT-FEEL-V1 HOLD · three frames · awaiting Roy eye-check / not packaged for Android · tip stays HOLD"
+        "zh": "網頁版：主角已改青色圓碟飛碟 · 畫面清晰度已提高 · 另外兩款飛碟未開放 · 未包裝 Android",
+        "en": "web: player is now a cyan saucer · sharper render · two other crafts not open yet · not packaged for Android"
       },
       "kit": "v0.3.16",
       "play": "not-submitted",
@@ -459,8 +459,8 @@
         "action"
       ],
       "howto": {
-        "zh": "• 選一款失控機甲，生存實驗室同軍隊嘅追捕\n• 虛擬搖桿移動；自動／技能武器清敵人\n• 拾取 X 經驗、H 修復、武器升級方塊\n• 完成 HUD 合約擊殺目標攞分\n• 存活越耐，來襲單位級別越高（目前 tip HOLD）",
-        "en": "• Pick a runaway mech and survive the lab’s hunt\n• Move with the virtual stick; weapons clear hunters\n• Pick up X XP, H repair, and weapon upgrade cubes\n• Finish HUD contract kill goals for score\n• Longer runs draw higher-tier enemies (live tip on HOLD)"
+        "zh": "• 你係一部脫離實驗室嘅飛碟\n• 虛擬搖桿移動；武器自動打\n• 拾取 X 經驗、H 修復、武器升級方塊\n• 完成 HUD 合約擊殺目標攞分\n• 存活越耐，來襲單位越多",
+        "en": "• You are a lab UFO on the run\n• Move with the virtual stick; guns fire on their own\n• Pick up X XP, H repair, and weapon upgrade cubes\n• Finish HUD contract kill goals for score\n• Longer runs draw more hunters"
       }
     },
     {
