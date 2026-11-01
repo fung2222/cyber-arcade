@@ -15,7 +15,7 @@ const L = () => (i18n.isZh() ? 'zh' : 'en');
 const tierName = (tier) => t('tier.' + tier);
 let games = [], ent = null, storeReason = null;
 // bottom tabs: profile | cats | browse | favs | settings
-const HUB_VERSION = '0.5.1'; // hub shell (About); per-game product versions live in games.json
+const HUB_VERSION = '0.5.2'; // hub shell (About); per-game product versions live in games.json
 const FAV_KEY = 'cyber.arcade.favorites';
 const NAME_KEY = 'cyber.arcade.displayName';
 const MUTE_KEY = 'cyber.arcade.muted';
@@ -178,15 +178,47 @@ function syncMuteBtn() {
   b.setAttribute('aria-pressed', muted ? 'true' : 'false');
   b.textContent = muted ? t('settings.muteOn') : t('settings.muteOff');
 }
+const PRESS_FX_MS = 180;
+const LAUNCH_FX_MS = 900; // hub→game portal; Play only (not demo/howto)
+
+function pressFx(el) {
+  if (!el || reduceMotion()) return 0;
+  el.classList.remove('btn-press');
+  void el.offsetWidth;
+  el.classList.add('btn-press');
+  return PRESS_FX_MS;
+}
+
+function ensureLaunchFx() {
+  let root = document.getElementById('launch-fx');
+  if (root) return root;
+  root = document.createElement('div');
+  root.id = 'launch-fx';
+  root.className = 'launch-fx';
+  root.setAttribute('aria-hidden', 'true');
+  root.innerHTML = '<div class="launch-fx-wipe"></div><div class="launch-fx-scan"></div><div class="launch-fx-ring"></div><div class="launch-fx-label">LINK</div>';
+  document.body.appendChild(root);
+  return root;
+}
+
+function runLaunchFx(done) {
+  if (reduceMotion()) { try { done(); } catch (e) { console.warn(e); } return; }
+  const root = ensureLaunchFx();
+  root.classList.remove('is-on');
+  void root.offsetWidth;
+  root.classList.add('is-on');
+  root.setAttribute('aria-hidden', 'false');
+  setTimeout(() => {
+    try { done(); } catch (e) { console.warn(e); }
+  }, LAUNCH_FX_MS);
+}
+
 function withConfirmThen(fn, btn) {
   unlockAudio();
   try { hubAudio.confirm(); hubAudio.whoosh(0.04); } catch { /* audio optional */ }
-  if (btn) {
-    btn.classList.remove('neon-flash'); void btn.offsetWidth; btn.classList.add('neon-flash');
-  }
-  // brief neon flash, never block forever if audio fails
+  const delay = pressFx(btn);
   const go = () => { try { fn(); } catch (e) { console.warn(e); } };
-  setTimeout(go, reduceMotion() ? 0 : 280);
+  setTimeout(go, delay);
 }
 ['pointerdown', 'keydown', 'touchstart'].forEach((ev) => {
   document.addEventListener(ev, () => unlockAudio(), { once: true, passive: true });
@@ -282,7 +314,8 @@ function launch(g, opts = {}) {
   const url = g.url + (g.url.includes('?') ? '&' : '?') + ent.launchParams(g.id, opts);
   window.__hub.lastLaunch = { id: g.id, url, ...opts };
   if (NO_NAV) { toast(t('launching', { name: g.name[L()] })); return; }
-  location.href = url;
+  // Noticeably longer hub→game portal (Play / trial start only). Demo/howto skip this path.
+  runLaunchFx(() => { location.href = url; });
 }
 function openTrial(g) {
   const max = ent.trialRuns(g.id), n = ent.trialRemaining(g.id), tn = tierName(g.tier);
@@ -465,7 +498,7 @@ function render() {
       ? `<button type="button" class="howto" data-howto="${esc(g.id)}">${esc(t('howto'))}</button>`
       : '';
     const demoBtn = g.demo
-      ? `<a class="demo" href="${esc(g.demo)}" rel="noopener">${esc(t('demo'))}</a>`
+      ? `<button type="button" class="demo" data-demo="${esc(g.demo)}">${esc(t('demo'))}</button>`
       : '';
     // One action row: Start/Play leftmost, then smaller 教學／示範 to its right (wraps on narrow phones).
     const el = document.createElement('article');
@@ -481,12 +514,20 @@ function render() {
   });
   setupTouchCenterPreview(list);
   list.querySelectorAll('[data-play]').forEach((b) => { b.onclick = () => withConfirmThen(() => onPlay(b.dataset.play), b); });
-  list.querySelectorAll('[data-unlock]').forEach((b) => { b.onclick = () => { unlockAudio(); try { hubAudio.click(); } catch {} openStore(); }; });
+  list.querySelectorAll('[data-unlock]').forEach((b) => {
+    b.onclick = () => {
+      unlockAudio();
+      try { hubAudio.click(); } catch {}
+      pressFx(b);
+      openStore();
+    };
+  });
   list.querySelectorAll('[data-fav]').forEach((b) => {
     b.onclick = (ev) => {
       ev.stopPropagation();
       unlockAudio();
       try { hubAudio.click(); } catch {}
+      pressFx(b);
       toggleFav(b.dataset.fav);
       render();
     };
@@ -496,8 +537,24 @@ function render() {
       ev.stopPropagation();
       unlockAudio();
       try { hubAudio.click(); } catch {}
+      pressFx(b);
       const g = games.find((x) => x.id === b.dataset.howto);
       if (g) openHowto(g);
+    };
+  });
+  // Demo: short press FX only (no long launch portal), then navigate.
+  list.querySelectorAll('[data-demo]').forEach((b) => {
+    b.onclick = (ev) => {
+      ev.stopPropagation();
+      unlockAudio();
+      try { hubAudio.click(); } catch {}
+      const url = b.dataset.demo;
+      if (!url) return;
+      const delay = pressFx(b);
+      setTimeout(() => {
+        if (NO_NAV) { toast(t('demo')); return; }
+        location.href = url;
+      }, delay);
     };
   });
   devMeta();

@@ -93,7 +93,6 @@ html[data-lang="en"] .name { font-family: 'Orbitron', var(--zh); font-size: 20px
 .links button, .links a { flex: 1; min-height: 44px; text-align: center; padding: 10px 8px; text-decoration: none; color: #fff; font: 700 13px var(--zh); letter-spacing: 2px; cursor: pointer;
   border: 1px solid var(--c1); background: rgba(0,229,255,.1); box-shadow: 0 0 10px rgba(0,229,255,.2); }
 .links .try { border-color: var(--c3); background: rgba(255,243,92,.08); }
-.links a.demo { flex: 0 0 auto; padding: 10px 14px; border-color: var(--c2, #ff2bd6); background: rgba(255,43,214,.08); }
 .stage { margin-top: 6px; font-size: 11px; color: #8f88c0; letter-spacing: .5px; }
 .links .unl { border-color: var(--gold); background: rgba(255,207,74,.1); flex: 0 0 auto; padding: 10px 14px; }
 .links button:active { transform: scale(.97); }
@@ -177,19 +176,28 @@ footer { text-align: center; padding: 12px 16px max(30px, env(safe-area-inset-bo
 .links button:focus-visible, .links a:focus-visible, .tier-chip:focus-visible, .unlock-btn:focus-visible, .lang-btn:focus-visible {
   outline: 2px solid var(--c3); outline-offset: 2px;
 }
-.links button.neon-flash {
-  animation: neonSelect .45s ease-out;
+/* Snappy tactile press FX (~180ms) — any card action button */
+.links button.btn-press,
+.links a.btn-press,
+.fav-btn.btn-press,
+button.btn-press {
+  animation: btnPress .18s ease-out;
 }
-@keyframes neonSelect {
-  0% { transform: scale(1); box-shadow: 0 0 10px rgba(0,229,255,.2); }
-  35% { transform: scale(1.06); box-shadow: 0 0 28px rgba(0,229,255,.85), 0 0 48px rgba(255,43,214,.55); border-color: #fff; background: rgba(0,229,255,.35); }
-  100% { transform: scale(1); box-shadow: 0 0 10px rgba(0,229,255,.2); }
+@keyframes btnPress {
+  0% { transform: scale(1); filter: brightness(1); }
+  35% {
+    transform: scale(.94);
+    filter: brightness(1.35);
+    box-shadow: 0 0 22px rgba(0,229,255,.85), 0 0 36px rgba(255,43,214,.5);
+    border-color: #fff;
+  }
+  100% { transform: scale(1); filter: brightness(1); }
 }
 @media (prefers-reduced-motion: reduce) {
   .card, .thumb img, .thumb video, .links button, .links a { transition: none !important; }
   .card:hover, .card:focus-within { transform: none; }
   .card:hover .thumb img { transform: none; }
-  .links button.neon-flash { animation: none; }
+  .links button.btn-press, .links a.btn-press, .fav-btn.btn-press, button.btn-press { animation: none; }
   .thumb.has-preview.playing video { opacity: 0 !important; }
   .thumb.has-preview.playing img { opacity: 1 !important; }
 }
@@ -548,29 +556,35 @@ footer {
 }
 .links-pri .try { flex: 1 1 auto; min-height: 48px; }
 .links-pri .unl { flex: 0 0 auto; min-height: 48px; padding: 10px 14px; }
-/* Secondary: sit beside Start, visually smaller (not full-width twins) */
+/* Secondary: 教學／示範 share compact chrome; accent color may differ */
 .links.links-pri > .howto,
-.links.links-pri > a.demo {
+.links.links-pri > .demo {
   flex: 0 0 auto;
   min-height: 36px;
   padding: 6px 12px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
+  line-height: 1.2;
   box-shadow: none;
   align-self: center;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 .links-pri .howto {
-  border-color: rgba(255,43,214,.5);
-  background: rgba(255,43,214,.07);
+  border-color: rgba(255,43,214,.55);
+  background: rgba(255,43,214,.08);
   color: #ffb8ec;
 }
 .links-pri .demo {
-  border-color: rgba(0,229,255,.35);
-  background: rgba(0,229,255,.05);
-  color: #b8f6ff;
-  text-decoration: none;
-  display: inline-flex; align-items: center; justify-content: center;
+  border-color: rgba(0,229,255,.55);
+  background: rgba(0,229,255,.08);
+  color: #9ef6ff;
 }
 .card.featured .links-pri .play-main {
   min-height: 52px;
@@ -586,4 +600,100 @@ footer {
 .card.is-previewing {
   border-color: rgba(0,229,255,.65);
   box-shadow: inset 0 0 28px rgba(0,229,255,.12), 0 0 18px rgba(0,229,255,.18);
+}
+
+
+/* Hub → game launch portal (Play only; ~900ms; reduced-motion skips) */
+.launch-fx {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(5,1,15,.72);
+  transition: opacity .12s ease;
+}
+.launch-fx.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+.launch-fx-scan {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 3px,
+      rgba(0,229,255,.07) 3px 4px
+    );
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+.launch-fx-wipe {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(0,229,255,.18) 42%,
+    rgba(255,43,214,.22) 50%,
+    rgba(0,229,255,.18) 58%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+}
+.launch-fx-ring {
+  position: relative; z-index: 1;
+  width: min(42vw, 180px); height: min(42vw, 180px);
+  border-radius: 50%;
+  border: 2px solid rgba(0,229,255,.85);
+  box-shadow:
+    0 0 24px rgba(0,229,255,.55),
+    0 0 48px rgba(255,43,214,.35),
+    inset 0 0 28px rgba(0,229,255,.2);
+  opacity: 0;
+  transform: scale(.55);
+}
+.launch-fx-ring::before {
+  content: "";
+  position: absolute; inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(255,43,214,.7);
+  box-shadow: 0 0 16px rgba(255,43,214,.45);
+}
+.launch-fx-label {
+  position: absolute; z-index: 2;
+  bottom: max(18%, env(safe-area-inset-bottom));
+  font: 900 12px 'Orbitron', var(--zh);
+  letter-spacing: 5px;
+  color: #9ef6ff;
+  text-shadow: 0 0 12px rgba(0,229,255,.7), 0 0 22px rgba(255,43,214,.4);
+  opacity: 0;
+}
+.launch-fx.is-on .launch-fx-scan { animation: launchScan .9s ease-out forwards; }
+.launch-fx.is-on .launch-fx-wipe { animation: launchWipe .9s cubic-bezier(.2,.7,.2,1) forwards; }
+.launch-fx.is-on .launch-fx-ring { animation: launchRing .9s cubic-bezier(.15,.85,.25,1) forwards; }
+.launch-fx.is-on .launch-fx-label { animation: launchLabel .9s ease-out forwards; }
+@keyframes launchWipe {
+  0% { transform: translateX(-120%); opacity: .2; }
+  45% { opacity: 1; }
+  100% { transform: translateX(120%); opacity: .85; }
+}
+@keyframes launchScan {
+  0% { opacity: 0; }
+  25% { opacity: .9; }
+  100% { opacity: .35; }
+}
+@keyframes launchRing {
+  0% { opacity: 0; transform: scale(.55); }
+  40% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: .9; transform: scale(1.35); border-color: #fff; }
+}
+@keyframes launchLabel {
+  0% { opacity: 0; letter-spacing: 2px; }
+  30% { opacity: 1; }
+  100% { opacity: .95; letter-spacing: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .launch-fx, .launch-fx.is-on .launch-fx-scan,
+  .launch-fx.is-on .launch-fx-wipe,
+  .launch-fx.is-on .launch-fx-ring,
+  .launch-fx.is-on .launch-fx-label { animation: none !important; transition: none !important; }
 }
