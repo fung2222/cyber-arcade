@@ -22,6 +22,7 @@ CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系
 
 ## 文件 Docs
 - [docs/PRODUCT-SPLIT.md](docs/PRODUCT-SPLIT.md) — **2026-10-25** hub vs 機甲雷台 standalone fighter split
+- [docs/CYBERHUB-EVAL-2026-11-01.md](docs/CYBERHUB-EVAL-2026-11-01.md) — **2026-11-01** 全項目誠實評估：好／壞／未完成／保留／抽出閘
 - [docs/ARCADE-HANDOFF.md](docs/ARCADE-HANDOFF.md) — 風格指引、技術、結構、製作次序、Play/AdMob 計劃、命名規則
 - [docs/MONETIZATION.md](docs/MONETIZATION.md) — 收費模式：免費／銀級／金級、試玩、廣告、Google Play Billing 計劃 · monetisation model
 - [docs/SONO-AUDIT.md](docs/SONO-AUDIT.md) — 舊 SONO 遊戲審查報告
