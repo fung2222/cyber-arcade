@@ -119,7 +119,21 @@ addStrings({
   'kit.rewardOffline': ['暫時冇廣告可以睇，遲啲再試下。', 'No ad available right now. Try again later.'],
   'kit.glow': ['光暈：{v}', 'GLOW: {v}'], 'kit.glowLow': ['低', 'LOW'], 'kit.glowHigh': ['高', 'HIGH'], 'kit.glowHint': ['畫面光暈強度（所有遊戲通用）', 'Neon glow strength (all CYBER games)'],
   'kit.endless': ['無盡模式', 'ENDLESS'], 'kit.bestEndless': ['無盡紀錄', 'ENDLESS BEST'], 'kit.language': ['語言', 'LANGUAGE'],
-  'kit.arcadeMenu': ['選單 · 其他遊戲', 'ARCADE MENU'], 'kit.arcadeMenuS': ['ARCADE MENU', '選單 · 其他遊戲'],
+  'kit.arcadeMenu': ['返回主頁', 'HOME'], 'kit.arcadeMenuS': ['HOME', '返回主頁'],
+  'kit.howto': ['玩法說明', 'HOW TO PLAY'], 'kit.howtoS': ['RULES · CONTROLS', '規則 · 操作'],
+  'kit.howtoClose': ['知道啦', 'GOT IT'], 'kit.howtoCloseS': ['CLOSE', '關閉'],
+  'kit.rules': ['規則', 'RULES'], 'kit.controls': ['操作', 'CONTROLS'],
+  'kit.tabRules': ['玩法', 'PLAY'], 'kit.tabControls': ['操控', 'CONTROLS'], 'kit.tabPrivacy': ['私隱', 'PRIVACY'],
+  'kit.settings': ['設定', 'SETTINGS'], 'kit.settingsK': ['SYSTEM', 'SYSTEM'],
+  'kit.volume': ['音量', 'VOLUME'], 'kit.glowLabel': ['光暈', 'GLOW'],
+  'kit.muteOn': ['靜音', 'MUTED'], 'kit.muteOff': ['開聲', 'ON'],
+  'kit.on': ['開', 'ON'], 'kit.off': ['關', 'OFF'],
+  'kit.privacyBlurb': [
+    '本遊戲唔會收集個人資料；分數同設定只存喺你部裝置。網頁版冇廣告、冇追蹤。詳情請睇完整私隱政策。',
+    'This game does not collect personal data. Scores and settings stay on your device. The web build has no ads or tracking. See the full privacy policy for details.'
+  ],
+  'kit.privacyFull': ['睇完整私隱政策', 'Full privacy policy'],
+  'kit.home': ['返大廳', 'Arcade home'],
   'kit.adsimRewarded': ['獎勵廣告示範', 'REWARDED AD (SIM)'], 'kit.adsimInter': ['插頁廣告示範', 'INTERSTITIAL (SIM)'], 'kit.adsimNote': ['?adsim=1 · 只係測試，唔係真廣告', '?adsim=1 · test only, not a real ad'],
 });
 

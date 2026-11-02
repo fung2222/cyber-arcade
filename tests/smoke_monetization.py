@@ -1,5 +1,5 @@
-# Headless smoke test for the hub monetisation prototype (tier badges, store, Silver→Gold upgrade, trials, restore).
-#   python -u tests/smoke_monetization.py HUB_URL [OUT_DIR]     (HUB_URL = the unlisted hub page, or set env HUB_URL)
+# Headless smoke test for the root hub monetisation prototype (tier badges, store, Silver→Gold upgrade, trials, restore).
+#   python -u tests/smoke_monetization.py HUB_URL [OUT_DIR]     (HUB_URL = root hub page, or set env HUB_URL)
 # Needs Playwright + Chrome. Exits 1 on any console error / failed assertion.
 import asyncio, sys, json, os
 from playwright.async_api import async_playwright
@@ -35,7 +35,7 @@ async def run(b, view, lang):
     check(await pg.locator('.card.locked').count() == n['silver'] + n['gold'], f'{sfx} locked cards')
     await snap(pg, f'01-hub-free-{sfx}', full=True)
     # 2) store, Free state
-    await pg.click('#btn-unlock'); await pg.wait_for_selector('.tier.gold')
+    await pg.evaluate('window.__hub.openStore()'); await pg.wait_for_selector('.tier.gold')
     check(await pg.locator('[data-buy="tier_silver"]').count() == 1 and await pg.locator('[data-buy="tier_gold"]').count() == 1, f'{sfx} free store buttons')
     check(await pg.locator('li.future').count() == 2, f'{sfx} future-games lines')
     check(await pg.locator('#btn-restore').count() == 1, f'{sfx} restore button')
@@ -56,7 +56,7 @@ async def run(b, view, lang):
     # 3b) wipe local cache (simulated reinstall) → Restore Purchases brings Silver back
     await pg.evaluate("window.__hub.ent.devWipeCache()")
     check(await pg.evaluate('window.__hub.ent.getTier()') == 'free', f'{sfx} wiped → free')
-    await pg.click('#btn-unlock'); await pg.click('#btn-restore'); await pg.wait_for_timeout(300)
+    await pg.evaluate('window.__hub.openStore()'); await pg.click('#btn-restore'); await pg.wait_for_timeout(300)
     check(await pg.evaluate('window.__hub.ent.getTier()') == 'silver', f'{sfx} restored silver')
     await ctx.close()
     # 4) trials: 3 runs of a Gold game, then exhausted → store with reason
@@ -65,7 +65,8 @@ async def run(b, view, lang):
     for i in range(3):
         await pg.click(sel); await pg.wait_for_selector('#tr-start')
         if i == 0: await snap(pg, f'06-trial-sheet-{sfx}')
-        await pg.click('#tr-start'); await pg.wait_for_timeout(150)
+        await pg.click('#tr-start')
+        await pg.wait_for_function(f"window.__hub.lastLaunch && window.__hub.lastLaunch.url.includes('trialLeft={2 - i}')", timeout=12000)
         ll = await pg.evaluate('window.__hub.lastLaunch')
         check(ll and 'trial=1' in ll['url'] and f'trialLeft={2 - i}' in ll['url'] and 'ads=1' in ll['url'], f'{sfx} trial launch {i}: {ll}')
     await pg.wait_for_timeout(2600)  # let the launch toast fade
@@ -75,13 +76,14 @@ async def run(b, view, lang):
     await pg.click('#store-close'); await pg.wait_for_timeout(200)
     await snap(pg, f'08-hub-trial-exhausted-{sfx}', full=True)
     # free game launches directly with ads=1, no trial
-    await pg.click('.card[data-game="cyber-snake"] [data-play]'); await pg.wait_for_timeout(150)
+    await pg.click('.card[data-game="cyber-snake"] [data-play]')
+    await pg.wait_for_function("window.__hub.lastLaunch && window.__hub.lastLaunch.id === 'cyber-snake'", timeout=12000)
     ll = await pg.evaluate('window.__hub.lastLaunch')
     check(ll and ll['id'] == 'cyber-snake' and 'trial' not in ll['url'], f'{sfx} free launch')
     await ctx.close()
     # 5) Gold owner (dev panel) — hub fully unlocked, no ads
     ctx, pg = await page(b, view, lang)
-    for _ in range(7): await pg.click('#tier-chip')
+    await pg.goto(f'{BASE}?lang={lang}&nonav=1&dev=1')
     await pg.wait_for_selector('#dev:not(.hidden)')
     await pg.click('[data-dev="gold"]'); await pg.wait_for_timeout(300)
     check(await pg.locator('.card.locked').count() == 0, f'{sfx} gold: nothing locked')
@@ -91,7 +93,7 @@ async def run(b, view, lang):
 
 async def main():
     async with async_playwright() as p:
-        b = await p.chromium.launch(executable_path='/usr/bin/google-chrome')
+        b = await p.chromium.launch()
         for view in VIEWS:
             for lang in ('zh', 'en'):
                 print('run', view, lang); await run(b, view, lang)

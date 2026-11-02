@@ -10,12 +10,14 @@ usage:
   python tools/make_previews.py [--ids id1,id2] [--out DIR]
 """
 from __future__ import annotations
-import argparse, os, subprocess, sys, tempfile
+import argparse, os, shutil, subprocess, sys, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'assets' / 'previews'
-CHROME = os.environ.get('CHROME', '/usr/bin/google-chrome')
+CHROME = os.environ.get('CHROME') or shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('chrome')
+if not CHROME:
+    sys.exit('Set CHROME=/path/to/chrome (or install google-chrome/chromium) before generating previews.')
 VENV_PW = os.environ.get('PW_PYTHON', '/workspace/.venv-pw/bin/python')
 
 # Capture FPS and mild content stretch (1.0 = realtime; 1.4 ≈ 0.71× pace).

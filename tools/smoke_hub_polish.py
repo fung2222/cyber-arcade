@@ -1,23 +1,22 @@
 """Smoke + screenshots for hub polish.
 
-Requires HUB_URL env (unlisted hub entry). Never hardcode the unlisted path in this file.
-  HUB_URL=…/hub/ python tools/smoke_hub_polish.py
+Requires HUB_URL env (root hub URL). Do not hardcode a local test-portal path in this file.
+  HUB_URL=…/cyber-arcade/ python tools/smoke_hub_polish.py
 """
 import asyncio, os, sys
 from pathlib import Path
 from playwright.async_api import async_playwright
 
-CHROME = os.environ.get('CHROME', '/usr/bin/google-chrome')
 HUB = os.environ.get('HUB_URL')
 if not HUB:
-    sys.exit('Set HUB_URL to the unlisted hub entry (do not commit that path).')
+    sys.exit('Set HUB_URL to the root hub URL.')
 OUT = Path(os.environ.get('OUT', '/workspace/shots/hub-polish'))
 OUT.mkdir(parents=True, exist_ok=True)
 
 async def main():
     errs = []
     async with async_playwright() as p:
-        browser = await p.chromium.launch(executable_path=CHROME, headless=True,
+        browser = await p.chromium.launch(headless=True,
             args=['--autoplay-policy=no-user-gesture-required'])
         ctx = await browser.new_context(viewport={'width': 1280, 'height': 800})
         page = await ctx.new_page()
