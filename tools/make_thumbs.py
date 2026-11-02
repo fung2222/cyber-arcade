@@ -1,4 +1,4 @@
-"""Card thumbnails for the hub + test portal: crop a raw in-game screenshot to 16:9 and save an optimised WebP (< 60 KB).
+"""Card thumbnails for the root hub: crop a raw in-game screenshot to 16:9 and save an optimised WebP (< 60 KB).
 
 usage: python tools/make_thumbs.py RAW_DIR [gameId ...]
 RAW_DIR holds 1280x720 headless-Chrome captures of each live game in ?demo=1 (mid-action, never a title screen).

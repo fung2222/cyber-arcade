@@ -1,5 +1,5 @@
-"""Thumbnail smoke test for the hub prototype + test portal (412x915 touch + 1280x800, zh + en).
-usage: python tests/smoke_thumbs.py REPO_ROOT_URL PORTAL_FOLDER [OUT_DIR]   (the portal folder name is passed in, never stored)
+"""Thumbnail smoke test for the root hub prototype (412x915 touch + 1280x800, zh + en).
+usage: python tests/smoke_thumbs.py REPO_ROOT_URL PORTAL_FOLDER [OUT_DIR]   (PORTAL_FOLDER is legacy; old portal paths redirect to root)
 Counts are derived from games.json (done + wip with thumbs) so new WIP cards do not hard-fail the suite.
 """
 import asyncio, json, sys, urllib.request
