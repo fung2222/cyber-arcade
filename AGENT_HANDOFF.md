@@ -1,7 +1,7 @@
 # CYBER ARCADE — Agent session handoff
 
 > **PRODUCT SPLIT 2026-10-25 — read [`docs/PRODUCT-SPLIT.md`](docs/PRODUCT-SPLIT.md) first.**  
-> **FULL EVAL 2026-11-01 — read [`docs/CYBERHUB-EVAL-2026-11-01.md`](docs/CYBERHUB-EVAL-2026-11-01.md) for keep / improve / extract gates.**
+> **FULL EVAL 2026-11-01 — read [`docs/CYBERHUB-EVAL-2026-11-01.md`](docs/CYBERHUB-EVAL-2026-11-01.md) for keep / improve / extract gates. Written by Kimi AI at Roy's request on 2026-11-01; Roy confirmed 2026-11-02 that this is the apps-direction baseline.**
 > **機甲雷台** (`neon-stick-duel`) = **standalone Google Play fighter** (SF/KOF-style, heavy sprites, landscape, two-hand) — NOT a one-hand casual time-killer.  
 > **This hub** = short, fun, quick cyberpunk mini-games only (free + Silver HK$18 / Gold HK$28, zh-HK/EN, endless).
 

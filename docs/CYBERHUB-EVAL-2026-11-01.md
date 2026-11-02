@@ -1,6 +1,7 @@
 # CYBER ARCADE / CyberHub 全項目評估報告（畀其他 AI 跟進）
 
 > Owner: Roy（fung2222）· Date: 2026-11-01（Asia/Hong_Kong）· Scope: `fung2222/cyber-arcade` + `cyber-kit` + 12 個遊戲 repo。  
+> **作者：Kimi AI（Roy 2026-11-01 委託）；Roy 2026-11-02 確認：呢份就係當時嘅全 apps 方向 review，作為方向 baseline。**
 > 目的：誠實評估而家成個 CyberHub 生態，列清楚好／壞／未完成／值得保留／要抽出嘅邊界，畀下一個 AI 唔使重新估。
 
 ---
