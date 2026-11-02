@@ -7,6 +7,31 @@
 
 ---
 
+# Current progress (2026-11-02 — parked for next agent)
+
+## Done
+- Root `index.html` is the real hub and stays `noindex`; old `lab-kqsverjfjd/` paths only redirect to root.
+- `cyber-kit` is **v0.3.19** and vendored copies were synced across the game repos; `returnToHub` fallback now points at `../cyber-arcade/`.
+- **A1 done** — commit `8fd337c`: cleaned stale "secret test portal" wording in `docs/MONETIZATION.md`, `tests/smoke_thumbs.py`, `tools/make_thumbs.py` after the root-hub merge.
+
+## A2 parked (card data hygiene)
+- `games.json`: `corrupt-pet` card updated to live cache query `?v=0.1.4`, `version: 0.1.4`, `updated: 2026-11-02`, stage text bumped to v0.1.4.
+- Added `tests/games.test.mjs` guard: unique ids, bilingual card fields, thumb/preview assets exist, wip cards carry bilingual `stage`.
+- Verified: `node --test tests/` = **10/10 pass**.
+- **Not done:** browser visual check. The local server start was blocked by tool misuse; next agent must start it with background mode, e.g. `cd /opt/data/github-repos && python3 -m http.server 8137` (background), then open `http://127.0.0.1:8137/cyber-arcade/`, check corrupt-pet card shows `v0.1.4` + `製作中`, zero console errors, and eyeball a 390px screenshot.
+
+## A2 remaining decisions
+- Missing previews are intentional for now: `corrupt-pet`, `neon-sort`, `neon-swarm` have thumbs but no `assets/previews/*.webm`; hub keeps the 16:9 thumb slot when preview is absent.
+- `corrupt-pet` has **no `?demo=1` handler found**, so `games.json` correctly has no `demo` for it.
+- Do not mark wip cards as done; they already render the `製作中 / IN PROGRESS` pill.
+
+## Next order after A2
+1. **A3** — mobile bottom tabbar / card safe-area check.
+2. Then games one by one: **data-fuse → neon-recall → cyber-mini-pack → cyber-snake → cyber-ninja → cyber-tower → cyber-board → neon-stick-run → neon-sort → corrupt-pet**.
+3. Keep **neon-swarm** and **neon-stick-duel** last; both are extract-gate products per `docs/CYBERHUB-EVAL-2026-11-01.md`.
+
+---
+
 # Prior session notes (2026-10-17 → 2026-10-19)
 
 ## Session outcomes
@@ -47,8 +72,8 @@ Every game `#screen-start.menu-home`:
 ## Hub `games.json` tiers
 | Tier | ids |
 |---|---|
-| Free | cyber-snake, data-fuse, neon-recall, cyber-mini-pack |
-| Silver | neon-stick-duel, neon-stick-run, **neon-sort (wip)** |
+| Free | cyber-snake, data-fuse, **corrupt-pet (wip)**, neon-recall, cyber-mini-pack |
+| Silver | neon-stick-run, **neon-sort (wip)**, neon-stick-duel (standalone fighter line) |
 | Gold | cyber-ninja, cyber-board, cyber-tower, **neon-swarm (wip)** |
 
 Trial: 3 runs/day + per-game caps. Source: root `games.json`.

@@ -84,18 +84,18 @@
         "en": "Evil cyber Tamagotchi · short care · long corruption"
       },
       "repo": "https://github.com/fung2222/corrupt-pet",
-      "url": "https://fung2222.github.io/corrupt-pet/?v=0.1.2",
+      "url": "https://fung2222.github.io/corrupt-pet/?v=0.1.4",
       "thumb": "assets/thumbs/corrupt-pet.webp",
       "thumbAlt": {
         "zh": "腐核寵遊戲畫面：Q版罪晶蛋站喺遠景霓虹城市夜空前",
         "en": "CORRUPT.PET: a Q-version sin-chip egg against a far neon cityscape"
       },
       "status": "wip",
-      "version": "0.1.2",
-      "updated": "2026-11-01",
+      "version": "0.1.4",
+      "updated": "2026-11-02",
       "stage": {
-        "zh": "網頁 MVP v0.1.2：軟填色＋霓虹描邊光暈＋更深遠景層 · 待 Roy 肉眼",
-        "en": "web MVP v0.1.2: soft fill + neon rim glow + deeper cityscape · awaiting Roy eye-check"
+        "zh": "網頁 MVP v0.1.4：軟填色＋霓虹描邊光暈＋更深遠景層 · 待 Roy 肉眼",
+        "en": "web MVP v0.1.4: soft fill + neon rim glow + deeper cityscape · awaiting Roy eye-check"
       },
       "kit": "procedural Canvas2D (no full cyber-kit HUD yet)",
       "play": "not-submitted",
