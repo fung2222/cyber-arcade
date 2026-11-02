@@ -400,7 +400,8 @@ html[data-lang="en"] .tabbar .tab {
 
 /* pad page content so cards / footer clear the sticky tab bar + FAB */
 body {
-  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  /* 96px: tabbar 69px + 12px breathing room above the 60px Games FAB (A3) */
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 .hub-view.hidden { display: none !important; }
 #view-home main {

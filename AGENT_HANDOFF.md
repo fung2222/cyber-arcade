@@ -13,6 +13,7 @@
 - Root `index.html` is the real hub and stays `noindex`; old `lab-kqsverjfjd/` paths only redirect to root.
 - `cyber-kit` is **v0.3.19** and vendored copies were synced across the game repos; `returnToHub` fallback now points at `../cyber-arcade/`.
 - **A1 done** — commit `8fd337c`: cleaned stale "secret test portal" wording in `docs/MONETIZATION.md`, `tests/smoke_thumbs.py`, `tools/make_thumbs.py` after the root-hub merge.
+- **A3 done** — `css/hub.css` body bottom clearance 84px → **96px**; 390px last card now sits 20px above the Games FAB (was 8px). Guard: `tests/hub-layout.test.mjs`.
 
 ## A2 done (card data hygiene)
 - `games.json`: `corrupt-pet` card updated to live cache query `?v=0.1.4`, `version: 0.1.4`, `updated: 2026-11-02`, stage text bumped to v0.1.4; catalog `updated` also 2026-11-02.
@@ -26,9 +27,8 @@
 - Do not mark wip cards as done; they already render the `製作中 / IN PROGRESS` pill.
 
 ## Next
-1. **A3** — mobile bottom tabbar / card safe-area check.
-2. Then games one by one: **data-fuse → neon-recall → cyber-mini-pack → cyber-snake → cyber-ninja → cyber-tower → cyber-board → neon-stick-run → neon-sort → corrupt-pet**.
-3. Keep **neon-swarm** and **neon-stick-duel** last; both are extract-gate products per `docs/CYBERHUB-EVAL-2026-11-01.md`.
+1. Games one by one: **data-fuse → neon-recall → cyber-mini-pack → cyber-snake → cyber-ninja → cyber-tower → cyber-board → neon-stick-run → neon-sort → corrupt-pet**.
+2. Keep **neon-swarm** and **neon-stick-duel** last; both are extract-gate products per `docs/CYBERHUB-EVAL-2026-11-01.md`.
 
 ---
 
