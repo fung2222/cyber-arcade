@@ -1,7 +1,7 @@
 // CYBER ARCADE hub — game list with tier badges, trials, store/unlock sheet, restore, hidden DEV panel.
 import { i18n, t } from '../vendor/cyber-kit/core/i18n.js';
 import { SynthAudio, MUSIC } from '../vendor/cyber-kit/audio/synth.js';
-import './strings.js';
+import './strings.js?v=0.5.8';
 import { createEntitlements, RANK } from './entitlements.js';
 import { createWebStubBackend } from './billing/web-stub.js';
 

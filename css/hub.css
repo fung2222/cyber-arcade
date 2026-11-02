@@ -558,6 +558,7 @@ footer {
   box-shadow: 0 0 14px rgba(255,43,214,.3);
 }
 .set-btn:focus-visible { outline: 2px solid var(--c3); outline-offset: 2px; }
+.privacy-link { display: flex; align-items: center; justify-content: center; text-decoration: none; }
 .set-tier { margin: 0; font: 900 18px 'Orbitron', var(--zh); color: #fff; letter-spacing: 2px; }
 .muted-tier .set-tier { color: var(--silver); }
 
