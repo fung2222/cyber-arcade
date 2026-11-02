@@ -94,8 +94,8 @@
       "version": "0.1.4",
       "updated": "2026-11-02",
       "stage": {
-        "zh": "網頁 MVP v0.1.4：軟填色＋霓虹描邊光暈＋更深遠景層 · 待 Roy 肉眼",
-        "en": "web MVP v0.1.4: soft fill + neon rim glow + deeper cityscape · awaiting Roy eye-check"
+        "zh": "網頁 MVP v0.1.4：軟填色＋霓虹描邊光暈＋更深遠景層 · 已加 privacy.html · 待 Roy 肉眼",
+        "en": "web MVP v0.1.4: soft fill + neon rim glow + deeper cityscape · privacy.html added · awaiting Roy eye-check"
       },
       "kit": "procedural Canvas2D (no full cyber-kit HUD yet)",
       "play": "not-submitted",
