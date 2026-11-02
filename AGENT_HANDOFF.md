@@ -14,6 +14,7 @@
 - `cyber-kit` is **v0.3.19** and vendored copies were synced across the game repos; `returnToHub` fallback now points at `../cyber-arcade/`.
 - **A1 done** — commit `8fd337c`: cleaned stale "secret test portal" wording in `docs/MONETIZATION.md`, `tests/smoke_thumbs.py`, `tools/make_thumbs.py` after the root-hub merge.
 - **Hub test/vendor cleanup (2026-11-02)** — hub `vendor/cyber-kit` synced to **v0.3.19**; `tests/smoke_thumbs.py` now tests the root hub only and supports `SMOKE_SHOTS=0`; `tests/smoke_monetization.py` uses the current store/dev selectors; both hub smoke tests pass (thumbs 4 viewports, monetization 40 shots, zero console errors).
+- **Game smoke tests (2026-11-02)** — core game Playwright tests now launch the bundled Chromium (`p.chromium.launch(args=ARGS)`) instead of hardcoded `/usr/bin/google-chrome`; commits in cyber-board, cyber-mini-pack, cyber-ninja, cyber-snake, cyber-tower, neon-recall, neon-stick-run.
 - **A3 done** — `css/hub.css` body bottom clearance 84px → **96px**; 390px last card now sits 20px above the Games FAB (was 8px). Guard: `tests/hub-layout.test.mjs`.
 
 ## A2 done (card data hygiene)
