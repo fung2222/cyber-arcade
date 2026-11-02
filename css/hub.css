@@ -276,9 +276,10 @@ button.btn-press {
   .card .body .links-pri { padding-top: 10px; }
   .name { font-size: 22px; }
   .links, .links-pri { gap: 6px; margin-top: 10px; }
-  .links-pri .play-main, .links-pri .try, .links-pri .unl { min-height: 46px; }
-  .links-pri .howto, .links-pri .demo { min-height: 46px; padding: 10px 8px; font-size: 13px; }
-  .card.featured .links-pri .play-main { min-height: 46px; }
+  .links-pri .play-main, .links-pri .try { min-height: 52px; }
+  .links-pri .unl { min-height: 46px; }
+  .links-pri .howto, .links-pri .demo { min-height: 46px; padding: 10px 4px; font-size: 13px; }
+  .card.featured .links-pri .play-main { min-height: 52px; }
   .web-note { margin-top: 6px; padding: 0 14px; }
   footer { padding-top: 8px; }
 }
@@ -613,23 +614,23 @@ footer {
   margin-top: auto; padding-top: 14px;
 }
 .links-pri .play-main {
-  flex: 1.6 1 auto;
-  min-width: min(100%, 110px);
-  min-height: 48px;
-  font-size: 13px; letter-spacing: 1px;
+  flex: 3 1 0;
+  min-width: 0;
+  min-height: 52px;
+  font-size: 14px; letter-spacing: 1px;
   border-color: var(--c1);
   background: linear-gradient(180deg, rgba(0,229,255,.22), rgba(0,229,255,.08));
   box-shadow: 0 0 16px rgba(0,229,255,.35), inset 0 0 12px rgba(0,229,255,.08);
 }
-.links-pri .try { flex: 1 1 auto; min-height: 48px; }
-.links-pri .unl { flex: 0 0 auto; min-height: 48px; padding: 10px 14px; }
+.links-pri .try { flex: 3 1 0; min-width: 0; min-height: 52px; font-size: 14px; }
+.links-pri .unl { flex: 0 0 auto; min-height: 52px; padding: 10px 14px; }
 /* Secondary: 教學／示範 share compact chrome; accent color may differ */
 .links.links-pri > .howto,
 .links.links-pri > .demo {
-  flex: 1 1 0;
-  min-width: 64px;
+  flex: 0 0 58px;
+  min-width: 58px;
   min-height: 48px;
-  padding: 10px 8px;
+  padding: 10px 6px;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -656,7 +657,7 @@ footer {
   box-shadow: 0 0 10px rgba(0,229,255,.25);
 }
 .card.featured .links-pri .play-main {
-  min-height: 48px;
+  min-height: 52px;
   box-shadow: 0 0 20px rgba(0,229,255,.45), inset 0 0 14px rgba(0,229,255,.1);
 }
 .howto-list {
