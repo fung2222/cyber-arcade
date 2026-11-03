@@ -1,5 +1,6 @@
 // CYBER ARCADE hub — game list with tier badges, trials, store/unlock sheet, restore, hidden DEV panel.
 import { i18n, t } from '../vendor/cyber-kit/core/i18n.js';
+import { showGameLoading } from '../vendor/cyber-kit/ui/game-loading.js';
 import { SynthAudio, MUSIC } from '../vendor/cyber-kit/audio/synth.js';
 import './strings.js?v=0.5.8';
 import { createEntitlements, RANK } from './entitlements.js';
@@ -359,7 +360,7 @@ function launch(g, opts = {}) {
   window.__hub.lastLaunch = { id: g.id, url, ...opts };
   if (NO_NAV) { toast(t('launching', { name: g.name[L()] })); return; }
   // Noticeably longer hub→game portal (Play / trial start only). Demo/howto skip this path.
-  runLaunchFx(() => { location.href = url; });
+  showGameLoading({ hold: 900 }).then(() => { location.href = url; });
 }
 function openTrial(g) {
   const max = ent.trialRuns(g.id), n = ent.trialRemaining(g.id), tn = tierName(g.tier);
@@ -595,7 +596,7 @@ function render() {
       if (g) openHowto(g);
     };
   });
-  // Demo: short press FX only (no long launch portal), then navigate.
+  // Demo: same shared launch transition, then navigate.
   list.querySelectorAll('[data-demo]').forEach((b) => {
     b.onclick = (ev) => {
       ev.stopPropagation();
@@ -603,11 +604,10 @@ function render() {
       try { hubAudio.click(); } catch {}
       const url = b.dataset.demo;
       if (!url) return;
-      const delay = pressFx(b);
-      setTimeout(() => {
+      showGameLoading({ hold: 700 }).then(() => {
         if (NO_NAV) { toast(t('demo')); return; }
         location.href = url;
-      }, delay);
+      });
     };
   });
   devMeta();
