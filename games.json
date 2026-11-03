@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "series": "CYBER ARCADE 賽博街機",
   "games": [
     {
@@ -235,8 +235,8 @@
     {
       "id": "cyber-ninja",
       "name": {
-        "zh": "賽博忍者：星海魔獸",
-        "en": "CYBER NINJA"
+        "zh": "異域凶間",
+        "en": "XENO NIGHTMARE"
       },
       "genre": {
         "zh": "3D 直向射擊（自動開火）",
@@ -247,8 +247,8 @@
       "demo": "https://fung2222.github.io/cyber-ninja/?demo=1",
       "thumb": "assets/thumbs/cyber-ninja.webp",
       "thumbAlt": {
-        "zh": "賽博忍者遊戲畫面：飛越霓虹城市上空自動開火對抗敵人",
-        "en": "CYBER NINJA gameplay: auto-firing over a neon city while enemies attack"
+        "zh": "異域凶間遊戲畫面：駕駛戰機飛越霓虹城市上空自動開火對抗敵人",
+        "en": "XENO NIGHTMARE gameplay: auto-firing over a neon city while enemies attack"
       },
       "status": "done",
       "version": "0.3.13",
@@ -270,8 +270,8 @@
         "action"
       ],
       "howto": {
-        "zh": "• 任意位置拖動移動；忍者會自動開火\n• 打敵機儲能量，撳「居合斬」清彈幕兼重創巨獸\n• 拾取 P 火力、S 護盾、E 能量\n• 每 5 波打星海魔獸；護盾歸零就失敗（可復活一次）\n• 無盡波數一直有下一個挑戰",
-        "en": "• Drag anywhere to move; the ninja auto-fires\n• Build energy, then Iai Slash to clear bullets and hurt bosses\n• Pick up P power, S shield, E energy\n• Boss every 5 waves; shield zero fails the run (one revive)\n• Endless waves keep raising the next challenge"
+        "zh": "• 任意位置拖動移動戰機；自動開火\n• 打敵機儲能量，撳「裂空斬」清彈幕兼重創巨獸\n• 拾取 P 火力、S 護盾、E 能量\n• 每 5 波打星海魔獸；護盾歸零就失敗（可復活一次）\n• 無盡波數一直有下一個挑戰",
+        "en": "• Drag anywhere to fly your craft; auto-fire is always on\n• Build energy, then Rift Slash to clear bullets and hurt bosses\n• Pick up P power, S shield, E energy\n• Boss every 5 waves; shield zero fails the run (one revive)\n• Endless waves keep raising the next challenge"
       }
     },
     {

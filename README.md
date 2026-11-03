@@ -17,7 +17,7 @@ CYBER ARCADE 係將舊 SONO 網站入面嘅小遊戲**由零重新製作**嘅系
 | 數據熔合 DATA FUSE | 3D 數字合併 · **精選** | [data-fuse](https://github.com/fung2222/data-fuse) | ✅ 完成 |
 | 霓虹記憶 NEON RECALL | 3D 記憶配對 | [neon-recall](https://github.com/fung2222/neon-recall) | ✅ 完成 |
 | 賽博小遊戲合集 CYBER MINI PACK | 包剪揼 · 過三關 · 神經反射 | [cyber-mini-pack](https://github.com/fung2222/cyber-mini-pack) | ✅ 完成 |
-| 賽博忍者 CYBER NINJA | 3D 直向射擊 | [cyber-ninja](https://github.com/fung2222/cyber-ninja) | ✅ 完成 |
+| 異域凶間 XENO NIGHTMARE | 3D 直向射擊 | [cyber-ninja](https://github.com/fung2222/cyber-ninja) | ✅ 完成 |
 | 機甲雷台 MECH THUNDER ARENA | 獨立格鬥作（非 hub 休閒 · 列表靠後） | [neon-stick-duel](https://github.com/fung2222/neon-stick-duel) | 原型／抽出中 · [PRODUCT-SPLIT](docs/PRODUCT-SPLIT.md) |
 
 ## 文件 Docs

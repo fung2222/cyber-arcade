@@ -45,7 +45,7 @@
 | 貪食蛇 | → **CYBER SNAKE** (done) |
 | 2048 | → **DATA FUSE 數據熔合** (done) |
 | 記憶配對 | → **NEON RECALL 霓虹記憶** |
-| Cyber Ninja vs Cosmic Monster | → **CYBER NINJA 賽博忍者：星海魔獸** (3D, auto-fire) |
+| Cyber Ninja vs Cosmic Monster | → **XENO NIGHTMARE 異域凶間** (3D, auto-fire; formerly CYBER NINJA) |
 | 猜拳 + 過三關 + 反應挑戰 | → **CYBER MINI PACK** (one game, three modes) |
 | Stickman Fighter (+ v1) | → **NEON STICK DUEL 霓虹火柴人** (one-thumb, original icons) |
 | AI 指令格鬥 | ❌ retired |
