@@ -1,6 +1,6 @@
 // CYBER ARCADE hub — game list with tier badges, trials, store/unlock sheet, restore, hidden DEV panel.
 import { i18n, t } from '../vendor/cyber-kit/core/i18n.js';
-import { showGameLoading } from '../vendor/cyber-kit/ui/game-loading.js?v=0.3.21';
+import { showGameLoading } from '../vendor/cyber-kit/ui/game-loading.js?v=0.3.22';
 import { SynthAudio, MUSIC } from '../vendor/cyber-kit/audio/synth.js';
 import './strings.js?v=0.5.8';
 import { createEntitlements, RANK } from './entitlements.js';
@@ -360,7 +360,7 @@ function launch(g, opts = {}) {
   window.__hub.lastLaunch = { id: g.id, url, ...opts };
   if (NO_NAV) { toast(t('launching', { name: g.name[L()] })); return; }
   // Noticeably longer hub→game portal (Play / trial start only). Demo/howto skip this path.
-  showGameLoading({ hold: 900 }).then(() => { location.href = url; });
+  showGameLoading({ hold: 900, onLeave: () => { location.href = url; } });
 }
 function openTrial(g) {
   const max = ent.trialRuns(g.id), n = ent.trialRemaining(g.id), tn = tierName(g.tier);
@@ -604,10 +604,8 @@ function render() {
       try { hubAudio.click(); } catch {}
       const url = b.dataset.demo;
       if (!url) return;
-      showGameLoading({ hold: 700 }).then(() => {
-        if (NO_NAV) { toast(t('demo')); return; }
-        location.href = url;
-      });
+      if (NO_NAV) { toast(t('demo')); return; }
+      showGameLoading({ hold: 700, onLeave: () => { location.href = url; } });
     };
   });
   devMeta();

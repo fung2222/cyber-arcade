@@ -17,7 +17,7 @@
 - **Game smoke tests (2026-11-02)** — core game Playwright tests now launch the bundled Chromium (`p.chromium.launch(args=ARGS)`) instead of hardcoded `/usr/bin/google-chrome`; commits in cyber-board, cyber-mini-pack, cyber-ninja, cyber-snake, cyber-tower, neon-recall, neon-stick-run.
 - **A3 done** — `css/hub.css` body bottom clearance 84px → **96px**; 390px last card now sits 20px above the Games FAB (was 8px). Guard: `tests/hub-layout.test.mjs`.
 - **Card action hierarchy (2026-11-02)** — card Start/Play is now `flex: 3`, **52px** tall and 14px; 教學／示範 are fixed **58px** wide and stay on the same row. Guard: `tests/hub-cards.py` at 360/390/412 (play ≥2.5× 教學, no overflow).
-- **Unified start/launch transition (2026-11-03)** — `cyber-kit/ui/game-loading.js`: two glowing rings + `Loading...`; imported by every kit game (auto-binds start controls) and used by the hub before navigation. Hub `js/hub.js?v=0.5.9`; player cards/trials/demo all use it.
+- **Unified start/launch transition (2026-11-03)** — `cyber-kit/ui/game-loading.js`: two glowing rings + `Loading...` on a blurred semi-transparent backdrop; imported by every kit game (auto-binds start controls) and used by the hub before navigation. Hub `js/hub.js?v=0.5.10`; cards/trials/demo all use it. Hub keeps the overlay up while navigating (`onLeave`) so there is no half-second flash back to the lobby; old per-game boot loading overlays were removed.
 
 ## A2 done (card data hygiene)
 - `games.json`: `corrupt-pet` card updated to live cache query `?v=0.1.4`, `version: 0.1.4`, `updated: 2026-11-02`, stage text bumped to v0.1.4; catalog `updated` also 2026-11-02.
